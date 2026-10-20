@@ -203,33 +203,41 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 ## References
 
 1. T. Gustafsson and G. D. McBain, "scikit-fem: A Python package for finite element assembly,"
-   J. Open Source Softw. **5**, 2369 (2020).
+   J. Open Source Softw. **5**, 2369 (2020). [doi:10.21105/joss.02369](https://doi.org/10.21105/joss.02369)
 2. L. S. Goddard, "Optical characteristics of a two-cylinder electrostatic lens," Math. Proc. Camb. Phil. Soc.
-   **42**, 106 (1946).
+   **42**, 106 (1946). [doi:10.1017/S0305004100022829](https://doi.org/10.1017/S0305004100022829)
 3. R. D. Cook and D. W. O. Heddle, "The simple accurate calculation of cylinder lens potentials and focal
-   properties," J. Phys. E: Sci. Instrum. **9**, 279 (1976).
-4. Y. Y. Lau, D. Chernin, M. Heri and P. Zhang, "Solution to an unsolved problem in diodes: limiting current for
-   small emission area and low emission energy," [arXiv:2607.24590](https://arxiv.org/abs/2607.24590) (2026).
+   properties," J. Phys. E: Sci. Instrum. **9**, 279 (1976). [doi:10.1088/0022-3735/9/4/012](https://doi.org/10.1088/0022-3735/9/4/012)
+4. Y. Y. Lau, D. P. Chernin, Y. Heri and P. Zhang, "Solution to an unsolved problem in diodes: Limiting current for
+   small emission area and low emission energy," arXiv:2607.24590 (2026). [doi:10.48550/arXiv.2607.24590](https://doi.org/10.48550/arXiv.2607.24590)
 5. J. P. Verboncoeur, A. B. Langdon and N. T. Gladd, "An object-oriented electromagnetic PIC code,"
-   Comput. Phys. Commun. **87**, 199 (1995).
+   Comput. Phys. Commun. **87**, 199 (1995). [doi:10.1016/0010-4655(94)00173-Y](https://doi.org/10.1016/0010-4655%2894%2900173-Y)
 6. Y. Y. Lau, J. W. Luginsland, K. L. Cartwright, D. H. Simon, W. Tang, B. W. Hoff and R. M. Gilgenbach,
    "A re-examination of the Buneman–Hartree condition in a cylindrical smooth-bore relativistic magnetron,"
-   Phys. Plasmas **17**, 033102 (2010).
+   Phys. Plasmas **17**, 033102 (2010). [doi:10.1063/1.3328804](https://doi.org/10.1063/1.3328804)
 7. R. V. Lovelace and E. Ott, "Theory of magnetic insulation," Phys. Fluids **17**, 1263 (1974).
-8. M. Franzi et al., "Recirculating planar magnetron simulations and experiment," IEEE Trans. Plasma Sci. **41** (2013).
+   [doi:10.1063/1.1694876](https://doi.org/10.1063/1.1694876)
+8. M. A. Franzi, R. M. Gilgenbach, B. W. Hoff, D. A. Chalenski, D. Simon, Y. Y. Lau and J. Luginsland,
+   "Recirculating-planar-magnetron simulations and experiment," IEEE Trans. Plasma Sci. **41**, 639 (2013).
+   [doi:10.1109/TPS.2013.2242493](https://doi.org/10.1109/TPS.2013.2242493)
 9. J. W. Luginsland, Y. Y. Lau and R. M. Gilgenbach, "Two-dimensional Child–Langmuir law,"
-   Phys. Rev. Lett. **77**, 4668 (1996).
+   Phys. Rev. Lett. **77**, 4668 (1996). [doi:10.1103/PhysRevLett.77.4668](https://doi.org/10.1103/PhysRevLett.77.4668)
 10. Y. Y. Lau, "Simple theory for the two-dimensional Child–Langmuir law," Phys. Rev. Lett. **87**, 278301 (2001).
+    [doi:10.1103/PhysRevLett.87.278301](https://doi.org/10.1103/PhysRevLett.87.278301)
 11. I. Langmuir and K. B. Blodgett, "Currents limited by space charge between coaxial cylinders,"
-    Phys. Rev. **22**, 347 (1923).
-12. J. R. Pierce, "Limiting stable current in electron beams in the presence of ions," J. Appl. Phys. **15**, 721 (1944).
-13. G. Bekefi and T. Orzechowski, "Giant microwave bursts emitted from a field-emission, relativistic-electron-beam
-    magnetron," Phys. Rev. Lett. **37**, 379 (1976).
+    Phys. Rev. **22**, 347 (1923). [doi:10.1103/PhysRev.22.347](https://doi.org/10.1103/PhysRev.22.347)
+12. J. R. Pierce, "Limiting stable current in electron beams in the presence of ions," J. Appl. Phys. **15**, 721
+    (1944). [doi:10.1063/1.1707378](https://doi.org/10.1063/1.1707378)
+13. G. Bekefi and T. J. Orzechowski, "Giant microwave bursts emitted from a field-emission, relativistic-electron-beam
+    magnetron," Phys. Rev. Lett. **37**, 379 (1976). [doi:10.1103/PhysRevLett.37.379](https://doi.org/10.1103/PhysRevLett.37.379)
 14. A. Palevsky and G. Bekefi, "Microwave emission from pulsed, relativistic e-beam diodes. II. The
-    multiresonator magnetron," Phys. Fluids **22**, 986 (1979).
-15. WarpX, [https://github.com/BLAST-WarpX/warpx](https://github.com/BLAST-WarpX/warpx); L. Fedeli et al., "Pushing the
-    frontier in the design of laser-based electron accelerators with groundbreaking mesh-refined particle-in-cell
-    simulations on exascale-class supercomputers," Proc. SC22 (2022).
+    multiresonator magnetron," Phys. Fluids **22**, 986 (1979). [doi:10.1063/1.862663](https://doi.org/10.1063/1.862663)
+15. L. Fedeli, A. Huebl, F. Boillod-Cerneux, T. Clark, K. Gott, C. Hillairet, S. Jaure, A. Leblanc, R. Lehe, A. Myers,
+    C. Piechurski, M. Sato, N. Zaim, W. Zhang, J.-L. Vay and H. Vincenti, "Pushing the frontier in the design of
+    laser-based electron accelerators with groundbreaking mesh-refined particle-in-cell simulations on
+    exascale-class supercomputers," in *SC22: International Conference for High Performance Computing,
+    Networking, Storage and Analysis* (IEEE, 2022), pp. 1–12. [doi:10.1109/SC41404.2022.00008](https://doi.org/10.1109/SC41404.2022.00008)
+    WarpX source code: [github.com/BLAST-WarpX/warpx](https://github.com/BLAST-WarpX/warpx).
 
 ## Documentation
 
