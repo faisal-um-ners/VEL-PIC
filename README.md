@@ -19,7 +19,7 @@ graphical interface, a command-line runner and a Python API.
 | **2D-ZY** (Cartesian, per unit depth) | finite elements (Q1), locally refined meshes | Yee FDTD, all six field components |
 | **2D-RZ** (axisymmetric) | finite elements with r-weighted weak form | cylindrical Yee FDTD with exact on-axis update |
 
-<p align="center"><img src="docs/images/gui_live_monitor.png" alt="VEL-PIC live monitor" width="900"></p>
+<p align="center"><img src="docs/images/gui_model_builder.png" alt="VEL-PIC model builder" width="900"></p>
 
 ## Features
 
@@ -43,24 +43,41 @@ graphical interface, a command-line runner and a Python API.
 
 ### Limiting current of small emitters
 
-Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with low injection energy
-(Lau, Chernin, Heri & Zhang 2026). Below the limiting current the flow is steady and the whole current
-reaches the anode; above it the potential minimum reaches −Δ·V₀, a virtual cathode forms and oscillates,
-and part of the current returns to the cathode. The steady limiting-current solver included with VEL-PIC
-agrees with the paper's POISSON values to within 0.25 %.
+Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with low injection energy,
+Δ·eV₀ = 25 eV at V₀ = 2.5 kV (Lau, Chernin, Heri & Zhang 2026). The live monitor shows the potential along
+the emitter axis with its minimum marked, the phase space, the particles and the history of the potential
+minimum φ_min. The steady limiting-current solver included with VEL-PIC agrees with the paper's POISSON
+values to within 0.25 %.
 
-<p align="center"><img src="docs/images/diode_limiting_current.png" alt="Diode below and above the limiting current" width="900"></p>
+**Below the limit (strip, J = 0.96 J_max).** The flow is steady: φ_min settles at −4.6 V, well above
+−Δ·V₀ = −25 V, and the whole current reaches the anode.
+
+<p align="center"><img src="docs/images/gui_diode_strip_zy.png" alt="Strip emitter below the limiting current" width="900"></p>
+
+**Above the limit (disk, J = 1.04 J_max).** The potential minimum reaches −Δ·V₀, a virtual cathode forms and
+oscillates around φ_min ≈ −25.5 V (FFT inset: peak at 7.8 GHz), and part of the current returns to the cathode.
+
+<p align="center"><img src="docs/images/gui_diode_disk_rz.png" alt="Disk emitter above the limiting current" width="900"></p>
 
 Examples: `yylau_2026_strip_caseA_zy` (below the limit) and `yylau_2026_disk_virtual_cathode_rz` (above it).
 
 ### Planar vane magnetron
 
-A six-cavity planar magnetron at 170 kV and 0.16 T, inside the Hull–Buneman–Hartree window. Space-charge
-limited emission from the cathode at y = 0 forms three spokes; the cavity field grows from noise, locks into
-the π mode and saturates at 5.70 GHz, 2.4 % below the cold-test frequency. A resistive load in one cavity
-sets the loaded Q to 250.
+A six-cavity planar magnetron at 170 kV and 0.16 T, inside the Hull–Buneman–Hartree window (model shown at the
+top of this page). Space-charge-limited emission from the cathode at y = 0 forms three spokes; the cavity field
+grows from noise, locks into the π mode and saturates at about 35 MV/m and 5.70 GHz, 2.4 % below the cold-test
+frequency. A resistive load in one cavity sets the loaded Q to 250.
 
-<p align="center"><img src="docs/images/planar_magnetron_em.png" alt="Planar magnetron: field, phase space, spokes and saturation" width="900"></p>
+The model: cathode at y = 0 (red, emitting over the full period), anode block with six vane cavities above the
+1 cm interaction gap, periodic side boundaries, the loss port in cavity 1 and two field probes, on a uniform
+240 × 90 Yee mesh (0.25 mm cells).
+
+<p align="center"><img src="docs/images/gui_magnetron_mesh.png" alt="Planar magnetron geometry and mesh" width="900"></p>
+
+The live monitor at the end of the run (25 ns) shows E_z in the π mode, the phase space, the spokes and the
+cavity-2 E_z probe.
+
+<p align="center"><img src="docs/images/gui_live_monitor.png" alt="Planar magnetron live monitor at 25 ns" width="900"></p>
 
 Example: `planar_magnetron_em`.
 
