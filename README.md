@@ -42,6 +42,20 @@ graphical interface, a command-line runner and a Python API.
 
 ## Results
 
+### Field-only electrostatics: two-cylinder lens
+
+VEL-PIC also solves pure electrostatic problems without particles. The example `two_cylinder_lens_rz` is the
+classic immersion lens: two coaxial tubes of radius R at V₁ = 0 and V₂ = 1 kV with a gap of 0.1 D, on a mesh
+refined at the gap and the tube walls [[14, 15]](#references). Along the axis the potential agrees with the
+exact series solution to 3×10⁻⁴ V₂ and the peak field to 0.2 %.
+
+<p align="center"><img src="docs/images/lens_validation.png" alt="Two-cylinder lens: axial potential and field versus the exact series" width="900"></p>
+
+For a run without particles the live monitor shows the potential map, the line-probe profiles φ(z) and E_z(z)
+on the axis, and a second field component.
+
+<p align="center"><img src="docs/images/gui_lens_live.png" alt="Two-cylinder lens in the live monitor" width="900"></p>
+
 ### Limiting current of small emitters
 
 Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with low injection energy,
@@ -73,20 +87,6 @@ a uniform grid needs 256,000 cells (16× more), and 9× more for the disk. Grade
 electrostatic runs; the electromagnetic Yee solver uses a uniform grid.
 
 <p align="center"><img src="docs/images/mesh_refinement.png" alt="Graded mesh versus uniform mesh at a small emitter" width="820"></p>
-
-### Field-only electrostatics: two-cylinder lens
-
-VEL-PIC also solves pure electrostatic problems without particles. The example `two_cylinder_lens_rz` is the
-classic immersion lens: two coaxial tubes of radius R at V₁ = 0 and V₂ = 1 kV with a gap of 0.1 D, on a mesh
-refined at the gap and the tube walls [[14, 15]](#references). Along the axis the potential agrees with the
-exact series solution to 3×10⁻⁴ V₂ and the peak field to 0.2 %.
-
-<p align="center"><img src="docs/images/lens_validation.png" alt="Two-cylinder lens: axial potential and field versus the exact series" width="900"></p>
-
-For a run without particles the live monitor shows the potential map, the line-probe profiles φ(z) and E_z(z)
-on the axis, and a second field component.
-
-<p align="center"><img src="docs/images/gui_lens_live.png" alt="Two-cylinder lens in the live monitor" width="900"></p>
 
 ### Planar vane magnetron
 
