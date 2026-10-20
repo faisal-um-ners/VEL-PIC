@@ -16,7 +16,7 @@ graphical interface, a command-line runner and a Python API.
 
 | Geometry | Electrostatic | Electromagnetic |
 |---|---|---|
-| **1D-Z** (planar) | finite elements (scikit-fem [[12]](#references), P1) | Yee FDTD, charge-conserving |
+| **1D-Z** (planar) | finite elements (scikit-fem [[1]](#references), P1) | Yee FDTD, charge-conserving |
 | **2D-ZY** (Cartesian, per unit depth) | finite elements (Q1), locally refined meshes | Yee FDTD, all six field components |
 | **2D-RZ** (axisymmetric) | finite elements with r-weighted weak form | cylindrical Yee FDTD with exact on-axis update |
 
@@ -46,7 +46,7 @@ graphical interface, a command-line runner and a Python API.
 
 VEL-PIC also solves pure electrostatic problems without particles. The example `two_cylinder_lens_rz` is the
 classic immersion lens: two coaxial tubes of radius R at V₁ = 0 and V₂ = 1 kV with a gap of 0.1 D, on a mesh
-refined at the gap and the tube walls [[14, 15]](#references). Along the axis the potential agrees with the
+refined at the gap and the tube walls [[2, 3]](#references). Along the axis the potential agrees with the
 exact series solution to 3×10⁻⁴ V₂ and the peak field to 0.2 %.
 
 <p align="center"><img src="docs/images/lens_validation.png" alt="Two-cylinder lens: axial potential and field versus the exact series" width="900"></p>
@@ -59,7 +59,7 @@ on the axis, and a second field component.
 ### Limiting current of small emitters
 
 Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with low injection energy,
-Δ·eV₀ = 25 eV at V₀ = 2.5 kV, following Lau, Chernin, Heri & Zhang [[1]](#references). The live monitor shows the potential along
+Δ·eV₀ = 25 eV at V₀ = 2.5 kV, following Lau, Chernin, Heri & Zhang [[4]](#references). The live monitor shows the potential along
 the emitter axis with its minimum marked, the phase space, the particles and the history of the potential
 minimum φ_min. The steady limiting-current solver included with VEL-PIC agrees with the paper's POISSON
 values to within 0.25 %.
@@ -75,13 +75,13 @@ oscillates around φ_min ≈ −25.5 V (FFT inset: peak at 7.8 GHz), and part of
 <p align="center"><img src="docs/images/gui_diode_disk_rz.png" alt="Disk emitter above the limiting current" width="900"></p>
 
 Examples: `yylau_2026_strip_caseA_zy` (below the limit) and `yylau_2026_disk_virtual_cathode_rz` (above it); geometry,
-normalisation and the limiting-current equation (their Eq. 7) are those of Ref. [[1]](#references).
+normalisation and the limiting-current equation (their Eq. 7) are those of Ref. [[4]](#references).
 
 ### Graded mesh for small emitters
 
-The electrostatic solver uses finite elements (scikit-fem [[12]](#references)) on a tensor-product mesh with
+The electrostatic solver uses finite elements (scikit-fem [[1]](#references)) on a tensor-product mesh with
 graded refinement bands: cells are fine over a small emitter and at the cathode and grow by a set ratio
-(1.05–1.2) away from them. Uniform-grid PIC codes such as XOOPIC [[13]](#references) must use the finest cell
+(1.05–1.2) away from them. Uniform-grid PIC codes such as XOOPIC [[5]](#references) must use the finest cell
 everywhere. For the strip emitter above, the graded mesh has 15,972 cells; the same 25 µm × 31 µm resolution on
 a uniform grid needs 256,000 cells (16× more), and 9× more for the disk.
 
@@ -97,8 +97,8 @@ assume equal cells. For electromagnetic runs use a uniform mesh fine enough for 
 
 A six-cavity planar vane magnetron at 170 kV and 0.16 T. It is a generic design made for VEL-PIC, not a
 reproduction of a particular device: the operating point lies between the relativistic planar Hull cutoff
-(0.150 T) and the π-mode Buneman–Hartree field (0.180 T) [[2, 3]](#references), and the periodic geometry is the
-planar analogue of the recirculating planar magnetron [[4]](#references) (model shown at the top of this page). Space-charge-limited emission from the cathode at y = 0 forms three spokes; the cavity field
+(0.150 T) and the π-mode Buneman–Hartree field (0.180 T) [[6, 7]](#references), and the periodic geometry is the
+planar analogue of the recirculating planar magnetron [[8]](#references) (model shown at the top of this page). Space-charge-limited emission from the cathode at y = 0 forms three spokes; the cavity field
 grows from noise, locks into the π mode and saturates at about 35 MV/m and 5.70 GHz, 2.4 % below the cold-test
 frequency. A resistive load in one cavity sets the loaded Q to 250.
 
@@ -161,18 +161,18 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 | Example | Geometry, solver | Physics |
 |---|---|---|
 | `child_langmuir_1d`, `virtual_cathode_1d` | 1D ES | Child–Langmuir diode; over-injected beam and virtual cathode |
-| `child_langmuir_periodic_zy`, `child_langmuir_strip_zy`, `child_langmuir_disk_rz` | ZY / RZ ES | 2D space-charge-limited flow [[5, 6]](#references) |
-| `coaxial_diode_rz` | RZ ES | Langmuir–Blodgett radial flow [[7]](#references) |
+| `child_langmuir_periodic_zy`, `child_langmuir_strip_zy`, `child_langmuir_disk_rz` | ZY / RZ ES | 2D space-charge-limited flow [[9, 10]](#references) |
+| `coaxial_diode_rz` | RZ ES | Langmuir–Blodgett radial flow [[11]](#references) |
 | `thermionic_diode_1d`, `field_emission_1d` | 1D ES | emission laws with space charge |
-| `yylau_2026_strip_caseA_zy`, `yylau_2026_strip_E3_zy`, `yylau_2026_disk_rz` (+ `_virtual_cathode` variants) | ZY / RZ ES, refined mesh | limiting current of small emitters [[1]](#references) |
+| `yylau_2026_strip_caseA_zy`, `yylau_2026_strip_E3_zy`, `yylau_2026_disk_rz` (+ `_virtual_cathode` variants) | ZY / RZ ES, refined mesh | limiting current of small emitters [[4]](#references) |
 | `plasma_oscillation_1d`, `landau_damping_1d` | 1D ES | Langmuir oscillation; Landau damping (kλ_D = 0.5) |
 | `two_stream_1d`, `beam_plasma_1d`, `beam_plasma_zy` | 1D / ZY ES | streaming instabilities |
-| `pierce_diode_1d` | 1D ES | Pierce diode instability [[8]](#references) |
+| `pierce_diode_1d` | 1D ES | Pierce diode instability [[12]](#references) |
 | `beam_expansion_zy`, `beam_drift_tube_rz`, `beam_solenoid_rz` | ZY / RZ ES | space-charge beam expansion; Brillouin focusing |
 | `dielectric_charging_zy` | ZY ES | beam charging of a dielectric |
-| `two_cylinder_lens_rz` | RZ ES, field only | two-cylinder electrostatic lens [[14, 15]](#references) |
-| `planar_magnetron_es` | ZY ES | crossed-field diode, Hull cutoff [[2]](#references) |
-| `planar_magnetron_em`, `a6_magnetron_em` | ZY EM | planar vane magnetron [[2–4]](#references); A6 relativistic magnetron [[9, 10]](#references) |
+| `two_cylinder_lens_rz` | RZ ES, field only | two-cylinder electrostatic lens [[2, 3]](#references) |
+| `planar_magnetron_es` | ZY ES | crossed-field diode, Hull cutoff [[6]](#references) |
+| `planar_magnetron_em`, `a6_magnetron_em` | ZY EM | planar vane magnetron [[6–8]](#references); A6 relativistic magnetron [[13, 14]](#references) |
 | `relativistic_diode_rz_em` | RZ EM | TEM-port-driven coaxial diode |
 | `laser_plasma_1d`, `laser_plasma_zy`, `laser_focus_zy`, `laser_wakefield_1d` | 1D / ZY EM | laser–plasma interaction and focusing |
 | `beam_plasma_wakefield_1d`, `plasma_wakefield_rz` | 1D / RZ EM | beam-driven plasma wakefields |
@@ -186,51 +186,50 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 |---|---|
 | Poisson solver, 1D / ZY / RZ | second-order convergence |
 | Child–Langmuir law, 1 kV / 100 kV (relativistic) | +1.3 % / +1.5 % |
-| 2D strip emitter vs Lau [[6]](#references), W/d = 1–4 | +0.2 … +1.9 % |
-| Langmuir–Blodgett coaxial flow [[7]](#references) | +0.6 % |
-| Two-cylinder lens, axial potential / peak field [[14, 15]](#references) | 3×10⁻⁴ V₂ / −0.19 % |
+| 2D strip emitter vs Lau [[10]](#references), W/d = 1–4 | +0.2 … +1.9 % |
+| Langmuir–Blodgett coaxial flow [[11]](#references) | +0.6 % |
+| Two-cylinder lens, axial potential / peak field [[2, 3]](#references) | 3×10⁻⁴ V₂ / −0.19 % |
 | Landau damping, kλ_D = 0.5 (exact Vlasov root) | γ +3.5 %, ω −0.04 % |
 | Two-stream / beam–plasma growth rates | −0.25 % / −0.3 % |
-| Pierce diode instability [[8]](#references), α = 1.5π / 2.5π | γ −2.1 % / −5.4 % |
+| Pierce diode instability [[12]](#references), α = 1.5π / 2.5π | γ −2.1 % / −5.4 % |
 | Cavity eigenmodes (TM, TE, RZ) | −0.02 % |
 | Electromagnetic charge conservation | 10⁻¹⁵ |
-| Limiting current of small emitters vs POISSON [[1]](#references) | +0.06 … +0.24 % |
-| Code-to-code with WarpX [[11]](#references): two-stream, Pierce diode, RZ beam, EM wake | 0.04 %, 0.05 %, 1.4 %, 0.06 % |
+| Limiting current of small emitters vs POISSON [[4]](#references) | +0.06 … +0.24 % |
+| Code-to-code with WarpX [[15]](#references): two-stream, Pierce diode, RZ beam, EM wake | 0.04 %, 0.05 %, 1.4 %, 0.06 % |
 | Particle pushers vs WarpX (Boris, Vay, Higuera–Cary) | 10⁻⁸ … 10⁻¹⁵ |
 | Crossed-field gaps vs WarpX, planar / coaxial | potential ≤ 1.2·10⁻⁴ V₀ / 10⁻⁶ V₀ |
-| A6 magnetron at 360 kV, 0.8 T (measured ≈ 2.3 GHz [[9, 10]](#references)) | π mode at 2.16 GHz |
+| A6 magnetron at 360 kV, 0.8 T (measured ≈ 2.3 GHz [[13, 14]](#references)) | π mode at 2.16 GHz |
 
 ## References
 
-1. Y. Y. Lau, D. Chernin, M. Heri and P. Zhang, "Solution to an unsolved problem in diodes: limiting current for
+1. T. Gustafsson and G. D. McBain, "scikit-fem: A Python package for finite element assembly,"
+   J. Open Source Softw. **5**, 2369 (2020).
+2. L. S. Goddard, "Optical characteristics of a two-cylinder electrostatic lens," Math. Proc. Camb. Phil. Soc.
+   **42**, 106 (1946).
+3. R. D. Cook and D. W. O. Heddle, "The simple accurate calculation of cylinder lens potentials and focal
+   properties," J. Phys. E: Sci. Instrum. **9**, 279 (1976).
+4. Y. Y. Lau, D. Chernin, M. Heri and P. Zhang, "Solution to an unsolved problem in diodes: limiting current for
    small emission area and low emission energy," [arXiv:2607.24590](https://arxiv.org/abs/2607.24590) (2026).
-2. Y. Y. Lau, J. W. Luginsland, K. L. Cartwright, D. H. Simon, W. Tang, B. W. Hoff and R. M. Gilgenbach,
+5. J. P. Verboncoeur, A. B. Langdon and N. T. Gladd, "An object-oriented electromagnetic PIC code,"
+   Comput. Phys. Commun. **87**, 199 (1995).
+6. Y. Y. Lau, J. W. Luginsland, K. L. Cartwright, D. H. Simon, W. Tang, B. W. Hoff and R. M. Gilgenbach,
    "A re-examination of the Buneman–Hartree condition in a cylindrical smooth-bore relativistic magnetron,"
    Phys. Plasmas **17**, 033102 (2010).
-3. R. V. Lovelace and E. Ott, "Theory of magnetic insulation," Phys. Fluids **17**, 1263 (1974).
-4. M. Franzi et al., "Recirculating planar magnetron simulations and experiment," IEEE Trans. Plasma Sci. **41** (2013).
-5. J. W. Luginsland, Y. Y. Lau and R. M. Gilgenbach, "Two-dimensional Child–Langmuir law,"
+7. R. V. Lovelace and E. Ott, "Theory of magnetic insulation," Phys. Fluids **17**, 1263 (1974).
+8. M. Franzi et al., "Recirculating planar magnetron simulations and experiment," IEEE Trans. Plasma Sci. **41** (2013).
+9. J. W. Luginsland, Y. Y. Lau and R. M. Gilgenbach, "Two-dimensional Child–Langmuir law,"
    Phys. Rev. Lett. **77**, 4668 (1996).
-6. Y. Y. Lau, "Simple theory for the two-dimensional Child–Langmuir law," Phys. Rev. Lett. **87**, 278301 (2001).
-7. I. Langmuir and K. B. Blodgett, "Currents limited by space charge between coaxial cylinders,"
-   Phys. Rev. **22**, 347 (1923).
-8. J. R. Pierce, "Limiting stable current in electron beams in the presence of ions," J. Appl. Phys. **15**, 721 (1944).
-9. G. Bekefi and T. Orzechowski, "Giant microwave bursts emitted from a field-emission, relativistic-electron-beam
-   magnetron," Phys. Rev. Lett. **37**, 379 (1976).
-10. A. Palevsky and G. Bekefi, "Microwave emission from pulsed, relativistic e-beam diodes. II. The
+10. Y. Y. Lau, "Simple theory for the two-dimensional Child–Langmuir law," Phys. Rev. Lett. **87**, 278301 (2001).
+11. I. Langmuir and K. B. Blodgett, "Currents limited by space charge between coaxial cylinders,"
+    Phys. Rev. **22**, 347 (1923).
+12. J. R. Pierce, "Limiting stable current in electron beams in the presence of ions," J. Appl. Phys. **15**, 721 (1944).
+13. G. Bekefi and T. Orzechowski, "Giant microwave bursts emitted from a field-emission, relativistic-electron-beam
+    magnetron," Phys. Rev. Lett. **37**, 379 (1976).
+14. A. Palevsky and G. Bekefi, "Microwave emission from pulsed, relativistic e-beam diodes. II. The
     multiresonator magnetron," Phys. Fluids **22**, 986 (1979).
-11. WarpX, [https://github.com/BLAST-WarpX/warpx](https://github.com/BLAST-WarpX/warpx); L. Fedeli et al., "Pushing the
+15. WarpX, [https://github.com/BLAST-WarpX/warpx](https://github.com/BLAST-WarpX/warpx); L. Fedeli et al., "Pushing the
     frontier in the design of laser-based electron accelerators with groundbreaking mesh-refined particle-in-cell
     simulations on exascale-class supercomputers," Proc. SC22 (2022).
-
-12. T. Gustafsson and G. D. McBain, "scikit-fem: A Python package for finite element assembly,"
-    J. Open Source Softw. **5**, 2369 (2020).
-13. J. P. Verboncoeur, A. B. Langdon and N. T. Gladd, "An object-oriented electromagnetic PIC code,"
-    Comput. Phys. Commun. **87**, 199 (1995).
-14. L. S. Goddard, "Optical characteristics of a two-cylinder electrostatic lens," Math. Proc. Camb. Phil. Soc.
-    **42**, 106 (1946).
-15. R. D. Cook and D. W. O. Heddle, "The simple accurate calculation of cylinder lens potentials and focal
-    properties," J. Phys. E: Sci. Instrum. **9**, 279 (1976).
 
 ## Documentation
 
