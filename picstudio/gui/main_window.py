@@ -1022,15 +1022,14 @@ class MainWindow(QMainWindow):
         box.exec()
 
     def cite(self):
-        text = CITATION.format(version=__version__)
+        text = CITATION
         bib = ("@software{faisal_velpic,\n"
-               f"  author  = {{{AUTHOR}}},\n"
-               "  title   = {VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code},\n"
-               f"  version = {{{__version__}}},\n"
-               "  year    = {2026},\n"
+               "  author    = {Faisal, Md Arifuzzaman},\n"
+               "  title     = {{VEL-PIC}: Vacuum Electrodynamics and Laser Particle-in-Cell code},\n"
+               "  year      = {2026},\n"
                "  publisher = {Zenodo},\n"
-               f"  doi     = {{{DOI}}},\n"
-               f"  url     = {{https://doi.org/{DOI}}}\n}}")
+               f"  doi       = {{{DOI}}},\n"
+               f"  url       = {{https://doi.org/{DOI}}}\n}}")
         box = QMessageBox(self)
         box.setWindowTitle("How to cite VEL-PIC")
         box.setText("<p>If VEL-PIC contributes to published work, please cite:</p>"

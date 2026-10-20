@@ -247,23 +247,20 @@ install/        installers and launchers
 
 ## How to cite
 
-If VEL-PIC contributes to published work, please cite it. The software is archived on Zenodo:
+If VEL-PIC contributes to published work, please cite it. The software is archived on Zenodo with the
+permanent DOI [10.5281/zenodo.23512470](https://doi.org/10.5281/zenodo.23512470), which covers all versions.
 
-- all versions (always resolves to the latest release): [10.5281/zenodo.23512470](https://doi.org/10.5281/zenodo.23512470)
-- version 1.3.0: [10.5281/zenodo.23512471](https://doi.org/10.5281/zenodo.23512471)
-
-> Faisal, M. A. (2026). *VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code* (Version 1.3.0)
-> [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23512471
+> Faisal, M. A. (2026). *VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code* [Computer software].
+> Zenodo. https://doi.org/10.5281/zenodo.23512470
 
 ```bibtex
 @software{faisal_velpic,
   author    = {Faisal, Md Arifuzzaman},
   title     = {{VEL-PIC}: Vacuum Electrodynamics and Laser Particle-in-Cell code},
-  version   = {1.3.0},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.23512471},
-  url       = {https://doi.org/10.5281/zenodo.23512471}
+  doi       = {10.5281/zenodo.23512470},
+  url       = {https://doi.org/10.5281/zenodo.23512470}
 }
 ```
 

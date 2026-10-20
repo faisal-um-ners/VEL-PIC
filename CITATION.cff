@@ -30,3 +30,14 @@ keywords:
   - space-charge-limited emission
   - magnetron
   - electromagnetic PIC
+preferred-citation:
+  type: software
+  title: "VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code"
+  authors:
+    - family-names: "Faisal"
+      given-names: "Md Arifuzzaman"
+  year: 2026
+  publisher:
+    name: "Zenodo"
+  doi: "10.5281/zenodo.23512470"
+  url: "https://doi.org/10.5281/zenodo.23512470"
