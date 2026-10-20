@@ -1126,7 +1126,7 @@ class Simulation:
         d["history_units"] = np.array(self.history_units())
         d["progress"] = np.array([self.step_count, self.n_steps])
         d["t_end"] = self.n_steps * self.dt
-        self.out.save_npz("", "live.npz", d)
+        self.out.save_npz("", "live.npz", d, optional=True)
 
     def line_snapshot(self):
         """Profiles of the line probes for the live monitor: line_<name> (values), line_<name>_s

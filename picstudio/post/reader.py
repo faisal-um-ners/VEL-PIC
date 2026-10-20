@@ -2,10 +2,23 @@
 from __future__ import annotations
 
 import glob
+import io
 import json
 import os
 
 import numpy as np
+
+
+def load_npz(path):
+    """Read an NPZ file into a dict and close it at once.
+
+    The whole file is read into memory first, so the handle is held only for a moment.  On Windows a
+    file that is open in another process cannot be replaced; this keeps the GUI from blocking the
+    solver when it rewrites live.npz."""
+    with open(path, "rb") as fh:
+        buf = fh.read()
+    with np.load(io.BytesIO(buf), allow_pickle=True) as z:
+        return {k: z[k] for k in z.files}
 
 
 class Results:
@@ -40,12 +53,12 @@ class Results:
 
     def geometry_data(self):
         p = os.path.join(self.dir, "geometry.npz")
-        return dict(np.load(p, allow_pickle=True)) if os.path.exists(p) else None
+        return load_npz(p) if os.path.exists(p) else None
 
     def field(self, i=-1):
         if not self.field_files:
             return None
-        d = dict(np.load(self.field_files[i], allow_pickle=True))
+        d = load_npz(self.field_files[i])
         if "cell_mat" not in d:                  # runs made before v1.2.1: material map from geometry.npz
             if not hasattr(self, "_cell_mat"):
                 g = self.geometry_data()
@@ -57,15 +70,15 @@ class Results:
     def particles(self, i=-1):
         if not self.particle_files:
             return None
-        return dict(np.load(self.particle_files[i], allow_pickle=True))
+        return load_npz(self.particle_files[i])
 
     def live(self):
         p = os.path.join(self.dir, "live.npz")
         if not os.path.exists(p):
             return None
         try:
-            return dict(np.load(p, allow_pickle=True))
-        except Exception:  # noqa: BLE001  (file being replaced)
+            return load_npz(p)
+        except Exception:  # noqa: BLE001  (file being replaced or still locked)
             return None
 
 
