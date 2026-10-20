@@ -15,7 +15,7 @@ graphical interface, a command-line runner and a Python API.
 
 | Geometry | Electrostatic | Electromagnetic |
 |---|---|---|
-| **1D-Z** (planar) | finite elements (scikit-fem, P1) | Yee FDTD, charge-conserving |
+| **1D-Z** (planar) | finite elements (scikit-fem [[12]](#references), P1) | Yee FDTD, charge-conserving |
 | **2D-ZY** (Cartesian, per unit depth) | finite elements (Q1), locally refined meshes | Yee FDTD, all six field components |
 | **2D-RZ** (axisymmetric) | finite elements with r-weighted weak form | cylindrical Yee FDTD with exact on-axis update |
 
@@ -61,6 +61,17 @@ oscillates around φ_min ≈ −25.5 V (FFT inset: peak at 7.8 GHz), and part of
 
 Examples: `yylau_2026_strip_caseA_zy` (below the limit) and `yylau_2026_disk_virtual_cathode_rz` (above it); geometry,
 normalisation and the limiting-current equation (their Eq. 7) are those of Ref. [[1]](#references).
+
+### Graded mesh for small emitters
+
+The electrostatic solver uses finite elements (scikit-fem [[12]](#references)) on a tensor-product mesh with
+graded refinement bands: cells are fine over a small emitter and at the cathode and grow by a set ratio
+(1.05–1.2) away from them. Uniform-grid PIC codes such as XOOPIC [[13]](#references) must use the finest cell
+everywhere. For the strip emitter above, the graded mesh has 15,972 cells; the same 25 µm × 31 µm resolution on
+a uniform grid needs 256,000 cells (16× more), and 9× more for the disk. Graded meshes are available for
+electrostatic runs; the electromagnetic Yee solver uses a uniform grid.
+
+<p align="center"><img src="docs/images/mesh_refinement.png" alt="Graded mesh versus uniform mesh at a small emitter" width="820"></p>
 
 ### Planar vane magnetron
 
@@ -189,6 +200,11 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 11. WarpX, [https://github.com/BLAST-WarpX/warpx](https://github.com/BLAST-WarpX/warpx); L. Fedeli et al., "Pushing the
     frontier in the design of laser-based electron accelerators with groundbreaking mesh-refined particle-in-cell
     simulations on exascale-class supercomputers," Proc. SC22 (2022).
+
+12. T. Gustafsson and G. D. McBain, "scikit-fem: A Python package for finite element assembly,"
+    J. Open Source Softw. **5**, 2369 (2020).
+13. J. P. Verboncoeur, A. B. Langdon and N. T. Gladd, "An object-oriented electromagnetic PIC code,"
+    Comput. Phys. Commun. **87**, 199 (1995).
 
 ## Documentation
 
