@@ -6,6 +6,10 @@ authors:
   - family-names: "Faisal"
     given-names: "Md Arifuzzaman"
     affiliation: "Department of Nuclear Engineering and Radiological Sciences, University of Michigan"
+abstract: >-
+  VEL-PIC is a Python particle-in-cell code for space-charge-limited flow, electron beams, plasmas and
+  vacuum electron devices in 1D-Z, 2D-ZY and 2D-RZ geometry, with finite-element electrostatic and Yee
+  FDTD electromagnetic solvers, a model-builder graphical interface, a command-line runner and a Python API.
 version: "1.3.0"
 date-released: "2026-10-20"
 license: BSD-3-Clause
