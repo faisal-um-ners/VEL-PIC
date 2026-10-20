@@ -83,8 +83,13 @@ The electrostatic solver uses finite elements (scikit-fem [[12]](#references)) o
 graded refinement bands: cells are fine over a small emitter and at the cathode and grow by a set ratio
 (1.05–1.2) away from them. Uniform-grid PIC codes such as XOOPIC [[13]](#references) must use the finest cell
 everywhere. For the strip emitter above, the graded mesh has 15,972 cells; the same 25 µm × 31 µm resolution on
-a uniform grid needs 256,000 cells (16× more), and 9× more for the disk. Graded meshes are available for
-electrostatic runs; the electromagnetic Yee solver uses a uniform grid.
+a uniform grid needs 256,000 cells (16× more), and 9× more for the disk.
+
+Graded meshes are for electrostatic runs only. The Geometry tab draws a refinement region for either solver,
+but with the electromagnetic solver the model check reports an error and the run does not start: the Yee time
+step is set by the smallest cell over the whole domain, the staggered update is second-order only on equal
+cells (graded cells reflect waves), and the charge-conserving deposition and the held-electrode correction
+assume equal cells. For electromagnetic runs use a uniform mesh fine enough for the emitter.
 
 <p align="center"><img src="docs/images/mesh_refinement.png" alt="Graded mesh versus uniform mesh at a small emitter" width="820"></p>
 

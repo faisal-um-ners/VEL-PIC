@@ -487,8 +487,11 @@ class MainWindow(QMainWindow):
                       "the emitter): a region gives a smaller cell size between <i>From</i> and <i>To</i> "
                       "along z or y; the cells grow by the growth ratio away from it. Emitter ends and "
                       "rectangle edges become mesh nodes automatically. Keep the growth ratio gentle "
-                      "(1.05-1.2). Refined meshes are available with the electrostatic solver (the EM Yee "
-                      "solver needs a uniform grid).</p>")
+                      "(1.05-1.2). Refined meshes are available with the electrostatic solver only. The "
+                      "electromagnetic Yee solver needs a uniform grid: its time step follows the smallest "
+                      "cell everywhere, graded cells reflect waves, and charge conservation assumes equal "
+                      "cells, so Check model reports an error and the run does not start. For EM runs untick "
+                      "<i>Enabled</i> and use a uniform mesh fine enough for the emitter.</p>")
         hint.setWordWrap(True)
         hint.setObjectName("hint")
         lay.addWidget(hint)
