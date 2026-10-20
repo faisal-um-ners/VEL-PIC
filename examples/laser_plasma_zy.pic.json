@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "name": "2D laser - plasma interaction (ZY)",
+  "description": "Focused 0.8 um laser pulse (a0 = 1, w0 = 4 um) incident on a near-critical plasma slab (n = 0.5 n_c) with an up-ramp: relativistic self-focusing, filamentation, reflection and hot-electron generation in 2D.  Ions are mobile protons.",
+  "parameters": {
+    "lam": "0.8e-6",
+    "w": "2*pi*c/lam",
+    "nc": "eps0*me*w**2/e**2",
+    "nfrac": "0.5",
+    "Lz": "40*lam",
+    "Ly": "24*lam"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    },
+    "z_max": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    },
+    "y_min": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    },
+    "y_max": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electromagnetic",
+    "t_end": "200e-15",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 1,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "none",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Lz",
+    "nz": "800",
+    "y_min": "-Ly/2",
+    "y_max": "Ly/2",
+    "ny": "480"
+  },
+  "diagnostics": {
+    "output_dir": "output_laser_plasma_zy",
+    "history_every": "4",
+    "field_every": "300",
+    "particle_every": "600",
+    "max_dump_particles": "50000",
+    "live_every": "100"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    },
+    {
+      "name": "ions",
+      "preset": "proton"
+    }
+  ],
+  "loaders": [
+    {
+      "name": "plasma e",
+      "species": "electrons",
+      "z0": "12*lam",
+      "z1": "36*lam",
+      "y0": "-Ly/2+2*lam",
+      "y1": "Ly/2-2*lam",
+      "density": "nfrac*nc*min(max((z-12*lam)/(4*lam),0),1)",
+      "ppc": "2",
+      "temperature": "10"
+    },
+    {
+      "name": "plasma i",
+      "species": "ions",
+      "z0": "12*lam",
+      "z1": "36*lam",
+      "y0": "-Ly/2+2*lam",
+      "y1": "Ly/2-2*lam",
+      "density": "nfrac*nc*min(max((z-12*lam)/(4*lam),0),1)",
+      "ppc": "2"
+    }
+  ],
+  "emitters": [],
+  "external_fields": [],
+  "sources": [
+    {
+      "name": "laser",
+      "type": "laser",
+      "z_position": "1.5*lam",
+      "wavelength": "lam",
+      "a0": "1.0",
+      "duration": "20e-15",
+      "t_peak": "40e-15",
+      "polarization": "y",
+      "waist": "4*lam",
+      "y_center": "0",
+      "focus_z": "16*lam"
+    }
+  ],
+  "probes": [
+    {
+      "name": "Ey_front",
+      "quantity": "Ey",
+      "z": "8*lam",
+      "y": "0"
+    }
+  ],
+  "line_probes": [],
+  "power_lines": [
+    {
+      "name": "reflected",
+      "orientation": "z",
+      "position": "4*lam",
+      "start": "-Ly/2+2*lam",
+      "end": "Ly/2-2*lam"
+    },
+    {
+      "name": "transmitted",
+      "orientation": "z",
+      "position": "37*lam",
+      "start": "-Ly/2+2*lam",
+      "end": "Ly/2-2*lam"
+    }
+  ]
+}

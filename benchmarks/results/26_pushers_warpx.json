@@ -1,0 +1,125 @@
+{
+  "name": "26_pushers_warpx",
+  "title": "Particle pushers: identical to WarpX (Boris, Vay, Higuera-Cary)",
+  "rows": [
+    {
+      "case": "gyro, boris: max |VEL-PIC - WarpX| / path size",
+      "value": 2.3487583638454774e-08,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.3487583638454774e-08,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "gyro, vay: max |VEL-PIC - WarpX| / path size",
+      "value": 2.3487583526739304e-08,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.3487583526739304e-08,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "gyro, higuera: max |VEL-PIC - WarpX| / path size",
+      "value": 2.348758405997782e-08,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.348758405997782e-08,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "exb, boris: max |VEL-PIC - WarpX| / path size",
+      "value": 1.3155883414363783e-09,
+      "reference": 0.0,
+      "unit": "",
+      "error": 1.3155883414363783e-09,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "exb, vay: max |VEL-PIC - WarpX| / path size",
+      "value": 1.3155838500852934e-09,
+      "reference": 0.0,
+      "unit": "",
+      "error": 1.3155838500852934e-09,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "exb, higuera: max |VEL-PIC - WarpX| / path size",
+      "value": 1.3155870689592269e-09,
+      "reference": 0.0,
+      "unit": "",
+      "error": 1.3155870689592269e-09,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "relexb, boris: max |VEL-PIC - WarpX| / path size",
+      "value": 5.443967987378085e-13,
+      "reference": 0.0,
+      "unit": "",
+      "error": 5.443967987378085e-13,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "relexb, vay: max |VEL-PIC - WarpX| / path size",
+      "value": 2.5492109611719476e-15,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.5492109611719476e-15,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "relexb, higuera: max |VEL-PIC - WarpX| / path size",
+      "value": 2.5492109611719476e-15,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.5492109611719476e-15,
+      "tol": 1e-07,
+      "passed": true
+    },
+    {
+      "case": "Boris gyro-frequency vs (2/dt) atan(w_c dt/2)",
+      "value": 17579327398.323956,
+      "reference": 17576000554.03965,
+      "unit": "",
+      "error": 0.0001892833511285552,
+      "tol": 0.0002,
+      "passed": true
+    },
+    {
+      "case": "E x B drift velocity vs E/B",
+      "value": 1006918.5239436803,
+      "reference": 1000000.0,
+      "unit": "",
+      "error": 0.006918523943680421,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "relativistic E x B (gamma=20), vay: transverse deviation / path",
+      "value": 4.956873287105946e-16,
+      "reference": 0.0,
+      "unit": "",
+      "error": 4.956873287105946e-16,
+      "tol": 1e-09,
+      "passed": true
+    },
+    {
+      "case": "relativistic E x B (gamma=20), higuera: transverse deviation / path",
+      "value": 7.0187147012482645e-19,
+      "reference": 0.0,
+      "unit": "",
+      "error": 7.0187147012482645e-19,
+      "tol": 1e-09,
+      "passed": true
+    }
+  ],
+  "notes": "Single electron in uniform fields, WarpX 26.09 2D run (algo.particle_pusher, algo.maxwell_solver = none, ParticleExtrema reduced diagnostic every step) against VEL-PIC's push kernels with the same initial half-step push-back. The WarpX inputs and outputs are stored in benchmarks/warpx_compare/data/pushers. In the relativistic E x B case the Boris pusher drifts sideways by 1.34e-04 of the path (its known error, identical in WarpX), whereas Vay and Higuera-Cary keep the particle on a straight line.",
+  "passed": true
+}

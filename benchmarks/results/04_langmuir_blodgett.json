@@ -1,0 +1,26 @@
+{
+  "name": "04_langmuir_blodgett",
+  "title": "Radial SCL flow in a coaxial diode (RZ) vs Langmuir-Blodgett",
+  "rows": [
+    {
+      "case": "b/a = 2: current per length (A/m)",
+      "value": 835.2048502966593,
+      "reference": 830.2210359524588,
+      "unit": "",
+      "error": 0.00600299694705142,
+      "tol": 0.05,
+      "passed": true
+    },
+    {
+      "case": "b/a = 4: current per length (A/m)",
+      "value": 174.41522701436645,
+      "reference": 173.3535118645635,
+      "unit": "",
+      "error": 0.006124566721396718,
+      "tol": 0.05,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "name": "Beam-driven plasma wakefield (RZ, PWFA)",
+  "description": "A relativistic Gaussian electron bunch (1 GeV, sigma_z = sigma_r = 1/k_p, n_b = 0.3 n_p) drives a plasma wake in cylindrical geometry: radial focusing and longitudinal acceleration behind the driver.",
+  "parameters": {
+    "np0": "1e22",
+    "wp": "sqrt(np0*e**2/(eps0*me))",
+    "kp": "wp/c",
+    "lp": "2*pi/kp",
+    "sz": "1/kp",
+    "sr": "1/kp",
+    "z0": "1.5*lp",
+    "Lz": "7*lp",
+    "Lr": "2.5*lp",
+    "ub": "c*sqrt((1+1e9*e/(me*c**2))**2-1)"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    },
+    "z_max": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    },
+    "y_min": {
+      "name": "",
+      "field": "axis",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 20
+    }
+  },
+  "simulation": {
+    "geometry": "2D-RZ",
+    "solver": "electromagnetic",
+    "t_end": "4*lp/c",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 1,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "none",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Lz",
+    "nz": "560",
+    "y_min": "0",
+    "y_max": "Lr",
+    "ny": "200"
+  },
+  "diagnostics": {
+    "output_dir": "output_plasma_wakefield_rz",
+    "history_every": "5",
+    "field_every": "200",
+    "particle_every": "400",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "plasma",
+      "preset": "electron"
+    },
+    {
+      "name": "bunch",
+      "preset": "electron"
+    },
+    {
+      "name": "ions",
+      "preset": "proton"
+    }
+  ],
+  "loaders": [
+    {
+      "name": "plasma",
+      "species": "plasma",
+      "z0": "0",
+      "z1": "Lz",
+      "y0": "0",
+      "y1": "Lr-0.3*lp",
+      "density": "np0",
+      "ppc": "4"
+    },
+    {
+      "name": "ions",
+      "species": "ions",
+      "z0": "0",
+      "z1": "Lz",
+      "y0": "0",
+      "y1": "Lr-0.3*lp",
+      "density": "np0",
+      "ppc": "4"
+    },
+    {
+      "name": "bunch",
+      "species": "bunch",
+      "z0": "z0-4*sz",
+      "z1": "z0+4*sz",
+      "y0": "0",
+      "y1": "4*sr",
+      "density": "0.3*np0*exp(-0.5*((z-z0)/sz)**2-0.5*(r/sr)**2)",
+      "ppc": "16",
+      "drift": [
+        "ub",
+        "0",
+        "0"
+      ]
+    }
+  ],
+  "emitters": [],
+  "external_fields": [],
+  "sources": [],
+  "probes": [
+    {
+      "name": "Ez_axis",
+      "quantity": "Ez",
+      "z": "1.5*lp",
+      "y": "0"
+    }
+  ],
+  "line_probes": [],
+  "power_lines": []
+}

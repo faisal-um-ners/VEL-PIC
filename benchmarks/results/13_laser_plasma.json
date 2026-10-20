@@ -1,0 +1,26 @@
+{
+  "name": "13_laser_plasma",
+  "title": "Laser propagation in plasma: dispersion and critical-density reflection",
+  "rows": [
+    {
+      "case": "underdense n = 0.5 n_c: group velocity / c",
+      "value": 0.7092618178560356,
+      "reference": 0.7071067811865476,
+      "unit": "",
+      "error": 0.003047682085401293,
+      "tol": 0.02,
+      "passed": true
+    },
+    {
+      "case": "overdense n = 4 n_c: reflected / incident energy",
+      "value": 0.999681569023568,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.000318430976432027,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

@@ -1,0 +1,44 @@
+{
+  "name": "25_lau2026_pic",
+  "title": "Lau et al. 2026: PIC onset of the virtual cathode at the steady J_max",
+  "rows": [
+    {
+      "case": "PIC strip w/d=0.1, J = 0.96 J_max: transmitted fraction",
+      "value": 0.9999901523109243,
+      "reference": 1.0,
+      "unit": "",
+      "error": -9.847689075748178e-06,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "PIC strip w/d=0.1, J = 1.04 J_max: returned fraction (> 2 %)",
+      "value": 0.08854057247899176,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.08854057247899176,
+      "tol": 0.02,
+      "passed": true
+    },
+    {
+      "case": "PIC disk R/d=0.1, J = 0.96 J_max: transmitted fraction",
+      "value": 0.999768672426319,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0002313275736810505,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "PIC disk R/d=0.1, J = 1.04 J_max: returned fraction (> 2 %)",
+      "value": 0.041010267985819915,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.041010267985819915,
+      "tol": 0.02,
+      "passed": true
+    }
+  ],
+  "notes": "Shipped examples yylau_2026_strip_caseA_zy and yylau_2026_disk_rz (z-only motion, refined mesh), injected current 4 % below / above the steady limit of Eq. (7). {\"strip w/d=0.1 0.96\": {\"anode\": 0.9999901523109243, \"returned\": -0.0}, \"strip w/d=0.1 1.04\": {\"anode\": 0.9126706932773107, \"returned\": 0.08854057247899176}, \"disk R/d=0.1 0.96\": {\"anode\": 0.999768672426319, \"returned\": -0.0}, \"disk R/d=0.1 1.04\": {\"anode\": 0.9586930023977178, \"returned\": 0.041010267985819915}}",
+  "passed": true
+}

@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "name": "Child-Langmuir diode, 2D periodic (1D-equivalent)",
+  "description": "Planar SCL diode in 2D with periodic side boundaries and an emitter covering the whole cathode: no edge effects, so the anode current density must equal the 1D Child-Langmuir law. History: I_anode (collected), I_cathode (electrons returned to the cathode), Iemit_cathode (emitted). Magnetic field: Species > motion = z_only is the infinite axial field (electrons move only along z, the assumption of Luginsland et al. 1996 and Lau 2001); motion = full uses the applied field 'axial B' = [Bz, 0, 0] T with the parameter Bz (0 = no field, or any finite value, e.g. 0.1, 1, 10).",
+  "parameters": {
+    "V0": "1000",
+    "d": "1e-3",
+    "Ly": "0.25e-3",
+    "JCL": "4*eps0/9*sqrt(2*e/me)*V0**1.5/d**2",
+    "ICL": "JCL*Ly",
+    "Bz": "0"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electrostatic",
+    "t_end": "2e-9",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "d",
+    "nz": "64",
+    "y_min": "0",
+    "y_max": "Ly",
+    "ny": "16"
+  },
+  "diagnostics": {
+    "output_dir": "output_child_langmuir_periodic_zy",
+    "history_every": "10",
+    "field_every": "400",
+    "particle_every": "400",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "vacuum gap",
+      "shape": "rectangle",
+      "material": "vacuum",
+      "z0": "0",
+      "z1": "d",
+      "y0": "0",
+      "y1": "Ly"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron",
+      "motion": "full"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "scl",
+      "z0": "0",
+      "y0": "0",
+      "z1": "0",
+      "y1": "Ly",
+      "particles_per_cell": "4"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "axial B",
+      "type": "uniform",
+      "E": [
+        "0",
+        "0",
+        "0"
+      ],
+      "B": [
+        "Bz",
+        "0",
+        "0"
+      ],
+      "time_factor": "1"
+    }
+  ],
+  "sources": [],
+  "probes": [],
+  "line_probes": [
+    {
+      "name": "phi",
+      "quantity": "phi",
+      "extremum": "min",
+      "along": "z",
+      "y": "0",
+      "start": "0",
+      "end": "d"
+    }
+  ],
+  "power_lines": []
+}

@@ -1,0 +1,26 @@
+{
+  "name": "16_warpx_two_stream",
+  "title": "WarpX comparison A: 1D ES two-stream instability",
+  "rows": [
+    {
+      "case": "growth rate gamma/w_pb  (WarpX reference)",
+      "value": 0.4987736476970955,
+      "reference": 0.49857953404370026,
+      "unit": "",
+      "error": 0.0003893333764040108,
+      "tol": 0.03,
+      "passed": true
+    },
+    {
+      "case": "saturated field energy (WarpX reference)",
+      "value": 3.118968626325288e-07,
+      "reference": 2.98850541272462e-07,
+      "unit": "",
+      "error": 0.0436550032819667,
+      "tol": 0.1,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

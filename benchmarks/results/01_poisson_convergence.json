@@ -1,0 +1,53 @@
+{
+  "name": "01_poisson_convergence",
+  "title": "Poisson (scikit-fem) convergence: manufactured & analytic solutions",
+  "rows": [
+    {
+      "case": "1D-Z: convergence order",
+      "value": 2.0008738960830974,
+      "reference": 2.0,
+      "unit": "",
+      "error": 0.0004369480415487015,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "2D-ZY: convergence order",
+      "value": 2.0022332057440164,
+      "reference": 2.0,
+      "unit": "",
+      "error": 0.00111660287200821,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "2D-RZ: convergence order",
+      "value": 1.9315479742742536,
+      "reference": 2.0,
+      "unit": "",
+      "error": -0.03422601286287319,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "coax RZ: convergence order",
+      "value": 1.9955245589946184,
+      "reference": 2.0,
+      "unit": "",
+      "error": -0.0022377205026907765,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "dielectric interface (exact for P1): max error",
+      "value": 5.873159728050814e-15,
+      "reference": 0.0,
+      "unit": "",
+      "error": 5.873159728050814e-15,
+      "tol": 1e-10,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

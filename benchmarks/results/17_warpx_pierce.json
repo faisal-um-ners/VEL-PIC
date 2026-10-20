@@ -1,0 +1,26 @@
+{
+  "name": "17_warpx_pierce",
+  "title": "WarpX comparison B: 1D ES Pierce diode injected at J_CL",
+  "rows": [
+    {
+      "case": "max |phi_PIC - phi_WarpX| / V",
+      "value": 0.0005487801745358069,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.0005487801745358069,
+      "tol": 0.02,
+      "passed": true
+    },
+    {
+      "case": "max |phi_PIC - phi_theory| / V",
+      "value": 0.0028253152164908783,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.0028253152164908783,
+      "tol": 0.02,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

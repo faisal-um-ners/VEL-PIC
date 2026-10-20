@@ -1,0 +1,44 @@
+{
+  "name": "08_emission_laws",
+  "title": "Thermionic and Fowler-Nordheim emission with self-consistent space charge",
+  "rows": [
+    {
+      "case": "thermionic, V=3 kV (T-limited): J / J_RDS",
+      "value": 0.9979842339573718,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0020157660426282087,
+      "tol": 0.05,
+      "passed": true
+    },
+    {
+      "case": "thermionic, V=30 V (SCL): J / Langmuir thermal-SCL estimate",
+      "value": 1.061225941210004,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.06122594121000402,
+      "tol": 0.08,
+      "passed": true
+    },
+    {
+      "case": "Fowler-Nordheim F = 3.0e+09 V/m: J / J_FN",
+      "value": 0.9997354559272635,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0002645440727364612,
+      "tol": 0.05,
+      "passed": true
+    },
+    {
+      "case": "Fowler-Nordheim F = 4.0e+09 V/m: J / J_FN",
+      "value": 0.9977381286968632,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.00226187130313682,
+      "tol": 0.05,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

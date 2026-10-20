@@ -1,0 +1,9 @@
+numpy>=1.22
+scipy>=1.8
+scikit-fem>=8.0
+numba>=0.56
+matplotlib>=3.5
+PySide6>=6.4
+# optional: MPI parallel runs (also needs an MPI library, e.g. 'pip install mpich' or OpenMPI)
+# mpi4py>=3.1
+pytest

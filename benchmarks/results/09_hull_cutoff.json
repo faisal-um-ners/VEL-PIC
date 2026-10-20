@@ -1,0 +1,26 @@
+{
+  "name": "09_hull_cutoff",
+  "title": "Hull cutoff in a planar crossed-field diode (ZY, magnetized)",
+  "rows": [
+    {
+      "case": "J_anode/J_CL at B = 0.85 B_H (must conduct, >0.3)",
+      "value": 0.8627841896300062,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.13721581036999375,
+      "tol": 0.7,
+      "passed": true
+    },
+    {
+      "case": "J_anode/J_CL at B = 1.05 B_H (cut off, <0.02)",
+      "value": -0.0,
+      "reference": 0.0,
+      "unit": "",
+      "error": -0.0,
+      "tol": 0.02,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

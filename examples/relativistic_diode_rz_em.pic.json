@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "name": "Coax-fed relativistic diode (RZ EM, TEM port)",
+  "description": "A TEM voltage pulse launched in a coaxial line drives a cathode stalk; explosive SCL emission from the cathode tip; electrons cross the A-K gap to the anode plate.",
+  "parameters": {
+    "V0": "300e3",
+    "rin": "1e-2",
+    "rout": "3e-2",
+    "gap": "1e-2",
+    "Lz": "0.1"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 12
+    },
+    "z_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "axis",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-RZ",
+    "solver": "electromagnetic",
+    "t_end": "5e-9",
+    "dt": "auto",
+    "cfl": "0.9",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Lz",
+    "nz": "200",
+    "y_min": "0",
+    "y_max": "rout",
+    "ny": "60"
+  },
+  "diagnostics": {
+    "output_dir": "output_relativistic_diode_rz_em",
+    "history_every": "5",
+    "field_every": "300",
+    "particle_every": "300",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "cathode stalk",
+      "shape": "rectangle",
+      "z0": "-1",
+      "z1": "Lz-gap",
+      "y0": "0",
+      "y1": "rin",
+      "material": "conductor"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode tip",
+      "species": "electrons",
+      "model": "scl",
+      "z0": "Lz-gap",
+      "y0": "0",
+      "z1": "Lz-gap",
+      "y1": "rin",
+      "normal": "+z",
+      "particles_per_cell": "4"
+    }
+  ],
+  "external_fields": [],
+  "sources": [
+    {
+      "name": "TEM drive",
+      "type": "tem_port",
+      "z_position": "0.012",
+      "voltage": "-V0*min(t/1e-9,1)",
+      "inner": "rin",
+      "outer": "rout"
+    }
+  ],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": [
+    {
+      "name": "P_in",
+      "orientation": "z",
+      "position": "0.03",
+      "start": "rin",
+      "end": "rout"
+    }
+  ]
+}

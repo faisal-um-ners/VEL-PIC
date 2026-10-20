@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "name": "Planar magnetron with vane slow-wave structure (2D EM)",
+  "description": "Planar (linear) magnetron: smooth cathode along y = 0 (SCL emission from z = 0 to N*p), anode with N vane cavities above it, periodic in z (equivalent to an infinitely long / recirculating planar magnetron), magnetic field B_x out of the plane. The back half of cavity 1 is a lossy load (loss port) whose conductivity gives a defined loaded Q = Qload (250) of the operating mode at 5.85 GHz; 'fill' was set by the cold-test ring-down calibration (Model > Calibrate loss Q; re-run it after changing the geometry or Qload). Operating point: B0 = 0.16 T > B_H (insulated) and V0 above the Buneman-Hartree voltage of the pi-mode (~5.7 GHz); tune V0 and B0 (or the cavity depth h) to change the mode.",
+  "parameters": {
+    "V0": "170e3",
+    "B0": "0.16",
+    "d": "1e-2",
+    "p": "1e-2",
+    "wc": "0.5e-2",
+    "h": "1e-2",
+    "N": "6",
+    "Ly": "N*p",
+    "Qload": "250",
+    "f0": "5.85e9",
+    "gam": "1+e*V0/(me*c**2)",
+    "BH": "me*c/(e*d)*sqrt(gam**2-1)"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "-V0*min(t/1e-9,1)",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electromagnetic",
+    "t_end": "25e-9",
+    "dt": "auto",
+    "cfl": "0.9",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 1,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Ly",
+    "nz": "240",
+    "y_min": "0",
+    "y_max": "d+h+0.25e-2",
+    "ny": "90"
+  },
+  "diagnostics": {
+    "output_dir": "output_planar_magnetron_em",
+    "history_every": "5",
+    "field_every": "1000",
+    "particle_every": "1000",
+    "max_dump_particles": "50000",
+    "live_every": "100"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "anode",
+      "shape": "rectangle",
+      "z0": "-1",
+      "z1": "1",
+      "y0": "d",
+      "y1": "1",
+      "material": "conductor",
+      "voltage": "0"
+    },
+    {
+      "name": "cavity 1",
+      "shape": "rectangle",
+      "y0": "d - 1e-4",
+      "y1": "d+h",
+      "z0": "0*p + (p-wc)/2",
+      "z1": "0*p + (p+wc)/2",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 2",
+      "shape": "rectangle",
+      "y0": "d - 1e-4",
+      "y1": "d+h",
+      "z0": "1*p + (p-wc)/2",
+      "z1": "1*p + (p+wc)/2",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 3",
+      "shape": "rectangle",
+      "y0": "d - 1e-4",
+      "y1": "d+h",
+      "z0": "2*p + (p-wc)/2",
+      "z1": "2*p + (p+wc)/2",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 4",
+      "shape": "rectangle",
+      "y0": "d - 1e-4",
+      "y1": "d+h",
+      "z0": "3*p + (p-wc)/2",
+      "z1": "3*p + (p+wc)/2",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 5",
+      "shape": "rectangle",
+      "y0": "d - 1e-4",
+      "y1": "d+h",
+      "z0": "4*p + (p-wc)/2",
+      "z1": "4*p + (p+wc)/2",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 6",
+      "shape": "rectangle",
+      "y0": "d - 1e-4",
+      "y1": "d+h",
+      "z0": "5*p + (p-wc)/2",
+      "z1": "5*p + (p+wc)/2",
+      "material": "vacuum"
+    },
+    {
+      "name": "loss port",
+      "shape": "rectangle",
+      "y0": "d+0.5*h",
+      "y1": "d+h",
+      "z0": "(p-wc)/2",
+      "z1": "(p+wc)/2",
+      "material": "lossy",
+      "loss_spec": "Q",
+      "Q": "Qload",
+      "frequency": "f0",
+      "fill": "0.01475"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "scl",
+      "z0": "0",
+      "y0": "0",
+      "z1": "Ly",
+      "y1": "0",
+      "normal": "+y",
+      "particles_per_cell": "2",
+      "t_start": "0.3e-9"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "B",
+      "type": "uniform",
+      "B": [
+        "0",
+        "0",
+        "B0"
+      ]
+    }
+  ],
+  "sources": [],
+  "probes": [
+    {
+      "name": "cav2_Ez",
+      "quantity": "Ez",
+      "z": "1.5*p",
+      "y": "d+h/2"
+    },
+    {
+      "name": "gap_Ey",
+      "quantity": "Ey",
+      "z": "1.5*p",
+      "y": "0.8*d"
+    }
+  ],
+  "line_probes": [],
+  "power_lines": [
+    {
+      "name": "port",
+      "orientation": "y",
+      "position": "d+0.5*h",
+      "start": "(p-wc)/2",
+      "end": "(p+wc)/2"
+    }
+  ]
+}

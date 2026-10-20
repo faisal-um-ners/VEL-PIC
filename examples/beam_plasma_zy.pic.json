@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "name": "2D beam - plasma interaction (ZY)",
+  "description": "A relativistic electron beam (gamma = 3, n_b = 0.1 n_p) streams through a uniform plasma with a neutralizing return current: two-stream (longitudinal) and filamentation/Weibel (transverse) instabilities grow together in the (z,y) plane.  Periodic box.",
+  "parameters": {
+    "np0": "1e18",
+    "wp": "sqrt(np0*e**2/(eps0*me))",
+    "kp": "wp/c",
+    "L": "16*2*pi/kp",
+    "nb": "0.1*np0",
+    "ub": "c*sqrt(3**2-1)",
+    "vr": "-0.1*c*sqrt(1-1/3**2)"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electromagnetic",
+    "t_end": "120/wp",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 1,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "L",
+    "nz": "256",
+    "y_min": "0",
+    "y_max": "L/2",
+    "ny": "128"
+  },
+  "diagnostics": {
+    "output_dir": "output_beam_plasma_zy",
+    "history_every": "5",
+    "field_every": "300",
+    "particle_every": "300",
+    "max_dump_particles": "50000",
+    "live_every": "100"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "plasma",
+      "preset": "electron"
+    },
+    {
+      "name": "beam",
+      "preset": "electron"
+    },
+    {
+      "name": "ions",
+      "preset": "proton"
+    }
+  ],
+  "loaders": [
+    {
+      "name": "plasma",
+      "species": "plasma",
+      "z0": "0",
+      "z1": "L",
+      "y0": "0",
+      "y1": "L/2",
+      "density": "np0",
+      "ppc": "8",
+      "temperature": "50",
+      "drift": [
+        "vr",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "beam",
+      "species": "beam",
+      "z0": "0",
+      "z1": "L",
+      "y0": "0",
+      "y1": "L/2",
+      "density": "nb",
+      "ppc": "8",
+      "temperature": "500",
+      "drift": [
+        "ub",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "ions",
+      "species": "ions",
+      "z0": "0",
+      "z1": "L",
+      "y0": "0",
+      "y1": "L/2",
+      "density": "np0+nb",
+      "ppc": "4"
+    }
+  ],
+  "emitters": [],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

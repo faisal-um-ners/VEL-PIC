@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "name": "Coaxial SCL diode (Langmuir-Blodgett)",
+  "description": "Radial space-charge-limited flow from an inner cylindrical cathode (radius a) to an outer anode (radius b), periodic in z.  Compare I/L with Langmuir-Blodgett.",
+  "parameters": {
+    "V0": "1000",
+    "a": "1e-3",
+    "b": "2e-3",
+    "L": "0.5e-3"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "axis",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-RZ",
+    "solver": "electrostatic",
+    "t_end": "1e-9",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "L",
+    "nz": "8",
+    "y_min": "0",
+    "y_max": "b",
+    "ny": "96"
+  },
+  "diagnostics": {
+    "output_dir": "output_coaxial_diode_rz",
+    "history_every": "20",
+    "field_every": "400",
+    "particle_every": "400",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "vacuum gap",
+      "shape": "rectangle",
+      "material": "vacuum",
+      "z0": "0",
+      "z1": "L",
+      "y0": "a",
+      "y1": "b"
+    },
+    {
+      "name": "cathode",
+      "shape": "rectangle",
+      "z0": "-1",
+      "z1": "1",
+      "y0": "0",
+      "y1": "a",
+      "material": "conductor",
+      "voltage": "0"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "scl",
+      "surface": "segment",
+      "z0": "0",
+      "y0": "a",
+      "z1": "L",
+      "y1": "a",
+      "normal": "+y",
+      "particles_per_cell": "8"
+    }
+  ],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

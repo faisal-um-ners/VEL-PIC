@@ -1,0 +1,17 @@
+{
+  "name": "14_plasma_wakefield",
+  "title": "Relativistic beam-driven plasma wakefield amplitude (1D EM)",
+  "rows": [
+    {
+      "case": "wake amplitude / linear theory",
+      "value": 1.0465840444310732,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.046584044431073224,
+      "tol": 0.06,
+      "passed": true
+    }
+  ],
+  "notes": "The ~5 % excess over linear theory is a weakly non-linear effect (n_b/n_p = 0.05); WarpX gives the same amplitude (benchmark 19).",
+  "passed": true
+}

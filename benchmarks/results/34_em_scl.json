@@ -1,0 +1,35 @@
+{
+  "name": "34_em_scl",
+  "title": "Space-charge-limited emission with the EM (Yee) solver: planar and cylindrical",
+  "rows": [
+    {
+      "case": "EM 1D Child-Langmuir, 100 cells: J_anode / J (relativistic CL)",
+      "value": 1.0309951062795648,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.03099510627956481,
+      "tol": 0.035,
+      "passed": true
+    },
+    {
+      "case": "EM 1D Child-Langmuir, 200 cells: J_anode / J (relativistic CL)",
+      "value": 1.0193592169419692,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.019359216941969182,
+      "tol": 0.025,
+      "passed": true
+    },
+    {
+      "case": "EM coaxial diode (b/a = 2, 100 cells): I/L vs Langmuir-Blodgett",
+      "value": 1.0324340041545443,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.03243400415454434,
+      "tol": 0.04,
+      "passed": true
+    }
+  ],
+  "notes": "Electrodes held at their potentials (ideal voltage sources, fields/circuit.py); Gauss-law emitter with the half-cell surface-charge correction. 1D 100 cells: J/J_ref = 1.0310, returned current -0.00e+00; 1D 200 cells: J/J_ref = 1.0194, returned current -0.00e+00; coax: I/L = 27104.0 A/m, Langmuir-Blodgett 26252.5 A/m. The Gauss-law emitter converges at first order in the cell size near the cathode, as in the ES solver.",
+  "passed": true
+}

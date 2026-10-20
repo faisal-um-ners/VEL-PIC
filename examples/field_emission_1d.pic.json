@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "name": "Fowler-Nordheim field emission diode",
+  "description": "Murphy-Good FN emission with space charge in a 1 um vacuum gap.",
+  "parameters": {
+    "V0": "6000",
+    "d": "1e-6"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "1D-Z",
+    "solver": "electrostatic",
+    "t_end": "2e-13",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "d",
+    "nz": "100",
+    "y_min": "0",
+    "y_max": "1e-2",
+    "ny": "128"
+  },
+  "diagnostics": {
+    "output_dir": "output_field_emission_1d",
+    "history_every": "10",
+    "field_every": "500",
+    "particle_every": "500",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "vacuum gap",
+      "shape": "rectangle",
+      "material": "vacuum",
+      "z0": "0",
+      "z1": "d",
+      "y0": "0",
+      "y1": "1"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "tip",
+      "species": "electrons",
+      "model": "fowler_nordheim",
+      "z0": "0",
+      "work_function": "4.5",
+      "beta": "1",
+      "particles_per_cell": "20"
+    }
+  ],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

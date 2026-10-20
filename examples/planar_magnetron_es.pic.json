@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "name": "Crossed-field (planar magnetron) diode - Hull cutoff",
+  "description": "Planar diode with a magnetic field B_x parallel to the electrodes: cathode along y = 0 (emitting from z = 0 to Ly), anode at y = d, periodic in z. Anode current is cut off for B > B_H = (me c/(e d)) sqrt(gamma^2-1). Sweep Bratio.",
+  "parameters": {
+    "V0": "10e3",
+    "d": "5e-3",
+    "gam": "1+e*V0/(me*c**2)",
+    "BH": "me*c/(e*d)*sqrt(gam**2-1)",
+    "Bratio": "0.8",
+    "Ly": "2e-3"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electrostatic",
+    "t_end": "4e-9",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Ly",
+    "nz": "16",
+    "y_min": "0",
+    "y_max": "d",
+    "ny": "64"
+  },
+  "diagnostics": {
+    "output_dir": "output_planar_magnetron_es",
+    "history_every": "20",
+    "field_every": "500",
+    "particle_every": "500",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "Bratio",
+    "values": "[0.6, 0.8, 0.9, 1.0, 1.1, 1.3]",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "vacuum gap",
+      "shape": "rectangle",
+      "material": "vacuum",
+      "z0": "0",
+      "z1": "Ly",
+      "y0": "0",
+      "y1": "d"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "scl",
+      "z0": "0",
+      "y0": "0",
+      "z1": "Ly",
+      "y1": "0",
+      "normal": "+y",
+      "particles_per_cell": "4"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "B",
+      "type": "uniform",
+      "B": [
+        "0",
+        "0",
+        "Bratio*BH"
+      ]
+    }
+  ],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

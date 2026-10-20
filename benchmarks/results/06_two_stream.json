@@ -1,0 +1,17 @@
+{
+  "name": "06_two_stream",
+  "title": "Two-stream instability growth rate (1D ES)",
+  "rows": [
+    {
+      "case": "growth rate gamma / w_pb",
+      "value": 0.4987736476970955,
+      "reference": 0.5,
+      "unit": "",
+      "error": -0.002452704605809042,
+      "tol": 0.05,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

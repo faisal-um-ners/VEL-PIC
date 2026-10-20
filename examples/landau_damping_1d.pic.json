@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "name": "Landau damping (1D)",
+  "description": "Collisionless damping of a Langmuir wave in a Maxwellian electron plasma on a fixed neutralizing background, k lambda_D = 0.5. Exact Vlasov root: w = 1.4156 - 0.1533i w_p; the field energy decays as exp(-0.307 w_p t) while oscillating at 2w. Quiet start in position and velocity, 4000 particles per cell.",
+  "parameters": {
+    "n0": "1e15",
+    "Te": "1",
+    "kld": "0.5",
+    "wp": "sqrt(n0*e**2/(eps0*me))",
+    "lD": "sqrt(eps0*Te/(n0*e))",
+    "L": "2*pi*lD/kld"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "1D-Z",
+    "solver": "electrostatic",
+    "t_end": "22/wp",
+    "dt": "0.05/wp",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "L",
+    "nz": "64",
+    "y_min": "0",
+    "y_max": "1e-2",
+    "ny": "128"
+  },
+  "diagnostics": {
+    "output_dir": "output_landau_damping_1d",
+    "history_every": "1",
+    "field_every": "40",
+    "particle_every": "40",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [
+    {
+      "name": "plasma",
+      "species": "electrons",
+      "z0": "0",
+      "z1": "L",
+      "y0": "0",
+      "y1": "1",
+      "density": "n0",
+      "ppc": "4000",
+      "quiet_start": true,
+      "temperature": "Te",
+      "perturbation": "density",
+      "pert_amplitude": "0.05",
+      "pert_mode": "1"
+    }
+  ],
+  "emitters": [],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

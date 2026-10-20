@@ -1,0 +1,26 @@
+{
+  "name": "11_absorbing_boundary",
+  "title": "Graded absorbing boundary performance",
+  "rows": [
+    {
+      "case": "1D-Z: residual energy after absorption / peak",
+      "value": 1.2026140057364953e-07,
+      "reference": 0.0,
+      "unit": "",
+      "error": 1.2026140057364953e-07,
+      "tol": 0.001,
+      "passed": true
+    },
+    {
+      "case": "2D-ZY: residual energy after absorption / peak",
+      "value": 3.3086830549325544e-07,
+      "reference": 0.0,
+      "unit": "",
+      "error": 3.3086830549325544e-07,
+      "tol": 0.001,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

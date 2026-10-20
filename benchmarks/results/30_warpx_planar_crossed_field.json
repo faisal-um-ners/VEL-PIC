@@ -1,0 +1,44 @@
+{
+  "name": "30_warpx_planar_crossed_field",
+  "title": "WarpX comparison E: planar smooth-bore magnetron gap (2D), below / above Hull cutoff",
+  "rows": [
+    {
+      "case": "B = 0.6 B_H (conducting): max |phi_VEL-PIC - phi_WarpX| / V",
+      "value": 4.5677094285565543e-07,
+      "reference": 0.0,
+      "unit": "",
+      "error": 4.5677094285565543e-07,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "B = 0.6 B_H (conducting): electrons in the gap, VEL-PIC / WarpX",
+      "value": 0.9999611159640149,
+      "reference": 1.0,
+      "unit": "",
+      "error": -3.888403598506507e-05,
+      "tol": 0.03,
+      "passed": true
+    },
+    {
+      "case": "B = 1.3 B_H (insulated): max |phi_VEL-PIC - phi_WarpX| / V",
+      "value": 0.0001173539219858867,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.0001173539219858867,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "B = 1.3 B_H (insulated): electrons in the gap, VEL-PIC / WarpX",
+      "value": 1.0001954596952711,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.0001954596952711274,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "V = 10 kV, d = 5 mm, Hull field B_H = 67.77 mT (relativistic planar). Electrons injected at J = 0.25 J_CL with 2 eV normal energy, periodic 8-cell strip along the cathode. WarpX 26.09 2D (XZ, ES labframe, use_filter = 0) vs VEL-PIC 2D-ZY, same dt, shape, pusher and energy-conserving gather. Above B_H all electrons return to the cathode (twice the charge in the gap, the potential depressed near the cathode). Compared after the start-up, t = 1-2.2 ns, while the insulated hub is still laminar (later it develops the 2D diocotron/turbulent hub in both codes).",
+  "passed": true
+}

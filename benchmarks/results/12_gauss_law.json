@@ -1,0 +1,35 @@
+{
+  "name": "12_gauss_law",
+  "title": "Charge conservation of the EM current deposition (Esirkepov)",
+  "rows": [
+    {
+      "case": "1D-Z: change of (rho/eps0 - div E) / max|div E| over 100 steps",
+      "value": 7.280389334398358e-15,
+      "reference": 0.0,
+      "unit": "",
+      "error": 7.280389334398358e-15,
+      "tol": 1e-10,
+      "passed": true
+    },
+    {
+      "case": "2D-ZY: change of (rho/eps0 - div E) / max|div E| over 100 steps",
+      "value": 2.0405997278797842e-14,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.0405997278797842e-14,
+      "tol": 1e-10,
+      "passed": true
+    },
+    {
+      "case": "2D-RZ: change of (rho/eps0 - div E) / max|div E| over 100 steps",
+      "value": 2.1199473381923265e-11,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.1199473381923265e-11,
+      "tol": 1e-10,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

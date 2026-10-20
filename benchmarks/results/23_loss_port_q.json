@@ -1,0 +1,35 @@
+{
+  "name": "23_loss_port_q",
+  "title": "Loss port with defined loaded Q (cold-test ring-down)",
+  "rows": [
+    {
+      "case": "Planar magnetron: loaded Q of the loss port (target 250)",
+      "value": 251.7248338449939,
+      "reference": 250.0,
+      "unit": "",
+      "error": 0.0068993353799755575,
+      "tol": 0.05,
+      "passed": true
+    },
+    {
+      "case": "A6 magnetron: loaded Q of the loss port (target 250)",
+      "value": 253.02215913378225,
+      "reference": 250.0,
+      "unit": "",
+      "error": 0.012088636535128927,
+      "tol": 0.05,
+      "passed": true
+    },
+    {
+      "case": "A6 cold-test pi-mode frequency (GHz) vs ~2.34 GHz (literature)",
+      "value": 2.312923612661108,
+      "reference": 2.34,
+      "unit": "",
+      "error": -0.011571105700381112,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "The lossy load has sigma = 2 pi f eps0/(Q F); F (electric-energy fill factor) was calibrated with 'picstudio qcal' and the loaded Q re-measured here by an independent ring-down.",
+  "passed": true
+}

@@ -1,0 +1,26 @@
+{
+  "name": "02_child_langmuir_1d",
+  "title": "Child-Langmuir law, planar 1D (non-relativistic & relativistic)",
+  "rows": [
+    {
+      "case": "V = 1 kV, J_anode / J_CL",
+      "value": 1.0133664637144373,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.013366463714437282,
+      "tol": 0.03,
+      "passed": true
+    },
+    {
+      "case": "V = 100 kV, J_anode / relativistic CL (Jory-Trivelpiece)",
+      "value": 1.0150050939867536,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.015005093986753648,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

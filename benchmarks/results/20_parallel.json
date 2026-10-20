@@ -1,0 +1,26 @@
+{
+  "name": "20_parallel",
+  "title": "Parallel speed-up (numba threads / MPI), 2-core machine",
+  "rows": [
+    {
+      "case": "threads=2: speed-up over 1 thread (ideal 2)",
+      "value": 1.4378986055561562,
+      "reference": 2.0,
+      "unit": "",
+      "error": -0.2810506972219219,
+      "tol": 0.6,
+      "passed": true
+    },
+    {
+      "case": "MPI 2 ranks x 1 thread: speed-up over 1 thread (ideal 2)",
+      "value": 1.8809389140271495,
+      "reference": 2.0,
+      "unit": "",
+      "error": -0.05953054298642524,
+      "tol": 0.6,
+      "passed": true
+    }
+  ],
+  "notes": "Single-thread throughput: 7.88 M particle-steps/s (push + deposit + scikit-fem Poisson on 128x128).",
+  "passed": true
+}

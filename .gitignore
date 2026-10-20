@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+
+# Simulation output
+output_*/
+benchmarks/work/
+*.npz
+!docs/**/*.npz
+!benchmarks/warpx_compare/data/**
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

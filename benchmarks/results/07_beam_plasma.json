@@ -1,0 +1,17 @@
+{
+  "name": "07_beam_plasma",
+  "title": "Beam-plasma instability growth rate (1D ES)",
+  "rows": [
+    {
+      "case": "growth rate gamma / w_p",
+      "value": 0.06582386454881703,
+      "reference": 0.06600727870703772,
+      "unit": "",
+      "error": -0.0027786959531348465,
+      "tol": 0.08,
+      "passed": true
+    }
+  ],
+  "notes": "weak-beam asymptote sqrt(3)/2^(4/3) alpha^(1/3) = 0.0687",
+  "passed": true
+}

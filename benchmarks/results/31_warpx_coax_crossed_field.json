@@ -1,0 +1,44 @@
+{
+  "name": "31_warpx_coax_crossed_field",
+  "title": "WarpX comparison F: cylindrical smooth-bore magnetron gap (RZ), below / above Hull cutoff",
+  "rows": [
+    {
+      "case": "B = 0.6 B* (conducting): max |phi_VEL-PIC - phi_WarpX| / V",
+      "value": 7.426431011481327e-07,
+      "reference": 0.0,
+      "unit": "",
+      "error": 7.426431011481327e-07,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "B = 0.6 B* (conducting): electrons in the gap, VEL-PIC / WarpX",
+      "value": 1.000143437254432,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.0001434372544319995,
+      "tol": 0.03,
+      "passed": true
+    },
+    {
+      "case": "B = 1.3 B* (insulated): max |phi_VEL-PIC - phi_WarpX| / V",
+      "value": 6.772262101549132e-07,
+      "reference": 0.0,
+      "unit": "",
+      "error": 6.772262101549132e-07,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "B = 1.3 B* (insulated): electrons in the gap, VEL-PIC / WarpX",
+      "value": 1.0000388949518377,
+      "reference": 1.0,
+      "unit": "",
+      "error": 3.8894951837731284e-05,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "Coaxial gap, inner cathode a = 5 mm, anode b = 10 mm, V = 10 kV, axial B. Hull field B* = (m c / e d_e) sqrt(gamma^2 - 1), d_e = (b^2 - a^2)/(2b) (Lovelace & Ott 1974) = 90.36 mT. Electrons injected radially at J = 0.25 J_CL(b - a), 2 eV. WarpX 26.09 RZ (r_min = a, ES labframe) vs VEL-PIC 2D-RZ (annular domain).",
+  "passed": true
+}

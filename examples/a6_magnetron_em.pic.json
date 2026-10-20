@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "name": "A6 relativistic magnetron with loss port (2D EM)",
+  "description": "Bekefi A6 relativistic magnetron cross-section: cathode r=1.58 cm, anode r=2.11 cm, 6 vanes to r=4.11 cm (20 deg cavities), axial B (out of plane), explosive (SCL) emission from the whole cathode surface. The outer half of cavity 1 is a lossy load (loss port) giving a defined loaded Q = Qload (250) for the cold-test pi-mode at 2.313 GHz (fill calibrated by ring-down, Model > Calibrate loss Q; re-run it after changing the geometry or Qload). Operating point of the experiment (Bekefi & Orzechowski 1976): V0 = 360 kV, B0 = 0.8 T, inside the window between the smooth-bore Hull field (0.51 T, Lovelace-Ott) and the pi-mode Buneman-Hartree field (0.82 T). The pi mode starts at ~15 ns and oscillates at ~2.16 GHz (measured ~2.3 GHz); see benchmark 21.",
+  "parameters": {
+    "V0": "360e3",
+    "B0": "0.8",
+    "rc": "1.58e-2",
+    "ra": "2.11e-2",
+    "rv": "4.11e-2",
+    "hw": "10*pi/180",
+    "Lb": "5.6e-2",
+    "Qload": "250",
+    "f0": "2.313e9"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electromagnetic",
+    "t_end": "40e-9",
+    "dt": "auto",
+    "cfl": "0.9",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 1,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "-Lb",
+    "z_max": "Lb",
+    "nz": "224",
+    "y_min": "-Lb",
+    "y_max": "Lb",
+    "ny": "224"
+  },
+  "diagnostics": {
+    "output_dir": "output_a6_magnetron_em",
+    "history_every": "5",
+    "field_every": "1000",
+    "particle_every": "1000",
+    "max_dump_particles": "50000",
+    "live_every": "100"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "anode block",
+      "shape": "rectangle",
+      "z0": "-2*Lb",
+      "z1": "2*Lb",
+      "y0": "-2*Lb",
+      "y1": "2*Lb",
+      "material": "conductor",
+      "voltage": "0"
+    },
+    {
+      "name": "interaction space",
+      "shape": "circle",
+      "zc": "0",
+      "yc": "0",
+      "radius": "ra",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 1",
+      "shape": "polygon",
+      "points": "0.9*ra*cos(0.0*pi/180 + -1*hw),0.9*ra*sin(0.0*pi/180 + -1*hw); rv*cos(0.0*pi/180 + -1*hw),rv*sin(0.0*pi/180 + -1*hw); rv/cos(hw)*cos(0.0*pi/180),rv/cos(hw)*sin(0.0*pi/180); rv*cos(0.0*pi/180 + 1*hw),rv*sin(0.0*pi/180 + 1*hw); 0.9*ra*cos(0.0*pi/180 + 1*hw),0.9*ra*sin(0.0*pi/180 + 1*hw)",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 2",
+      "shape": "polygon",
+      "points": "0.9*ra*cos(60.0*pi/180 + -1*hw),0.9*ra*sin(60.0*pi/180 + -1*hw); rv*cos(60.0*pi/180 + -1*hw),rv*sin(60.0*pi/180 + -1*hw); rv/cos(hw)*cos(60.0*pi/180),rv/cos(hw)*sin(60.0*pi/180); rv*cos(60.0*pi/180 + 1*hw),rv*sin(60.0*pi/180 + 1*hw); 0.9*ra*cos(60.0*pi/180 + 1*hw),0.9*ra*sin(60.0*pi/180 + 1*hw)",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 3",
+      "shape": "polygon",
+      "points": "0.9*ra*cos(120.0*pi/180 + -1*hw),0.9*ra*sin(120.0*pi/180 + -1*hw); rv*cos(120.0*pi/180 + -1*hw),rv*sin(120.0*pi/180 + -1*hw); rv/cos(hw)*cos(120.0*pi/180),rv/cos(hw)*sin(120.0*pi/180); rv*cos(120.0*pi/180 + 1*hw),rv*sin(120.0*pi/180 + 1*hw); 0.9*ra*cos(120.0*pi/180 + 1*hw),0.9*ra*sin(120.0*pi/180 + 1*hw)",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 4",
+      "shape": "polygon",
+      "points": "0.9*ra*cos(180.0*pi/180 + -1*hw),0.9*ra*sin(180.0*pi/180 + -1*hw); rv*cos(180.0*pi/180 + -1*hw),rv*sin(180.0*pi/180 + -1*hw); rv/cos(hw)*cos(180.0*pi/180),rv/cos(hw)*sin(180.0*pi/180); rv*cos(180.0*pi/180 + 1*hw),rv*sin(180.0*pi/180 + 1*hw); 0.9*ra*cos(180.0*pi/180 + 1*hw),0.9*ra*sin(180.0*pi/180 + 1*hw)",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 5",
+      "shape": "polygon",
+      "points": "0.9*ra*cos(240.0*pi/180 + -1*hw),0.9*ra*sin(240.0*pi/180 + -1*hw); rv*cos(240.0*pi/180 + -1*hw),rv*sin(240.0*pi/180 + -1*hw); rv/cos(hw)*cos(240.0*pi/180),rv/cos(hw)*sin(240.0*pi/180); rv*cos(240.0*pi/180 + 1*hw),rv*sin(240.0*pi/180 + 1*hw); 0.9*ra*cos(240.0*pi/180 + 1*hw),0.9*ra*sin(240.0*pi/180 + 1*hw)",
+      "material": "vacuum"
+    },
+    {
+      "name": "cavity 6",
+      "shape": "polygon",
+      "points": "0.9*ra*cos(300.0*pi/180 + -1*hw),0.9*ra*sin(300.0*pi/180 + -1*hw); rv*cos(300.0*pi/180 + -1*hw),rv*sin(300.0*pi/180 + -1*hw); rv/cos(hw)*cos(300.0*pi/180),rv/cos(hw)*sin(300.0*pi/180); rv*cos(300.0*pi/180 + 1*hw),rv*sin(300.0*pi/180 + 1*hw); 0.9*ra*cos(300.0*pi/180 + 1*hw),0.9*ra*sin(300.0*pi/180 + 1*hw)",
+      "material": "vacuum"
+    },
+    {
+      "name": "loss port",
+      "shape": "rectangle",
+      "z0": "0.5*(ra+rv)",
+      "z1": "rv+1e-3",
+      "y0": "-0.5*(ra+rv)*tan(hw)",
+      "y1": "0.5*(ra+rv)*tan(hw)",
+      "material": "lossy",
+      "loss_spec": "Q",
+      "Q": "Qload",
+      "frequency": "f0",
+      "fill": "0.01136"
+    },
+    {
+      "name": "cathode",
+      "shape": "circle",
+      "zc": "0",
+      "yc": "0",
+      "radius": "rc",
+      "material": "conductor",
+      "voltage": "-V0*min(t/2e-9,1)"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "explosive",
+      "species": "electrons",
+      "model": "scl",
+      "surface": "object",
+      "object": "cathode",
+      "particles_per_cell": "2",
+      "t_start": "0.5e-9"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "axial B",
+      "type": "uniform",
+      "B": [
+        "0",
+        "0",
+        "B0"
+      ]
+    }
+  ],
+  "sources": [],
+  "probes": [
+    {
+      "name": "cavity2_Ey",
+      "quantity": "Ey",
+      "z": "0.5*(ra+rv)*cos(pi/3)",
+      "y": "0.5*(ra+rv)*sin(pi/3)"
+    },
+    {
+      "name": "gap_Ez",
+      "quantity": "Ez",
+      "z": "0.0",
+      "y": "0.0195"
+    }
+  ],
+  "line_probes": [],
+  "power_lines": [
+    {
+      "name": "port",
+      "orientation": "z",
+      "position": "0.5*(ra+rv)",
+      "start": "-0.5*(ra+rv)*tan(hw)",
+      "end": "0.5*(ra+rv)*tan(hw)"
+    }
+  ]
+}

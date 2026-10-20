@@ -1,0 +1,44 @@
+{
+  "name": "21_magnetrons",
+  "title": "Vaned magnetrons (2D EM): A6 experiment and Hull / Buneman-Hartree window",
+  "rows": [
+    {
+      "case": "A6 (360 kV, 0.8 T): fundamental / cold-test pi-mode frequency (oscillates in the pi mode)",
+      "value": 0.931886536925734,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.06811346307426602,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "A6: fundamental vs measured ~2.3 GHz (Palevsky & Bekefi 1979)",
+      "value": 0.937153721699662,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.06284627830033795,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "planar, inside Hull-BH window: fundamental / cold-test pi mode",
+      "value": 0.9761350445965712,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.02386495540342881,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "planar, B above the BH field: cavity field rms / in-window rms (quiet, < 0.1)",
+      "value": 0.004482756000966431,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.004482756000966431,
+      "tol": 0.1,
+      "passed": true
+    }
+  ],
+  "notes": "A6 thresholds at 360 kV: smooth-bore Hull B* = 0.508 T (Lovelace-Ott), pi-mode BH field 0.825 T; the run at 0.8 T sits in the window. 2D result per metre of axial length x 7.2 cm: anode current 2.29 kA, port power 85 MW, electronic efficiency 10.3 %. Experiment (Bekefi & Orzechowski 1976): ~12 kA, ~1.7 GW at ~360 kV, ~0.8 T - the 2D model has no axial end loss and its output (loss port, loaded Q = 250) is not the experimental extraction, so current and power are indicative only; the frequency and mode are the benchmark. Planar magnetron at 170 kV: Hull field B_H = 0.150 T, pi-mode BH field 0.180 T (v_ph = 0.390 c); B = 0.16 T is inside the window (oscillates, f = 5.710 GHz), B = 0.19 T is above the BH field (V < V_BH: no oscillation, field rms ratio 0.004).",
+  "passed": true
+}

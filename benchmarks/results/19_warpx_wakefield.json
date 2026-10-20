@@ -1,0 +1,26 @@
+{
+  "name": "19_warpx_wakefield",
+  "title": "WarpX comparison D: 1D EM beam-driven plasma wakefield",
+  "rows": [
+    {
+      "case": "max |Ez_PIC - Ez_WarpX| / E_lin behind bunch",
+      "value": 0.0005868790550698882,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.0005868790550698882,
+      "tol": 0.08,
+      "passed": true
+    },
+    {
+      "case": "wake amplitude PIC / WarpX",
+      "value": 1006494677.2063112,
+      "reference": 1006600883.398778,
+      "unit": "",
+      "error": -0.00010550973500855765,
+      "tol": 0.05,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "name": "Dielectric surface charging by an electron beam",
+  "description": "A 1 keV electron beam hits a dielectric slab (eps_r = 4) on a grounded electrode; the deposited surface charge builds up a retarding potential that deflects the beam.",
+  "parameters": {
+    "Lz": "1e-2",
+    "Ly": "1e-2"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electrostatic",
+    "t_end": "40e-9",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Lz",
+    "nz": "100",
+    "y_min": "0",
+    "y_max": "Ly",
+    "ny": "100"
+  },
+  "diagnostics": {
+    "output_dir": "output_dielectric_charging_zy",
+    "history_every": "20",
+    "field_every": "500",
+    "particle_every": "500",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "slab",
+      "shape": "rectangle",
+      "z0": "0.7*Lz",
+      "z1": "0.85*Lz",
+      "y0": "0.2*Ly",
+      "y1": "0.8*Ly",
+      "material": "dielectric",
+      "eps_r": "4",
+      "collect_charge": true
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "gun",
+      "species": "electrons",
+      "model": "beam",
+      "z0": "0",
+      "y0": "0.45*Ly",
+      "z1": "0",
+      "y1": "0.55*Ly",
+      "current_density": "20",
+      "energy": "1000",
+      "particles_per_cell": "4"
+    }
+  ],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

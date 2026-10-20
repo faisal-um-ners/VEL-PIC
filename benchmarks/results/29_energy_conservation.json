@@ -1,0 +1,26 @@
+{
+  "name": "29_energy_conservation",
+  "title": "Energy conservation of a thermal plasma (1D EM, dz = lambda_D)",
+  "rows": [
+    {
+      "case": "energy-conserving gather: total energy change after 300/w_p",
+      "value": 2.153257962837527e-05,
+      "reference": 0.0,
+      "unit": "",
+      "error": 2.153257962837527e-05,
+      "tol": 0.02,
+      "passed": true
+    },
+    {
+      "case": "energy-conserving + 1-pass J filter (WarpX defaults): total energy change",
+      "value": -0.00024396385368684515,
+      "reference": 0.0,
+      "unit": "",
+      "error": -0.00024396385368684515,
+      "tol": 0.02,
+      "passed": true
+    }
+  ],
+  "notes": "64 cells of one Debye length, 64 particles per cell, T = 100 eV. Total energy change: energy-conserving +0.00 %, momentum-conserving +0.14 % (grid heating), energy-conserving with WarpX's 1-pass bilinear J filter -0.02 %.",
+  "passed": true
+}

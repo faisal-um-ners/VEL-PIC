@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "name": "Space-charge expansion of a sheet beam (ZY)",
+  "description": "A 10 keV, 1 A/m electron sheet beam (half-width 0.5 mm) enters a field-free, grounded drift region. With no focusing field it spreads under its own space charge. The edge of a uniform sheet feels a constant field, so y_edge = a0 + K z^2/2 with K = e I/(2 eps0 m gamma^3 v^3) = 0.047 /m: the rms half-width grows from 0.289 mm to 0.398 mm at z = 9 cm (VEL-PIC: 0.397 mm). Use Results > Beam envelope.",
+  "parameters": {
+    "V0": "10e3",
+    "I": "1",
+    "a0": "0.5e-3",
+    "Lz": "0.1",
+    "Ly": "6e-3"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electrostatic",
+    "t_end": "4e-9",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Lz",
+    "nz": "200",
+    "y_min": "-Ly",
+    "y_max": "Ly",
+    "ny": "96"
+  },
+  "diagnostics": {
+    "output_dir": "output_beam_expansion_zy",
+    "history_every": "10",
+    "field_every": "500",
+    "particle_every": "500",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "gun",
+      "species": "electrons",
+      "model": "beam",
+      "z0": "0",
+      "y0": "-a0",
+      "z1": "0",
+      "y1": "a0",
+      "normal": "+z",
+      "current_density": "I/(2*a0)",
+      "energy": "V0",
+      "temperature": "0",
+      "particles_per_cell": "8"
+    }
+  ],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

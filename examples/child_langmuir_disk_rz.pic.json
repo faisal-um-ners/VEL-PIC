@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "name": "2D Child-Langmuir: circular emitter (RZ)",
+  "description": "SCL emission from a disk of radius R on the axis (centre of the cathode); outer wall r = R + 3d: Neumann field (open side), absorbing for particles. Lau (2001): J/J_CL ~ 1 + d/(4R) for electrons confined to z (infinite B). Magnetic field: Species > motion = z_only is the infinite axial field (electrons move only along z, the assumption of Luginsland et al. 1996 and Lau 2001); motion = full uses the applied field 'axial B' = [Bz, 0, 0] T with the parameter Bz (0 = no field, or any finite value, e.g. 0.1, 1, 10).",
+  "parameters": {
+    "V0": "1000",
+    "d": "1e-3",
+    "R": "1e-3",
+    "Lr": "R+3*d",
+    "Bz": "0"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "axis",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "neumann",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-RZ",
+    "solver": "electrostatic",
+    "t_end": "1.5e-9",
+    "dt": "auto",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "d",
+    "nz": "48",
+    "y_min": "0",
+    "y_max": "Lr",
+    "ny": "192"
+  },
+  "diagnostics": {
+    "output_dir": "output_child_langmuir_disk_rz",
+    "history_every": "20",
+    "field_every": "400",
+    "particle_every": "400",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [
+    {
+      "name": "vacuum gap",
+      "shape": "rectangle",
+      "material": "vacuum",
+      "z0": "0",
+      "z1": "d",
+      "y0": "0",
+      "y1": "Lr"
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron",
+      "motion": "z_only"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "scl",
+      "z0": "0",
+      "y0": "0",
+      "z1": "0",
+      "y1": "R",
+      "particles_per_cell": "4"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "axial B",
+      "type": "uniform",
+      "E": [
+        "0",
+        "0",
+        "0"
+      ],
+      "B": [
+        "Bz",
+        "0",
+        "0"
+      ],
+      "time_factor": "1"
+    }
+  ],
+  "sources": [],
+  "probes": [],
+  "line_probes": [
+    {
+      "name": "phi",
+      "quantity": "phi",
+      "extremum": "min",
+      "along": "z",
+      "y": "0",
+      "start": "0",
+      "end": "d"
+    }
+  ],
+  "power_lines": []
+}

@@ -1,0 +1,17 @@
+{
+  "name": "18_warpx_rz_beam",
+  "title": "WarpX comparison C: RZ ES space-charge beam expansion",
+  "rows": [
+    {
+      "case": "max |a_PIC/a_WarpX - 1| over z",
+      "value": 0.014078104686605086,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.014078104686605086,
+      "tol": 0.05,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

@@ -1,0 +1,80 @@
+{
+  "name": "24_lau2026_steady",
+  "title": "Lau et al. 2026: limiting current of small emitters (steady Eq. 7)",
+  "rows": [
+    {
+      "case": "strip E1 (w/d=0.1, p/d=5.12, Delta=0.01) vs paper POISSON",
+      "value": 5.203374663905123,
+      "reference": 5.191,
+      "unit": "",
+      "error": 0.002383868985768256,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "strip E2 (w/d=0.05, p/d=2.56, Delta=0.001) vs paper POISSON",
+      "value": 4.832090150336929,
+      "reference": 4.829,
+      "unit": "",
+      "error": 0.000639915166065208,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "strip E3 (w/d=0.01, p/d=2.048, Delta=0.01) vs paper POISSON",
+      "value": 32.901722132723364,
+      "reference": 32.863,
+      "unit": "",
+      "error": 0.0011782896486431937,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "strip E5 (w/d=0.01, p/d=2.048, Delta=0.0001) vs paper POISSON",
+      "value": 9.23727035522461,
+      "reference": 9.226,
+      "unit": "",
+      "error": 0.0012215863022553286,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "strip E6 (w/d=0.01, p/d=2.048, Delta=1e-05) vs paper POISSON",
+      "value": 7.830848693847656,
+      "reference": 7.824,
+      "unit": "",
+      "error": 0.0008753443056821464,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "strip w/d=0.01, p/d=0.5, Delta=0.01 (packing table <J>=0.446)",
+      "value": 30.07780587362489,
+      "reference": 30.086871540503573,
+      "unit": "",
+      "error": -0.0003013163687184406,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "disk R/d=0.1, Delta=1e-5 vs tutorial (2.723)",
+      "value": 2.6663420399138964,
+      "reference": 2.723,
+      "unit": "",
+      "error": -0.020807183285385,
+      "tol": 0.03,
+      "passed": true
+    },
+    {
+      "case": "disk: self-consistent / first-order Eq.(B10) (tutorial 0.62)",
+      "value": 0.628164350575314,
+      "reference": 0.62,
+      "unit": "",
+      "error": 0.013168307379538557,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "Strip array (planar) and circular patch (RZ), confined flow with injection energy Delta = E_in/eV. Finite-element Picard iteration with warm starts and bisection (threshold 1e-3 min(Delta, 1e-2)), tensor mesh refined across the emitter and graded towards the cathode.",
+  "passed": true
+}

@@ -1,0 +1,35 @@
+{
+  "name": "32_pierce_instability",
+  "title": "Pierce diode instability (1D ES, planar) vs the exact dispersion relation",
+  "rows": [
+    {
+      "case": "Pierce diode alpha = 1.5 pi: growth rate (v0/L) vs exact dispersion root",
+      "value": 0.7493474074920851,
+      "reference": 0.7657457451406163,
+      "unit": "",
+      "error": -0.02141485963532186,
+      "tol": 0.06,
+      "passed": true
+    },
+    {
+      "case": "Pierce diode alpha = 2.5 pi: growth rate (v0/L) vs exact dispersion root",
+      "value": 0.557243480389487,
+      "reference": 0.5891566484230412,
+      "unit": "",
+      "error": -0.054167542908959976,
+      "tol": 0.06,
+      "passed": true
+    },
+    {
+      "case": "Pierce diode alpha = 2.5 pi: oscillation frequency (v0/L)",
+      "value": 1.4130418084753797,
+      "reference": 1.4288550920548606,
+      "unit": "",
+      "error": -0.011067100972947164,
+      "tol": 0.03,
+      "passed": true
+    }
+  ],
+  "notes": "Cold beam injected into a grounded gap with an immobile neutralising background, alpha = w_p L / v0. alpha = 1.5 pi: exact w = 0.0000 +0.7657i v0/L, PIC growth 0.7493; alpha = 2.5 pi: exact w = 1.4289 +0.5892i v0/L, PIC growth 0.5572, frequency 1.4130. The determinant root also reproduces the classical stability map (no growing root for alpha < pi, purely growing for pi < alpha < 2 pi, stable again near alpha = 2.9 pi).",
+  "passed": true
+}

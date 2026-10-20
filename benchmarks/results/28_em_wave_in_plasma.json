@@ -1,0 +1,26 @@
+{
+  "name": "28_em_wave_in_plasma",
+  "title": "Electromagnetic wave dispersion in a cold plasma (1D EM)",
+  "rows": [
+    {
+      "case": "EM wave in plasma, ck = 1 w_p: w / sqrt(w_p^2 + c^2 k^2)",
+      "value": 1.0000305922671768,
+      "reference": 1.0,
+      "unit": "",
+      "error": 3.0592267176832166e-05,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "EM wave in plasma, ck = 2 w_p: w / sqrt(w_p^2 + c^2 k^2)",
+      "value": 0.999992765316677,
+      "reference": 1.0,
+      "unit": "",
+      "error": -7.234683322976387e-06,
+      "tol": 0.01,
+      "passed": true
+    }
+  ],
+  "notes": "Transverse velocity perturbation u_y = A sin(kz) in a periodic cold plasma; the transverse E at z = L/4 oscillates at w, compared with w^2 = w_p^2 + c^2 k^2.",
+  "passed": true
+}

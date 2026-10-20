@@ -1,0 +1,26 @@
+{
+  "name": "22_relativistic_selffield",
+  "title": "Relativistic beam self-fields: EM vs ES+self-B vs envelope (RZ)",
+  "rows": [
+    {
+      "case": "EM: max |a/a_envelope - 1| (z < 15 cm)",
+      "value": 0.08981898636654229,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.08981898636654229,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "ES+self-B: max |a/a_envelope - 1| (z < 15 cm)",
+      "value": 0.014358178860643833,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.014358178860643833,
+      "tol": 0.05,
+      "passed": true
+    }
+  ],
+  "notes": "Without the magnetic self-field (ES, no self-B) the beam blows up 1/(1-beta^2) = 3.9x faster; EM reproduces the 1/gamma^2 space-charge reduction. The beam current rises smoothly (sin^2, 1 ns) so that the TM modes of the drift tube are not rung by a step turn-on; edge radius measured at t = 3.5 ns.",
+  "passed": true
+}

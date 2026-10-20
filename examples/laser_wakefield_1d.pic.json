@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "name": "Laser wakefield (1D)",
+  "description": "a0 = 0.5 Gaussian pulse in an underdense plasma (n = 0.01 n_c) drives a wake at k_p.",
+  "parameters": {
+    "lam": "0.8e-6",
+    "w": "2*pi*c/lam",
+    "nc": "eps0*me*w**2/e**2",
+    "n0": "0.01*nc",
+    "wp": "sqrt(n0*e**2/(eps0*me))",
+    "lp": "2*pi*c/wp",
+    "Lx": "6*lp"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 40
+    },
+    "z_max": {
+      "name": "",
+      "field": "absorbing",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 40
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "1D-Z",
+    "solver": "electromagnetic",
+    "t_end": "5.2*lp/c",
+    "dt": "auto",
+    "cfl": "0.98",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 1,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "Lx",
+    "nz": "6000",
+    "y_min": "0",
+    "y_max": "1e-2",
+    "ny": "128"
+  },
+  "diagnostics": {
+    "output_dir": "output_laser_wakefield_1d",
+    "history_every": "10",
+    "field_every": "500",
+    "particle_every": "2000",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron"
+    },
+    {
+      "name": "ions",
+      "preset": "proton"
+    }
+  ],
+  "loaders": [
+    {
+      "name": "plasma",
+      "species": "electrons",
+      "z0": "0.5*lp",
+      "z1": "Lx",
+      "y0": "0",
+      "y1": "1",
+      "density": "n0*min((z-0.5*lp)/(0.5*lp),1)",
+      "ppc": "20"
+    },
+    {
+      "name": "ions",
+      "species": "ions",
+      "z0": "0.5*lp",
+      "z1": "Lx",
+      "y0": "0",
+      "y1": "1",
+      "density": "n0*min((z-0.5*lp)/(0.5*lp),1)",
+      "ppc": "20"
+    }
+  ],
+  "emitters": [],
+  "external_fields": [],
+  "sources": [
+    {
+      "name": "laser",
+      "type": "laser",
+      "z_position": "4*lam",
+      "wavelength": "lam",
+      "a0": "0.5",
+      "duration": "lp/c/2/sqrt(2)*1.17741",
+      "t_peak": "lp/c",
+      "polarization": "x"
+    }
+  ],
+  "probes": [],
+  "line_probes": [],
+  "power_lines": []
+}

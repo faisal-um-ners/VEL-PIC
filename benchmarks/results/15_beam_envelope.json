@@ -1,0 +1,26 @@
+{
+  "name": "15_beam_envelope",
+  "title": "Space-charge beam transport (RZ): drift expansion & Brillouin solenoid",
+  "rows": [
+    {
+      "case": "drift tube: max |a_PIC/a_envelope - 1| over z",
+      "value": 0.01026149939688148,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.01026149939688148,
+      "tol": 0.03,
+      "passed": true
+    },
+    {
+      "case": "solenoid (Brillouin): max |a_PIC/a_envelope - 1| over z",
+      "value": 0.057449771818414375,
+      "reference": 0.0,
+      "unit": "",
+      "error": 0.057449771818414375,
+      "tol": 0.08,
+      "passed": true
+    }
+  ],
+  "notes": "The solenoid case uses the paraxial (linear-field, constant beta_z) envelope model; the residual difference comes from the fringe-field non-linearity and rotation-induced axial slowing included in PIC. Envelope equation a'' = K/a - (eB/2 gamma m beta c)^2 a, K = 2I/(I_A beta^3 gamma^3)",
+  "passed": true
+}

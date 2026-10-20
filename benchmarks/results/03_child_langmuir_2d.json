@@ -1,0 +1,53 @@
+{
+  "name": "03_child_langmuir_2d",
+  "title": "2D Child-Langmuir: finite strip (ZY) and disk (RZ) emitters",
+  "rows": [
+    {
+      "case": "strip W/d = 1: J/J_CL vs Lau (2001)",
+      "value": 1.3163239862442462,
+      "reference": 1.3141,
+      "unit": "",
+      "error": 0.0016924025905533657,
+      "tol": 0.04,
+      "passed": true
+    },
+    {
+      "case": "strip W/d = 2: J/J_CL vs Lau (2001)",
+      "value": 1.1718452783841324,
+      "reference": 1.15715,
+      "unit": "",
+      "error": 0.012699544902676774,
+      "tol": 0.04,
+      "passed": true
+    },
+    {
+      "case": "strip W/d = 4: J/J_CL vs Lau (2001)",
+      "value": 1.0990501059013045,
+      "reference": 1.0786,
+      "unit": "",
+      "error": 0.018959860839332876,
+      "tol": 0.04,
+      "passed": true
+    },
+    {
+      "case": "disk R/d = 1: J/J_CL vs Lau 1+d/4R (approx.)",
+      "value": 1.3323536968173224,
+      "reference": 1.25,
+      "unit": "",
+      "error": 0.06588295745385797,
+      "tol": 0.1,
+      "passed": true
+    },
+    {
+      "case": "disk R/d = 4: J/J_CL vs Lau 1+d/4R (approx.)",
+      "value": 1.100175441397585,
+      "reference": 1.0625,
+      "unit": "",
+      "error": 0.03545923896243308,
+      "tol": 0.1,
+      "passed": true
+    }
+  ],
+  "notes": "Electrons confined to z (motion = z_only, infinite axial B) as assumed by Luginsland et al. (1996) and Lau (2001). Lau's disk formula is an approximation (valid for d/R < 2 to a few %); the strip law fits PIC data closely.",
+  "passed": true
+}

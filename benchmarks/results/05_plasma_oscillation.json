@@ -1,0 +1,53 @@
+{
+  "name": "05_plasma_oscillation",
+  "title": "Cold plasma oscillation frequency (ES & EM, 1D/ZY/RZ)",
+  "rows": [
+    {
+      "case": "1D-Z ES: w / w_p",
+      "value": 0.9988212349012672,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0011787650987328258,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "2D-ZY ES: w / w_p",
+      "value": 0.998814643746332,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0011853562536680018,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "2D-RZ ES: w / w_p",
+      "value": 0.9988173488034142,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0011826511965857822,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "1D-Z EM: w / w_p",
+      "value": 0.9994311855304794,
+      "reference": 1.0,
+      "unit": "",
+      "error": -0.0005688144695206176,
+      "tol": 0.01,
+      "passed": true
+    },
+    {
+      "case": "2D-ZY EM: w / w_p",
+      "value": 1.0001082677266069,
+      "reference": 1.0,
+      "unit": "",
+      "error": 0.000108267726606881,
+      "tol": 0.01,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

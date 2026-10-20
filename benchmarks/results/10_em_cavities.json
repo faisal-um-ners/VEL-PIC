@@ -1,0 +1,44 @@
+{
+  "name": "10_em_cavities",
+  "title": "EM cavity eigenfrequencies (Yee FDTD, RZ and ZY)",
+  "rows": [
+    {
+      "case": "RZ pillbox TM010 frequency (GHz)",
+      "value": 2.294364558874013,
+      "reference": 2.294850556704201,
+      "unit": "",
+      "error": -0.0002117775507288755,
+      "tol": 0.005,
+      "passed": true
+    },
+    {
+      "case": "RZ pillbox TM011 frequency (GHz)",
+      "value": 4.393624512953665,
+      "reference": 4.394244957369622,
+      "unit": "",
+      "error": -0.0001411947722478324,
+      "tol": 0.005,
+      "passed": true
+    },
+    {
+      "case": "ZY rectangular cavity TMx 1,1 frequency (GHz)",
+      "value": 4.503500447983071,
+      "reference": 4.503821163818269,
+      "unit": "",
+      "error": -7.12097180443072e-05,
+      "tol": 0.005,
+      "passed": true
+    },
+    {
+      "case": "ZY rectangular cavity TEx 2,1 frequency (GHz)",
+      "value": 6.245062852404199,
+      "reference": 6.245676208333334,
+      "unit": "",
+      "error": -9.820488745748701e-05,
+      "tol": 0.005,
+      "passed": true
+    }
+  ],
+  "notes": "",
+  "passed": true
+}

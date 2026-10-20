@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "picstudio"
+version = "1.3.0"
+description = "VEL-PIC (Vacuum Electrodynamics and Laser Particle-in-Cell): 1D, 2D Cartesian and 2D axisymmetric electrostatic / electromagnetic particle-in-cell code with a model-builder GUI"
+authors = [{ name = "Md Arifuzzaman Faisal" }]
+license = { text = "BSD-3-Clause" }
+keywords = ["particle-in-cell", "PIC", "plasma", "vacuum electronics", "space-charge-limited flow", "magnetron", "electromagnetic", "FDTD", "finite element"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.22",
+  "scipy>=1.8",
+  "scikit-fem>=8.0",
+  "numba>=0.56",
+  "matplotlib>=3.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/faisal-um-ners/VEL-PIC"
+Repository = "https://github.com/faisal-um-ners/VEL-PIC"
+
+[project.optional-dependencies]
+gui = ["PySide6>=6.4"]
+mpi = ["mpi4py>=3.1"]
+dev = ["pytest"]
+all = ["PySide6>=6.4", "mpi4py>=3.1", "pytest"]
+
+[project.scripts]
+picstudio = "picstudio.__main__:main"
+
+[project.gui-scripts]
+picstudio-gui = "picstudio.gui.app:main"
+
+[tool.setuptools.packages.find]
+include = ["picstudio*"]
+
+[tool.setuptools.package-data]
+"picstudio.gui" = ["icons/*.svg"]
