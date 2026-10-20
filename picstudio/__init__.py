@@ -19,8 +19,9 @@ AFFILIATION = "Department of Nuclear Engineering and Radiological Sciences, Univ
 COPYRIGHT = "Copyright (c) 2026 Md Arifuzzaman Faisal"
 LICENSE = "BSD 3-Clause License"
 URL = "https://github.com/faisal-um-ners/VEL-PIC"
+DOI = "10.5281/zenodo.23512470"          # Zenodo concept DOI: all versions, resolves to the latest release
 CITATION = ("Md Arifuzzaman Faisal, VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code, "
-            "version {version} (2026), https://github.com/faisal-um-ners/VEL-PIC")
+            "version {version} (2026), Zenodo, https://doi.org/10.5281/zenodo.23512470")
 
 
 def load_model(path):

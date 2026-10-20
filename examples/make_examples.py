@@ -799,6 +799,38 @@ def yylau_2026_examples():
     _lau_disk("yylau_2026_disk_virtual_cathode_rz.pic.json",
               "Lau 2026: circular patch R/d = 0.1, above J_max: virtual cathode (RZ)", Jn=7.0, **common_d)
 
+# ---------------------------------------------------------------------------
+# Field-only electrostatics (no particles)
+def two_cylinder_lens_rz():
+    m = new_model("2D-RZ", "electrostatic", "Two-cylinder electrostatic lens (RZ, field only)")
+    m["description"] = ("Electrostatic immersion lens: two coaxial tubes of inner radius R (diameter D = 2R) at V1 and "
+                        "V2, separated by a gap g = 0.1 D, wall thickness 0.1 R. No particles: the run is a pure "
+                        "Laplace solution (scikit-fem, r-weighted weak form) on a mesh refined at the gap and the "
+                        "tube walls. The axial potential phi(z) and field E_z(z) are recorded by line probes. "
+                        "Reference: the exact series for two coaxial cylinders with a linear potential across the "
+                        "gap (Goddard 1946; Cook & Heddle 1976); VEL-PIC agrees with it to 3e-4 V2 along the axis.")
+    m["parameters"] = {"V1": "0", "V2": "1e3", "R": "10e-3", "g": "0.2*R", "t": "0.1*R", "L": "6*R", "hf": "0.1e-3"}
+    m["domain"].update(z_min="-L", z_max="L", nz="240", y_min="0", y_max="1.5*R", ny="60")
+    bset(m, "z_min", field="conductor", voltage="V1", name="entrance")
+    bset(m, "z_max", field="conductor", voltage="V2", name="exit")
+    bset(m, "y_max", field="neumann")
+    m["objects"] = [
+        {"name": "tube 1", "shape": "rectangle", "z0": "-L", "z1": "-g/2", "y0": "R", "y1": "R+t",
+         "material": "conductor", "voltage": "V1"},
+        {"name": "tube 2", "shape": "rectangle", "z0": "g/2", "z1": "L", "y0": "R", "y1": "R+t",
+         "material": "conductor", "voltage": "V2"}]
+    m["mesh_refinements"] = [
+        {"name": "gap", "axis": "z", "start": "-g", "end": "g", "size": "hf", "growth": "1.1"},
+        {"name": "tube wall", "axis": "y", "start": "R-t", "end": "R+2*t", "size": "hf", "growth": "1.1"}]
+    m["species"] = []
+    m["line_probes"] = [
+        {"name": "phi_axis", "quantity": "phi", "extremum": "max", "along": "z", "y": "0", "start": "-4*R", "end": "4*R"},
+        {"name": "Ez_axis", "quantity": "Ez", "extremum": "min", "along": "z", "y": "0", "start": "-4*R", "end": "4*R"}]
+    m["simulation"].update(t_end="1e-9", dt="1e-10")
+    m["diagnostics"].update(history_every="1", field_every="10", particle_every="10")
+    out(m, "two_cylinder_lens_rz.pic.json")
+
+
 if __name__ == "__main__":
     for f in (child_langmuir_1d, virtual_cathode_1d, two_stream_1d, plasma_oscillation_1d, child_langmuir_strip_zy,
               child_langmuir_periodic_zy, laser_plasma_zy, beam_plasma_zy, plasma_wakefield_rz,
@@ -806,5 +838,5 @@ if __name__ == "__main__":
               thermionic_diode_1d, field_emission_1d, planar_magnetron_es, planar_magnetron_em, a6_magnetron_em,
               laser_plasma_1d, laser_wakefield_1d, beam_plasma_1d, beam_plasma_wakefield_1d,
               laser_focus_zy, relativistic_diode_rz_em, dielectric_charging_zy, yylau_2026_examples,
-              landau_damping_1d, pierce_diode_1d, beam_expansion_zy):
+              landau_damping_1d, pierce_diode_1d, beam_expansion_zy, two_cylinder_lens_rz):
         f()

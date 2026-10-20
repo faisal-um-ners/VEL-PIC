@@ -207,29 +207,31 @@ class LivePanel(QWidget):
         geom = str(d.get("geometry", ""))
         z, y = np.asarray(d["z"]), np.asarray(d["y"])
         try:
+            from ..post.reader import species_names
+            field_only = not species_names(d)          # no particles: a pure field solution
             # 1. field map with a fixed (growing-only) colour scale
             q = self.qty.currentText()
             if q.startswith("line: "):
                 self._line_plot(ax[0], d, q[6:])
             elif q in d:
-                A = P.masked_field(d, q)          # conductor interiors excluded from the colour scale
-                e = self._e("field:" + q)
-                e.update(A)
-                sym = q.startswith(("E", "B", "J")) or (q.startswith("rho") and e.lo < 0 < e.hi)
-                vl = e.limits(0.0, symmetric=sym)
-                im = P.plot_field(ax[0], d, q, vlim=vl, aspect="auto")
-                if A.ndim == 1:
-                    ax[0].set_xlim(z[0], z[-1])
-                    ax[0].set_ylim(*e.limits(0.05))
-                    _eng(ax[0], "m", "")
+                self._field_map(ax[0], d, q, z)
+            if field_only:
+                # panels 2-4 show the line probes and a second field component instead of particles
+                lines = list(self._line_meta(d))
+                if lines:
+                    self._line_plot(ax[1], d, lines[0])
                 else:
-                    _eng(ax[0], "m", "m")
-                    self._overlay_lines(ax[0], d)
-                self.plot.colorbar(im, ax[0])
-                cb = self.plot._cbars.get(id(ax[0]))
-                if cb is not None:
-                    from ..post.ticks import unit_colorbar
-                    unit_colorbar(cb, field_unit(q), q)
+                    ax[1].clear()
+                    ax[1].set_title("add a line probe to plot a profile here", fontsize=9)
+                q2 = next((k for k in ("Ez", "Er", "Ey", "phi") if k in d and k != q), None)
+                if q2 is not None:
+                    self._field_map(ax[2], d, q2, z, robust=True)
+                if len(lines) > 1:
+                    self._line_plot(ax[3], d, lines[1])
+                else:
+                    self._history(ax[3], d)
+                self.plot.draw()
+                return
             # 2. phase space with stable limits
             xv, yv = self.phx.currentText(), self.phy.currentText()
             P.plot_phase(ax[1], d, "all", xv, yv)
@@ -255,6 +257,42 @@ class LivePanel(QWidget):
         except Exception as exc:  # noqa: BLE001
             ax[3].set_title(f"plot error: {exc}", fontsize=8)
         self.plot.draw()
+
+    def _field_map(self, a, d, q, z, robust=False):
+        """2D field map (or 1D profile) of quantity q with a growing-only colour scale.
+
+        robust: colour scale from the 99.5th percentile of |q| (field-only runs, where the singular
+        field at conductor corners would otherwise wash out the map)."""
+        A = P.masked_field(d, q)          # conductor interiors excluded from the colour scale
+        e = self._e("field:" + q)
+        e.update(A)
+        sym = q.startswith(("E", "B", "J")) or (q.startswith("rho") and e.lo < 0 < e.hi)
+        vl = e.limits(0.0, symmetric=sym)
+        if robust and A.ndim == 2 and np.isfinite(A).any():
+            # area-weighted percentile, so that the many small cells of a refined mesh do not dominate
+            zz, yy = np.asarray(d["z"], float), np.asarray(d["y"], float)
+            wz = np.gradient(zz) if len(zz) > 1 else np.ones_like(zz)
+            wy = np.gradient(yy) if len(yy) > 1 else np.ones_like(yy)
+            W = np.outer(wz, wy)
+            ok = np.isfinite(A)
+            v, w = np.abs(A[ok]), W[ok]
+            k = np.argsort(v)
+            cw = np.cumsum(w[k])
+            m = float(v[k][min(np.searchsorted(cw, 0.99 * cw[-1]), len(v) - 1)]) or 1.0
+            vl = (-m, m) if sym else (float(np.nanmin(A)), float(np.nanmax(A)))
+        im = P.plot_field(a, d, q, vlim=vl, aspect="auto")
+        if A.ndim == 1:
+            a.set_xlim(z[0], z[-1])
+            a.set_ylim(*e.limits(0.05))
+            _eng(a, "m", "")
+        else:
+            _eng(a, "m", "m")
+            self._overlay_lines(a, d)
+        self.plot.colorbar(im, a)
+        cb = self.plot._cbars.get(id(a))
+        if cb is not None:
+            from ..post.ticks import unit_colorbar
+            unit_colorbar(cb, field_unit(q), q)
 
     @staticmethod
     def _line_meta(d):

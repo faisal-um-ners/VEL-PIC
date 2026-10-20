@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QFileDialog, QFrame, QHB
                                QScrollArea, QSplitter, QTabWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
                                QWidget)
 
-from .. import AFFILIATION, APP_NAME, APP_TAGLINE, AUTHOR, CITATION, COPYRIGHT, LICENSE, URL, __version__
+from .. import AFFILIATION, APP_NAME, APP_TAGLINE, AUTHOR, CITATION, COPYRIGHT, DOI, LICENSE, URL, __version__
 from ..model import model as M
 from ..model import schema as S
 from ..post import plotting as P
@@ -1016,7 +1016,7 @@ class MainWindow(QMainWindow):
                     f"<p><b>Author:</b> {AUTHOR}<br>{AFFILIATION}</p>"
                     f"<p>{COPYRIGHT}. Released under the {LICENSE}.<br>"
                     "Particle kernels follow WarpX (BSD-3-Clause-LBNL); see THIRD_PARTY_NOTICES.md.</p>"
-                    f"<p><a href='{URL}'>{URL}</a></p>"
+                    f"<p><a href='{URL}'>{URL}</a><br>DOI: <a href='https://doi.org/{DOI}'>{DOI}</a></p>"
                     "<p>If you use VEL-PIC in published work, please cite it (Help &rarr; How to cite VEL-PIC).</p>")
         box.setTextFormat(Qt.RichText)
         box.exec()
@@ -1028,7 +1028,9 @@ class MainWindow(QMainWindow):
                "  title   = {VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code},\n"
                f"  version = {{{__version__}}},\n"
                "  year    = {2026},\n"
-               f"  url     = {{{URL}}}\n}}")
+               "  publisher = {Zenodo},\n"
+               f"  doi     = {{{DOI}}},\n"
+               f"  url     = {{https://doi.org/{DOI}}}\n}}")
         box = QMessageBox(self)
         box.setWindowTitle("How to cite VEL-PIC")
         box.setText("<p>If VEL-PIC contributes to published work, please cite:</p>"

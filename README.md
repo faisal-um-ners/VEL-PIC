@@ -7,6 +7,7 @@
 <a href="LICENSE"><img alt="License: BSD-3-Clause" src="https://img.shields.io/badge/license-BSD--3--Clause-blue.svg"></a>
 <img alt="Python 3.9+" src="https://img.shields.io/badge/python-3.9%2B-blue.svg">
 <img alt="Validation: 107/107" src="https://img.shields.io/badge/validation-107%2F107%20passed-brightgreen.svg">
+<a href="https://doi.org/10.5281/zenodo.23512470"><img alt="DOI 10.5281/zenodo.23512470" src="https://zenodo.org/badge/DOI/10.5281/zenodo.23512470.svg"></a>
 </p>
 
 VEL-PIC is a particle-in-cell (PIC) code for space-charge-limited flow, electron beams, plasmas and vacuum
@@ -72,6 +73,20 @@ a uniform grid needs 256,000 cells (16× more), and 9× more for the disk. Grade
 electrostatic runs; the electromagnetic Yee solver uses a uniform grid.
 
 <p align="center"><img src="docs/images/mesh_refinement.png" alt="Graded mesh versus uniform mesh at a small emitter" width="820"></p>
+
+### Field-only electrostatics: two-cylinder lens
+
+VEL-PIC also solves pure electrostatic problems without particles. The example `two_cylinder_lens_rz` is the
+classic immersion lens: two coaxial tubes of radius R at V₁ = 0 and V₂ = 1 kV with a gap of 0.1 D, on a mesh
+refined at the gap and the tube walls [[14, 15]](#references). Along the axis the potential agrees with the
+exact series solution to 3×10⁻⁴ V₂ and the peak field to 0.2 %.
+
+<p align="center"><img src="docs/images/lens_validation.png" alt="Two-cylinder lens: axial potential and field versus the exact series" width="900"></p>
+
+For a run without particles the live monitor shows the potential map, the line-probe profiles φ(z) and E_z(z)
+on the axis, and a second field component.
+
+<p align="center"><img src="docs/images/gui_lens_live.png" alt="Two-cylinder lens in the live monitor" width="900"></p>
 
 ### Planar vane magnetron
 
@@ -150,6 +165,7 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 | `pierce_diode_1d` | 1D ES | Pierce diode instability [[8]](#references) |
 | `beam_expansion_zy`, `beam_drift_tube_rz`, `beam_solenoid_rz` | ZY / RZ ES | space-charge beam expansion; Brillouin focusing |
 | `dielectric_charging_zy` | ZY ES | beam charging of a dielectric |
+| `two_cylinder_lens_rz` | RZ ES, field only | two-cylinder electrostatic lens [[14, 15]](#references) |
 | `planar_magnetron_es` | ZY ES | crossed-field diode, Hull cutoff [[2]](#references) |
 | `planar_magnetron_em`, `a6_magnetron_em` | ZY EM | planar vane magnetron [[2–4]](#references); A6 relativistic magnetron [[9, 10]](#references) |
 | `relativistic_diode_rz_em` | RZ EM | TEM-port-driven coaxial diode |
@@ -167,6 +183,7 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 | Child–Langmuir law, 1 kV / 100 kV (relativistic) | +1.3 % / +1.5 % |
 | 2D strip emitter vs Lau [[6]](#references), W/d = 1–4 | +0.2 … +1.9 % |
 | Langmuir–Blodgett coaxial flow [[7]](#references) | +0.6 % |
+| Two-cylinder lens, axial potential / peak field [[14, 15]](#references) | 3×10⁻⁴ V₂ / −0.19 % |
 | Landau damping, kλ_D = 0.5 (exact Vlasov root) | γ +3.5 %, ω −0.04 % |
 | Two-stream / beam–plasma growth rates | −0.25 % / −0.3 % |
 | Pierce diode instability [[8]](#references), α = 1.5π / 2.5π | γ −2.1 % / −5.4 % |
@@ -205,6 +222,10 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
     J. Open Source Softw. **5**, 2369 (2020).
 13. J. P. Verboncoeur, A. B. Langdon and N. T. Gladd, "An object-oriented electromagnetic PIC code,"
     Comput. Phys. Commun. **87**, 199 (1995).
+14. L. S. Goddard, "Optical characteristics of a two-cylinder electrostatic lens," Math. Proc. Camb. Phil. Soc.
+    **42**, 106 (1946).
+15. R. D. Cook and D. W. O. Heddle, "The simple accurate calculation of cylinder lens potentials and focal
+    properties," J. Phys. E: Sci. Instrum. **9**, 279 (1976).
 
 ## Documentation
 
@@ -226,22 +247,27 @@ install/        installers and launchers
 
 ## How to cite
 
-If VEL-PIC contributes to published work, please cite it:
+If VEL-PIC contributes to published work, please cite it. The software is archived on Zenodo:
 
-> Md Arifuzzaman Faisal, *VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code*, version 1.3.0 (2026),
-> https://github.com/faisal-um-ners/VEL-PIC
+- all versions (always resolves to the latest release): [10.5281/zenodo.23512470](https://doi.org/10.5281/zenodo.23512470)
+- version 1.3.0: [10.5281/zenodo.23512471](https://doi.org/10.5281/zenodo.23512471)
+
+> Faisal, M. A. (2026). *VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code* (Version 1.3.0)
+> [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23512471
 
 ```bibtex
 @software{faisal_velpic,
-  author  = {Md Arifuzzaman Faisal},
-  title   = {{VEL-PIC}: Vacuum Electrodynamics and Laser Particle-in-Cell code},
-  version = {1.3.0},
-  year    = {2026},
-  url     = {https://github.com/faisal-um-ners/VEL-PIC}
+  author    = {Faisal, Md Arifuzzaman},
+  title     = {{VEL-PIC}: Vacuum Electrodynamics and Laser Particle-in-Cell code},
+  version   = {1.3.0},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23512471},
+  url       = {https://doi.org/10.5281/zenodo.23512471}
 }
 ```
 
-Citation metadata is also provided in [`CITATION.cff`](CITATION.cff).
+Citation metadata are also provided in [`CITATION.cff`](CITATION.cff).
 
 ## Author
 

@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "name": "Two-cylinder electrostatic lens (RZ, field only)",
+  "description": "Electrostatic immersion lens: two coaxial tubes of inner radius R (diameter D = 2R) at V1 and V2, separated by a gap g = 0.1 D, wall thickness 0.1 R. No particles: the run is a pure Laplace solution (scikit-fem, r-weighted weak form) on a mesh refined at the gap and the tube walls. The axial potential phi(z) and field E_z(z) are recorded by line probes. Reference: the exact series for two coaxial cylinders with a linear potential across the gap (Goddard 1946; Cook & Heddle 1976); VEL-PIC agrees with it to 3e-4 V2 along the axis.",
+  "parameters": {
+    "V1": "0",
+    "V2": "1e3",
+    "R": "10e-3",
+    "g": "0.2*R",
+    "t": "0.1*R",
+    "L": "6*R",
+    "hf": "0.1e-3"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "entrance",
+      "field": "conductor",
+      "voltage": "V1",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "exit",
+      "field": "conductor",
+      "voltage": "V2",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "axis",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "neumann",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-RZ",
+    "solver": "electrostatic",
+    "t_end": "1e-9",
+    "dt": "1e-10",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "-L",
+    "z_max": "L",
+    "nz": "240",
+    "y_min": "0",
+    "y_max": "1.5*R",
+    "ny": "60"
+  },
+  "diagnostics": {
+    "output_dir": "output_two_cylinder_lens_rz",
+    "history_every": "1",
+    "field_every": "10",
+    "particle_every": "10",
+    "max_dump_particles": "50000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [
+    {
+      "name": "gap",
+      "axis": "z",
+      "start": "-g",
+      "end": "g",
+      "size": "hf",
+      "growth": "1.1"
+    },
+    {
+      "name": "tube wall",
+      "axis": "y",
+      "start": "R-t",
+      "end": "R+2*t",
+      "size": "hf",
+      "growth": "1.1"
+    }
+  ],
+  "objects": [
+    {
+      "name": "tube 1",
+      "shape": "rectangle",
+      "z0": "-L",
+      "z1": "-g/2",
+      "y0": "R",
+      "y1": "R+t",
+      "material": "conductor",
+      "voltage": "V1"
+    },
+    {
+      "name": "tube 2",
+      "shape": "rectangle",
+      "z0": "g/2",
+      "z1": "L",
+      "y0": "R",
+      "y1": "R+t",
+      "material": "conductor",
+      "voltage": "V2"
+    }
+  ],
+  "species": [],
+  "loaders": [],
+  "emitters": [],
+  "external_fields": [],
+  "sources": [],
+  "probes": [],
+  "line_probes": [
+    {
+      "name": "phi_axis",
+      "quantity": "phi",
+      "extremum": "max",
+      "along": "z",
+      "y": "0",
+      "start": "-4*R",
+      "end": "4*R"
+    },
+    {
+      "name": "Ez_axis",
+      "quantity": "Ez",
+      "extremum": "min",
+      "along": "z",
+      "y": "0",
+      "start": "-4*R",
+      "end": "4*R"
+    }
+  ],
+  "power_lines": []
+}
