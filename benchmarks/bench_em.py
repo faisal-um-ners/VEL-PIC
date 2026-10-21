@@ -242,7 +242,7 @@ def wakefield():
     Emax = np.abs(Ez[sel]).max()
     Eth = C.e * alpha * np0 / (C.eps0 * kp) * 2 * np.sin(kp * Lb / 2)
     fig, ax = plt.subplots(figsize=(6, 3.6))
-    ax.plot((z - zb) / lp, Ez / Eth, lw=1, label="VEL-PIC E_z")
+    ax.plot((z - zb) / lp, Ez / Eth, lw=1, label="VEXPACE E_z")
     xi = np.linspace(-3, 0, 400) * lp
     # linear theory behind a flat-top bunch: Ez = -Eth*cos(kp*(xi + Lb/2)) (amplitude Eth)
     ax.axhline(1, color="k", ls="--", lw=0.8)

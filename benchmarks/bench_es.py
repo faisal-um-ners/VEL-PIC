@@ -174,7 +174,7 @@ def child_langmuir_2d(nz=48):
     for k, c in (("strip", "C0"), ("disk", "C1")):
         if res[k]:
             a = np.array(res[k])
-            ax.plot(a[:, 0], a[:, 1], "o", color=c, label=f"VEL-PIC {k}")
+            ax.plot(a[:, 0], a[:, 1], "o", color=c, label=f"VEXPACE {k}")
     ax.set_xlabel("d/W  or  d/R")
     ax.set_ylabel("J / J_CL(1D)")
     ax.legend()
@@ -217,7 +217,7 @@ def langmuir_blodgett():
         ref.append(th)
     fig, ax = plt.subplots(figsize=(5, 3.6))
     ax.plot(xs, ref, "k-s", label="Langmuir-Blodgett")
-    ax.plot(xs, ys, "ro", label="VEL-PIC (RZ)")
+    ax.plot(xs, ys, "ro", label="VEXPACE (RZ)")
     ax.set_xlabel("b/a")
     ax.set_ylabel("I/L (A/m)")
     ax.legend()
@@ -292,7 +292,7 @@ def two_stream():
     x = k * v0 / wpb
     gth = wpb * np.sqrt(np.sqrt(4 * x ** 2 + 1) - x ** 2 - 1)
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
-    ax.semilogy(t * wpb, amp / amp.max(), label="VEL-PIC sqrt(W_field)")
+    ax.semilogy(t * wpb, amp / amp.max(), label="VEXPACE sqrt(W_field)")
     t0 = t[sel][len(t[sel]) // 2]
     ax.semilogy(t * wpb, amp[sel][len(t[sel]) // 2] / amp.max() * np.exp(gth * (t - t0)), "k--",
                 label=f"theory gamma = {gth / wpb:.3f} w_pb")
@@ -334,7 +334,7 @@ def beam_plasma():
     roots = Pn.polyroots(Pn.polysub(Pn.polysub(p1, p2), p3))
     gth = max(r.imag for r in roots)
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
-    ax.semilogy(t * wp, amp / amp.max(), label="VEL-PIC")
+    ax.semilogy(t * wp, amp / amp.max(), label="VEXPACE")
     t0 = t[sel][len(t[sel]) // 2]
     ax.semilogy(t * wp, amp[sel][len(t[sel]) // 2] / amp.max() * np.exp(gth * (t - t0)), "k--",
                 label=f"theory {gth / wp:.4f} w_p")
@@ -377,7 +377,7 @@ def emission_laws():
     VV = np.logspace(1, 3.7, 100)
     ax.loglog(VV, JCL(VV, d), "k--", label="Child-Langmuir")
     ax.loglog(VV, richardson_J(2500, 4.5, VV / d), "b:", label="Richardson-Schottky (E=V/d)")
-    ax.loglog(Vs, Js, "ro", label="VEL-PIC")
+    ax.loglog(Vs, Js, "ro", label="VEXPACE")
     ax.set_xlabel("V (V)")
     ax.set_ylabel("J (A/m^2)")
     ax.legend(fontsize=8)
@@ -444,7 +444,7 @@ def hull_cutoff():
         Ia.append(-tail_mean(sim, "I_z_max", 0.5) / 1e-3)
     Ia = np.array(Ia) / JCL(V, d)
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
-    ax.plot(ratios, Ia, "o-", label="VEL-PIC")
+    ax.plot(ratios, Ia, "o-", label="VEXPACE")
     ax.axvline(1.0, color="k", ls="--", label="Hull cutoff B_H")
     ax.set_xlabel("B / B_H")
     ax.set_ylabel("J_anode / J_CL")

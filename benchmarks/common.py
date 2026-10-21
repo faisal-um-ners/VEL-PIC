@@ -1,4 +1,4 @@
-"""Shared helpers for the VEL-PIC validation benchmarks."""
+"""Shared helpers for the VEXPACE validation benchmarks."""
 from __future__ import annotations
 
 import json

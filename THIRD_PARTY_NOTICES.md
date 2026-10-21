@@ -56,5 +56,5 @@ in binary and source code form.
 
 ## Python dependencies
 
-VEL-PIC uses NumPy, SciPy, scikit-fem, Numba, Matplotlib and (optionally) PySide6 and mpi4py, each under
-its own license. They are installed separately and are not redistributed with VEL-PIC.
+VEXPACE uses NumPy, SciPy, scikit-fem, Numba, Matplotlib and (optionally) PySide6 and mpi4py, each under
+its own license. They are installed separately and are not redistributed with VEXPACE.

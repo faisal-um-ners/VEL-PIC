@@ -1,6 +1,7 @@
-# VEL-PIC 1.3.0
+# VEXPACE 1.3.0
 
-First public release of VEL-PIC (Vacuum Electrodynamics and Laser Particle-in-Cell).
+First public release, published under the earlier name VEL-PIC; the code is now VEXPACE (Virtual Experiments in
+Plasma and Computational Electrodynamics).
 
 - Geometries 1D-Z, 2D-ZY and 2D-RZ; finite-element electrostatic solver (scikit-fem) and Yee FDTD
   electromagnetic solver.

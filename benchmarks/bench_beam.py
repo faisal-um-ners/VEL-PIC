@@ -83,7 +83,7 @@ def drift_and_solenoid():
         err = np.max(np.abs(a_sim[ok] / a_th[ok] - 1))
         lab = "solenoid (Brillouin)" if sol_on else "drift tube"
         rows.append(row(f"{lab}: max |a_PIC/a_envelope - 1| over z", err, 0.0, 0.08 if sol_on else 0.03, absolute=True))
-        ax.plot(zc * 100, a_sim * 1e3, "o", ms=3, label=f"VEL-PIC, {lab}")
+        ax.plot(zc * 100, a_sim * 1e3, "o", ms=3, label=f"VEXPACE, {lab}")
         zz = np.linspace(0, 0.2, 300)
         ax.plot(zz * 100, env.sol(zz)[0] * 1e3, "-", label=f"envelope eq., {lab}")
     ax.set_xlabel("z (cm)")

@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-message: "If you use VEL-PIC in your research, please cite it as below."
-title: "VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code"
+message: "If you use VEXPACE in your research, please cite it as below."
+title: "VEXPACE: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics"
 type: software
 authors:
   - family-names: "Faisal"
     given-names: "Md Arifuzzaman"
     affiliation: "Department of Nuclear Engineering and Radiological Sciences, University of Michigan"
 abstract: >-
-  VEL-PIC is a Python particle-in-cell code for space-charge-limited flow, electron beams, plasmas and
+  VEXPACE is a Python particle-in-cell code for space-charge-limited flow, electron beams, plasmas and
   vacuum electron devices in 1D-Z, 2D-ZY and 2D-RZ geometry, with finite-element electrostatic and Yee
   FDTD electromagnetic solvers, a model-builder graphical interface, a command-line runner and a Python API.
 version: "1.3.0"
@@ -15,14 +15,14 @@ doi: "10.5281/zenodo.23512470"
 identifiers:
   - type: doi
     value: "10.5281/zenodo.23512470"
-    description: "Concept DOI: all versions of VEL-PIC (resolves to the latest release)"
+    description: "Concept DOI: all versions of VEXPACE (resolves to the latest release)"
   - type: doi
     value: "10.5281/zenodo.23512471"
-    description: "VEL-PIC v1.3.0"
+    description: "VEXPACE v1.3.0"
 date-released: "2026-10-20"
 license: BSD-3-Clause
-repository-code: "https://github.com/faisal-um-ners/VEL-PIC"
-url: "https://github.com/faisal-um-ners/VEL-PIC"
+repository-code: "https://github.com/faisal-um-ners/VEXPACE"
+url: "https://github.com/faisal-um-ners/VEXPACE"
 keywords:
   - particle-in-cell
   - plasma simulation
@@ -32,7 +32,7 @@ keywords:
   - electromagnetic PIC
 preferred-citation:
   type: software
-  title: "VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code"
+  title: "VEXPACE: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics"
   authors:
     - family-names: "Faisal"
       given-names: "Md Arifuzzaman"

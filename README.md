@@ -1,7 +1,8 @@
-<p align="center"><img src="docs/images/velpic_logo.png" alt="VEL-PIC" width="420"></p>
+<p align="center"><img src="docs/images/vexpace_logo.png" alt="VEXPACE" width="420"></p>
 
-<h1 align="center">VEL-PIC</h1>
-<p align="center"><b>Vacuum Electrodynamics and Laser Particle-in-Cell</b></p>
+<h1 align="center">VEXPACE</h1>
+<p align="center"><b>Virtual Experiments in Plasma and Computational Electrodynamics</b><br>
+An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics</p>
 
 <p align="center">
 <a href="LICENSE"><img alt="License: BSD-3-Clause" src="https://img.shields.io/badge/license-BSD--3--Clause-blue.svg"></a>
@@ -10,9 +11,10 @@
 <a href="https://doi.org/10.5281/zenodo.23512470"><img alt="DOI 10.5281/zenodo.23512470" src="https://zenodo.org/badge/DOI/10.5281/zenodo.23512470.svg"></a>
 </p>
 
-VEL-PIC is a particle-in-cell (PIC) code for space-charge-limited flow, electron beams, plasmas and vacuum
+VEXPACE is a particle-in-cell (PIC) code for space-charge-limited flow, electron beams, plasmas and vacuum
 electron devices. It is written in Python with Numba-compiled kernels and comes with a model-builder
-graphical interface, a command-line runner and a Python API.
+graphical interface, a command-line runner and a Python API. (Version 1.3.0 was released under the earlier
+name VEL-PIC.)
 
 | Geometry | Electrostatic | Electromagnetic |
 |---|---|---|
@@ -20,7 +22,7 @@ graphical interface, a command-line runner and a Python API.
 | **2D-ZY** (Cartesian, per unit depth) | finite elements (Q1), locally refined meshes | Yee FDTD, all six field components |
 | **2D-RZ** (axisymmetric) | finite elements with r-weighted weak form | cylindrical Yee FDTD with exact on-axis update |
 
-<p align="center"><img src="docs/images/gui_model_builder.png" alt="VEL-PIC model builder" width="900"></p>
+<p align="center"><img src="docs/images/gui_model_builder.png" alt="VEXPACE model builder" width="900"></p>
 
 ## Features
 
@@ -44,7 +46,7 @@ graphical interface, a command-line runner and a Python API.
 
 ### Field-only electrostatics: two-cylinder lens
 
-VEL-PIC also solves pure electrostatic problems without particles. The example `two_cylinder_lens_rz` is the
+VEXPACE also solves pure electrostatic problems without particles. The example `two_cylinder_lens_rz` is the
 classic immersion lens: two coaxial tubes of radius R at V₁ = 0 and V₂ = 1 kV with a gap of 0.1 D, on a mesh
 refined at the gap and the tube walls [[2, 3]](#references). Along the axis the potential agrees with the
 exact series solution to 3×10⁻⁴ V₂ and the peak field to 0.2 %.
@@ -61,7 +63,7 @@ on the axis, and a second field component.
 Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with low injection energy,
 Δ·eV₀ = 25 eV at V₀ = 2.5 kV, following Lau, Chernin, Heri & Zhang [[4]](#references). The live monitor shows the potential along
 the emitter axis with its minimum marked, the phase space, the particles and the history of the potential
-minimum φ_min. The steady limiting-current solver included with VEL-PIC agrees with the paper's POISSON
+minimum φ_min. The steady limiting-current solver included with VEXPACE agrees with the paper's POISSON
 values to within 0.25 %.
 
 **Below the limit (strip, J = 0.96 J_max).** The flow is steady: φ_min settles at −4.6 V, well above
@@ -95,7 +97,7 @@ assume equal cells. For electromagnetic runs use a uniform mesh fine enough for 
 
 ### Planar vane magnetron
 
-A six-cavity planar vane magnetron at 170 kV and 0.16 T. It is a generic design made for VEL-PIC, not a
+A six-cavity planar vane magnetron at 170 kV and 0.16 T. It is a generic design made for VEXPACE, not a
 reproduction of a particular device: the operating point lies between the relativistic planar Hull cutoff
 (0.150 T) and the π-mode Buneman–Hartree field (0.180 T) [[6, 7]](#references), and the periodic geometry is the
 planar analogue of the recirculating planar magnetron [[8]](#references) (model shown at the top of this page). Space-charge-limited emission from the cathode at y = 0 forms three spokes; the cavity field
@@ -120,13 +122,13 @@ Example: `planar_magnetron_em`.
 Python 3.9 or newer is required.
 
 ```bash
-git clone https://github.com/faisal-um-ners/VEL-PIC.git
-cd VEL-PIC
+git clone https://github.com/faisal-um-ners/VEXPACE.git
+cd VEXPACE
 pip install -e ".[gui]"          # add ",mpi" for MPI support
 ```
 
 Installer scripts are also provided: `install/install_mac_linux.sh` (macOS and Linux),
-`install/install_windows.bat` (Windows) and the double-click launcher `install/VEL-PIC.command` (macOS).
+`install/install_windows.bat` (Windows) and the double-click launcher `install/VEXPACE.command` (macOS).
 Kernels are compiled by Numba on first use and cached.
 
 ## Usage
@@ -259,16 +261,16 @@ install/        installers and launchers
 
 ## How to cite
 
-If VEL-PIC contributes to published work, please cite it. The software is archived on Zenodo with the
+If VEXPACE contributes to published work, please cite it. The software is archived on Zenodo with the
 permanent DOI [10.5281/zenodo.23512470](https://doi.org/10.5281/zenodo.23512470), which covers all versions.
 
-> Faisal, M. A. (2026). *VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code* [Computer software].
+> Faisal, M. A. (2026). *VEXPACE: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics* [Computer software].
 > Zenodo. https://doi.org/10.5281/zenodo.23512470
 
 ```bibtex
-@software{faisal_velpic,
+@software{faisal_vexpace,
   author    = {Faisal, Md Arifuzzaman},
-  title     = {{VEL-PIC}: Vacuum Electrodynamics and Laser Particle-in-Cell code},
+  title     = {{VEXPACE}: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics},
   year      = {2026},
   publisher = {Zenodo},
   doi       = {10.5281/zenodo.23512470},
@@ -285,7 +287,7 @@ Department of Nuclear Engineering and Radiological Sciences, University of Michi
 
 ## License
 
-Copyright © 2026 Md Arifuzzaman Faisal. VEL-PIC is released under the [BSD 3-Clause License](LICENSE).
+Copyright © 2026 Md Arifuzzaman Faisal. VEXPACE is released under the [BSD 3-Clause License](LICENSE).
 
 The particle kernels follow the algorithms of [WarpX](https://github.com/BLAST-WarpX/warpx)
 (BSD-3-Clause-LBNL); its notice is reproduced in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

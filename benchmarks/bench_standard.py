@@ -38,7 +38,7 @@ def _warpx_cases():
 
 
 def _ours(cs, pusher):
-    """Single electron in uniform fields with VEL-PIC's kernels, WarpX ordering (PushP(-dt/2) at t=0).
+    """Single electron in uniform fields with VEXPACE's kernels, WarpX ordering (PushP(-dt/2) at t=0).
     Our 2D (z, y, x) corresponds to WarpX XZ (z, x, -y) - both right-handed."""
     z, y = np.zeros(1), np.zeros(1)
     ux, uy, uz = np.array(cs["u"]) * C.c
@@ -71,9 +71,9 @@ def pushers():
             scale = np.abs(wx).max()
             err = np.abs(tr - wx).max() / scale
             # the WarpX reduced diagnostic is written with 9 significant digits
-            rows.append(row(f"{name}, {pusher}: max |VEL-PIC - WarpX| / path size", err, 0.0, 1e-7, absolute=True))
+            rows.append(row(f"{name}, {pusher}: max |VEXPACE - WarpX| / path size", err, 0.0, 1e-7, absolute=True))
             ax[k].plot(wx[:, 1] * 1e3, wx[:, 0] * 1e3, "-", lw=2.5, alpha=0.35, label=f"WarpX {pusher}")
-            ax[k].plot(tr[::8, 1] * 1e3, tr[::8, 0] * 1e3, ".", ms=3, label=f"VEL-PIC {pusher}")
+            ax[k].plot(tr[::8, 1] * 1e3, tr[::8, 0] * 1e3, ".", ms=3, label=f"VEXPACE {pusher}")
         ax[k].set_title(name)
         ax[k].set_xlabel("z (mm)")
         ax[k].set_ylabel("x (mm)")
@@ -105,7 +105,7 @@ def pushers():
     return record("26_pushers_warpx", "Particle pushers: identical to WarpX (Boris, Vay, Higuera-Cary)", rows, fig,
                   notes="Single electron in uniform fields, WarpX 26.09 2D run (algo.particle_pusher, "
                         "algo.maxwell_solver = none, ParticleExtrema reduced diagnostic every step) against "
-                        "VEL-PIC's push kernels with the same initial half-step push-back. The WarpX inputs and "
+                        "VEXPACE's push kernels with the same initial half-step push-back. The WarpX inputs and "
                         f"outputs are stored in benchmarks/warpx_compare/data/pushers. In the relativistic E x B "
                         f"case the Boris pusher drifts sideways by {dev_b:.2e} of the path (its known error, "
                         "identical in WarpX), whereas Vay and Higuera-Cary keep the particle on a straight line.")
@@ -168,7 +168,7 @@ def landau():
     w_meas = np.pi / np.mean(np.diff(tp[sel]))
     rows.append(row("Landau damping k lambda_D = 0.5: damping rate gamma / w_p", gam, wi, 0.05))
     rows.append(row("Landau damping k lambda_D = 0.5: frequency w / w_p", w_meas, wr, 0.02))
-    ax[0].semilogy(t, W / W[0], lw=0.8, label="VEL-PIC")
+    ax[0].semilogy(t, W / W[0], lw=0.8, label="VEXPACE")
     ax[0].semilogy(t, np.exp(2 * wi * t), "k--", lw=1, label=f"exact: gamma = {wi:.4f} w_p")
     ax[0].plot(tp[sel], Wp[sel] / W[0], "o", ms=3)
     ax[0].set_xlabel("t w_p")
@@ -191,7 +191,7 @@ def landau():
                         f"roots of the Vlasov-Poisson dispersion relation 1 + (1 + zeta Z(zeta))/(k lambda_D)^2 "
                         f"= 0: k lambda_D = 0.5 -> w = {wr:.4f} {wi:+.4f}i w_p; k lambda_D = 0.3 -> "
                         f"w = {wr3:.4f} {wi3:+.4f}i w_p (the fluid Bohm-Gross estimate sqrt(1 + 3 k^2 lambda_D^2) = "
-                        f"{np.sqrt(1.27):.4f} is 3 % low at this k lambda_D; VEL-PIC gives {w3:.4f}).")
+                        f"{np.sqrt(1.27):.4f} is 3 % low at this k lambda_D; VEXPACE gives {w3:.4f}).")
 
 
 # ----------------------------------------------------------------------------

@@ -108,7 +108,7 @@ def pierce():
             rows.append(row(f"Pierce diode alpha = {a:g} pi: oscillation frequency (v0/L)", wr, abs(w.real), 0.03))
             notes[-1] += f", frequency {wr:.4f}"
         i = 0 if a < 2 else 1
-        ax[i].semilogy(tn, W, lw=1, label="VEL-PIC field energy")
+        ax[i].semilogy(tn, W, lw=1, label="VEXPACE field energy")
         t0 = tn[k][0]
         ax[i].semilogy(tn[k], W[k][0] * np.exp(2 * w.imag * (tn[k] - t0)), "k--", label=f"exact 2*gamma = {2 * w.imag:.3f} v0/L")
         ax[i].set_xlabel("t v0 / L")
@@ -164,7 +164,7 @@ def coax_hull(ratios=(0.8, 0.9, 0.95, 1.05, 1.1, 1.2)):
     # cutoff position by interpolation between the last conducting and first insulated point
     k = int(np.argmax(np.array(ratios) > 1))
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
-    ax.plot(ratios, Ia, "o-", label="VEL-PIC (RZ, SCL emission)")
+    ax.plot(ratios, Ia, "o-", label="VEXPACE (RZ, SCL emission)")
     ax.axvline(1.0, color="k", ls="--", label="Hull cutoff B* (Lovelace & Ott)")
     ax.set_xlabel("B / B*")
     ax.set_ylabel("anode current / current at B = 0")
