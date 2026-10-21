@@ -1,4 +1,4 @@
-"""Model schema: every input of VEL-PIC is described here.
+"""Model schema: every input of VEXPACE is described here.
 
 The same description drives
   * default values and validation (``picstudio.model.model``),

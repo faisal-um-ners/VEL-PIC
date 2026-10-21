@@ -1,4 +1,4 @@
-"""VEL-PIC - Vacuum Electrodynamics and Laser Particle-in-Cell (Python package ``picstudio``).
+"""VEXPACE - Virtual Experiments in Plasma and Computational Electrodynamics (Python package ``picstudio``).
 
 A particle-in-cell code for 1D (z), 2D Cartesian (z,y) and 2D axisymmetric (z,r) electrostatic and
 electromagnetic simulations.
@@ -12,16 +12,17 @@ Quick use from Python::
     sim.run()
 """
 __version__ = "1.3.0"
-APP_NAME = "VEL-PIC"
-APP_TAGLINE = "Vacuum Electrodynamics and Laser Particle-in-Cell"
+APP_NAME = "VEXPACE"
+APP_TAGLINE = "Virtual Experiments in Plasma and Computational Electrodynamics"
+APP_SUBTITLE = "An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics"
 AUTHOR = "Md Arifuzzaman Faisal"
 AFFILIATION = "Department of Nuclear Engineering and Radiological Sciences, University of Michigan, Ann Arbor, MI, USA"
 COPYRIGHT = "Copyright (c) 2026 Md Arifuzzaman Faisal"
 LICENSE = "BSD 3-Clause License"
-URL = "https://github.com/faisal-um-ners/VEL-PIC"
+URL = "https://github.com/faisal-um-ners/VEXPACE"
 DOI = "10.5281/zenodo.23512470"          # Zenodo concept DOI: all versions, resolves to the latest release
-CITATION = ("Faisal, M. A. (2026). VEL-PIC: Vacuum Electrodynamics and Laser Particle-in-Cell code "
-            "[Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23512470")
+CITATION = ("Faisal, M. A. (2026). VEXPACE: An Open-Source Particle-in-Cell Simulation Framework for Plasma and "
+            "Vacuum Electronics [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23512470")
 
 
 def load_model(path):

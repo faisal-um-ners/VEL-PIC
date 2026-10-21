@@ -1,10 +1,10 @@
-# VEL-PIC: numerical methods
+# VEXPACE: numerical methods
 
 ## 1. Mesh and coordinates
 
 The mesh is a structured tensor-product grid, uniform (dz, dy) or graded/refined along z and y (electrostatic solver). Particles are pushed and deposited in logical coordinates (the fractional node index), where every cell has unit size, so the bilinear weights are the Q1 shape functions of the physical cell.
 
-**Why abrupt cell-size jumps are avoided.** The electromagnetic (Yee) solver runs on a uniform grid; a refined mesh with the electromagnetic solver is a model-check error. Three reasons: (i) the Courant limit of the explicit Yee update is set by the smallest cell and applies to the whole domain, so a 10 µm band on a 78 µm grid would shorten every step about eightfold; (ii) the staggered update is second-order only for equal cells: on a stretched grid it drops to first order, and a change of cell size reflects waves and changes the numerical dispersion; (iii) the Esirkepov deposition and the held-electrode correction (discrete harmonic functions of the Yee operator) are written for equal cells. Codes that refine electromagnetic grids (e.g. WarpX) use separate refinement patches with buffer and absorbing layers, which VEL-PIC does not provide. In the electrostatic solver a jump lowers the local accuracy of the finite-element solution, adds a self-force on particles crossing it and changes the particle statistics per cell. The tensor axes are therefore graded geometrically (growth ratio 1.05–1.2 recommended; the model check warns above 1.3), with grid lines continuous across the domain.
+**Why abrupt cell-size jumps are avoided.** The electromagnetic (Yee) solver runs on a uniform grid; a refined mesh with the electromagnetic solver is a model-check error. Three reasons: (i) the Courant limit of the explicit Yee update is set by the smallest cell and applies to the whole domain, so a 10 µm band on a 78 µm grid would shorten every step about eightfold; (ii) the staggered update is second-order only for equal cells: on a stretched grid it drops to first order, and a change of cell size reflects waves and changes the numerical dispersion; (iii) the Esirkepov deposition and the held-electrode correction (discrete harmonic functions of the Yee operator) are written for equal cells. Codes that refine electromagnetic grids (e.g. WarpX) use separate refinement patches with buffer and absorbing layers, which VEXPACE does not provide. In the electrostatic solver a jump lowers the local accuracy of the finite-element solution, adds a self-force on particles crossing it and changes the particle statistics per cell. The tensor axes are therefore graded geometrically (growth ratio 1.05–1.2 recommended; the model check warns above 1.3), with grid lines continuous across the domain.
 
 Nodes are indexed `[iz]` in 1D and `[iz, iy]` in 2D. In RZ the second coordinate is the radius r, and either r_min = 0 (on axis) or r_min > 0 (annular domain).
 
@@ -90,7 +90,7 @@ Static electrode voltages in EM runs are added as the Laplace field of the condu
 
 **Electrode voltages in EM runs (ideal voltage sources).** In a Yee solver a PEC conductor is isolated: its total charge changes only when particles are absorbed on it or emitted from it. As current flows from cathode to anode the gap capacitor would discharge and the electrode potentials would drift.
 
-VEL-PIC connects every conductor to an ideal (zero-impedance) voltage source (`em_conductors = held`, the default):
+VEXPACE connects every conductor to an ideal (zero-impedance) voltage source (`em_conductors = held`, the default):
 
 * The applied voltages are carried by the electrostatic Laplace solution, superposed on the fields seen by the particles.
 * After every field update, the Yee field is corrected to keep each electrode at zero potential (`fields/circuit.py`). The steps are:

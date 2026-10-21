@@ -1,6 +1,6 @@
 """Code-to-code comparison with WarpX: smooth-bore magnetron diodes (crossed-field gaps).
 
-    E  planar crossed-field gap (2D: WarpX XZ, VEL-PIC ZY), B below and above the Hull cutoff
+    E  planar crossed-field gap (2D: WarpX XZ, VEXPACE ZY), B below and above the Hull cutoff
     F  cylindrical (coaxial) crossed-field gap (RZ), inner cathode, axial B, below and above the
        cylindrical Hull cutoff of Lovelace & Ott
 
@@ -125,7 +125,7 @@ PN.intervals = 20
         phiw = f["phi"]
         phiw = phiw.mean(axis=0) if phiw.shape[0] == len(xc) else phiw.mean(axis=1)
         tw, Nw = _warpx_count(dd)
-        # VEL-PIC (ZY; out-of-plane component x = -y of WarpX XZ)
+        # VEXPACE (ZY; out-of-plane component x = -y of WarpX XZ)
         m = new_model("2D-ZY", "electrostatic")
         m["domain"].update(z_min="0", z_max=_r(d), nz=str(nz), y_min="0", y_max=_r(Lx), ny=str(nx))
         m["boundaries"]["z_min"].update(field="conductor", voltage="0")
@@ -255,14 +255,14 @@ def _report(name, title, res, prm, xlabel, Bname, notes):
         late_p = o["tp"] > 0.45 * o["tp"][-1]
         Nw, Np = o["Nw"][late_w].mean(), o["Np"][late_p].mean()
         state = "insulated" if r > 1 else "conducting"
-        rows.append(row(f"B = {r:g} {Bname} ({state}): max |phi_VEL-PIC - phi_WarpX| / V", dphi, 0.0, 0.01,
+        rows.append(row(f"B = {r:g} {Bname} ({state}): max |phi_VEXPACE - phi_WarpX| / V", dphi, 0.0, 0.01,
                         absolute=True))
-        rows.append(row(f"B = {r:g} {Bname} ({state}): electrons in the gap, VEL-PIC / WarpX", Np / Nw, 1.0, 0.03))
+        rows.append(row(f"B = {r:g} {Bname} ({state}): electrons in the gap, VEXPACE / WarpX", Np / Nw, 1.0, 0.03))
         c = f"C{k}"
         ax[0].plot(o["zc"] * 1e3, o["phiw"] / V, "-", color=c, lw=2, alpha=0.5, label=f"WarpX, B = {r:g} {Bname}")
-        ax[0].plot(o["zp"] * 1e3, o["phip"] / V, ":", color=c, lw=2, label=f"VEL-PIC, B = {r:g} {Bname}")
+        ax[0].plot(o["zp"] * 1e3, o["phip"] / V, ":", color=c, lw=2, label=f"VEXPACE, B = {r:g} {Bname}")
         ax[1].plot(o["tw"] * 1e9, o["Nw"], "-", color=c, lw=2, alpha=0.5, label=f"WarpX, B = {r:g} {Bname}")
-        ax[1].plot(o["tp"] * 1e9, o["Np"], ":", color=c, lw=2, label=f"VEL-PIC, B = {r:g} {Bname}")
+        ax[1].plot(o["tp"] * 1e9, o["Np"], ":", color=c, lw=2, label=f"VEXPACE, B = {r:g} {Bname}")
     ax[0].set_xlabel(xlabel)
     ax[0].set_ylabel("phi / V")
     ax[0].legend(fontsize=7)
@@ -281,7 +281,7 @@ def main(which=("planar", "coax")):
                 res, prm, "z (mm)", "B_H",
                 f"V = 10 kV, d = 5 mm, Hull field B_H = {prm['BH'] * 1e3:.2f} mT (relativistic planar). Electrons "
                 f"injected at J = 0.25 J_CL with 2 eV normal energy, periodic 8-cell strip along the cathode. "
-                f"WarpX 26.09 2D (XZ, ES labframe, use_filter = 0) vs VEL-PIC 2D-ZY, same dt, shape, pusher and "
+                f"WarpX 26.09 2D (XZ, ES labframe, use_filter = 0) vs VEXPACE 2D-ZY, same dt, shape, pusher and "
                 f"energy-conserving gather. Above B_H all electrons return to the cathode (twice the charge in "
                 f"the gap, the potential depressed near the cathode). Compared after the start-up, t = 1-2.2 ns, while the "
                 f"insulated hub is still laminar (later it develops the 2D diocotron/turbulent hub in both codes).")
@@ -293,7 +293,7 @@ def main(which=("planar", "coax")):
                 f"Coaxial gap, inner cathode a = 5 mm, anode b = 10 mm, V = 10 kV, axial B. Hull field "
                 f"B* = (m c / e d_e) sqrt(gamma^2 - 1), d_e = (b^2 - a^2)/(2b) (Lovelace & Ott 1974) = "
                 f"{prm['Bs'] * 1e3:.2f} mT. Electrons injected radially at J = 0.25 J_CL(b - a), 2 eV. WarpX 26.09 RZ "
-                f"(r_min = a, ES labframe) vs VEL-PIC 2D-RZ (annular domain).")
+                f"(r_min = a, ES labframe) vs VEXPACE 2D-RZ (annular domain).")
 
 
 if __name__ == "__main__":

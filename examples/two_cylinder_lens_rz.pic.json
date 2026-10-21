@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "Two-cylinder electrostatic lens (RZ, field only)",
-  "description": "Electrostatic immersion lens: two coaxial tubes of inner radius R (diameter D = 2R) at V1 and V2, separated by a gap g = 0.1 D, wall thickness 0.1 R. No particles: the run is a pure Laplace solution (scikit-fem, r-weighted weak form) on a mesh refined at the gap and the tube walls. The axial potential phi(z) and field E_z(z) are recorded by line probes. Reference: the exact series for two coaxial cylinders with a linear potential across the gap (Goddard 1946; Cook & Heddle 1976); VEL-PIC agrees with it to 3e-4 V2 along the axis.",
+  "description": "Electrostatic immersion lens: two coaxial tubes of inner radius R (diameter D = 2R) at V1 and V2, separated by a gap g = 0.1 D, wall thickness 0.1 R. No particles: the run is a pure Laplace solution (scikit-fem, r-weighted weak form) on a mesh refined at the gap and the tube walls. The axial potential phi(z) and field E_z(z) are recorded by line probes. Reference: the exact series for two coaxial cylinders with a linear potential across the gap (Goddard 1946; Cook & Heddle 1976); VEXPACE agrees with it to 3e-4 V2 along the axis.",
   "parameters": {
     "V1": "0",
     "V2": "1e3",

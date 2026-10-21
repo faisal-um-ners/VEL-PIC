@@ -3,7 +3,7 @@
 In a Yee FDTD solver a PEC conductor is *isolated*: its total charge only changes when particles
 are absorbed on it or emitted from it, so as current flows from cathode to anode the gap capacitor
 discharges and the electrode voltages drift.  A real diode or magnetron is driven by a power supply
-that keeps every electrode at its potential.  VEL-PIC models that supply as an ideal (zero-impedance)
+that keeps every electrode at its potential.  VEXPACE models that supply as an ideal (zero-impedance)
 voltage source on each conductor:
 
   * the applied electrode voltages are carried by the electrostatic Laplace solution, superposed on

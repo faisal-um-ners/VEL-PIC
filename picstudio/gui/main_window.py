@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QFileDialog, QFrame, QHB
                                QScrollArea, QSplitter, QTabWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
                                QWidget)
 
-from .. import AFFILIATION, APP_NAME, APP_TAGLINE, AUTHOR, CITATION, COPYRIGHT, DOI, LICENSE, URL, __version__
+from .. import AFFILIATION, APP_NAME, APP_SUBTITLE, APP_TAGLINE, AUTHOR, CITATION, COPYRIGHT, DOI, LICENSE, URL, __version__
 from ..model import model as M
 from ..model import schema as S
 from ..post import plotting as P
@@ -267,7 +267,7 @@ class MainWindow(QMainWindow):
         self._act(h, "User guide", lambda: self.show_guide("USER_GUIDE.md"))
         self._act(h, "Numerical methods", lambda: self.show_guide("THEORY.md"))
         self._act(h, "Validation report", self.show_validation)
-        self._act(h, "How to cite VEL-PIC", self.cite)
+        self._act(h, "How to cite VEXPACE", self.cite)
         self._act(h, "About", self.about)
 
     # ======================================================================
@@ -1012,7 +1012,7 @@ class MainWindow(QMainWindow):
         box.setWindowTitle(f"About {APP_NAME}")
         from PySide6.QtGui import QIcon
         box.setIconPixmap(QIcon(logo).pixmap(96, 96))
-        box.setText(f"<h2>{APP_NAME} {__version__}</h2><p><b>{APP_TAGLINE}</b></p>"
+        box.setText(f"<h2>{APP_NAME} {__version__}</h2><p><b>{APP_TAGLINE}</b><br>{APP_SUBTITLE}</p>"
                     "<p>Particle-in-cell simulation of diodes, beams, plasmas and vacuum electron devices in 1D (z), "
                     "2D Cartesian (z, y) and 2D axisymmetric (z, r) geometry. Electrostatic solver: finite elements "
                     "(scikit-fem). Electromagnetic solver: Yee FDTD with charge-conserving deposition.</p>"
@@ -1020,22 +1020,22 @@ class MainWindow(QMainWindow):
                     f"<p>{COPYRIGHT}. Released under the {LICENSE}.<br>"
                     "Particle kernels follow WarpX (BSD-3-Clause-LBNL); see THIRD_PARTY_NOTICES.md.</p>"
                     f"<p><a href='{URL}'>{URL}</a><br>DOI: <a href='https://doi.org/{DOI}'>{DOI}</a></p>"
-                    "<p>If you use VEL-PIC in published work, please cite it (Help &rarr; How to cite VEL-PIC).</p>")
+                    "<p>If you use VEXPACE in published work, please cite it (Help &rarr; How to cite VEXPACE).</p>")
         box.setTextFormat(Qt.RichText)
         box.exec()
 
     def cite(self):
         text = CITATION
-        bib = ("@software{faisal_velpic,\n"
+        bib = ("@software{faisal_vexpace,\n"
                "  author    = {Faisal, Md Arifuzzaman},\n"
-               "  title     = {{VEL-PIC}: Vacuum Electrodynamics and Laser Particle-in-Cell code},\n"
+               "  title     = {{VEXPACE}: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics},\n"
                "  year      = {2026},\n"
                "  publisher = {Zenodo},\n"
                f"  doi       = {{{DOI}}},\n"
                f"  url       = {{https://doi.org/{DOI}}}\n}}")
         box = QMessageBox(self)
-        box.setWindowTitle("How to cite VEL-PIC")
-        box.setText("<p>If VEL-PIC contributes to published work, please cite:</p>"
+        box.setWindowTitle("How to cite VEXPACE")
+        box.setText("<p>If VEXPACE contributes to published work, please cite:</p>"
                     f"<p>{text}</p><p>BibTeX:</p><pre>{bib}</pre>")
         box.setTextFormat(Qt.RichText)
         box.setTextInteractionFlags(Qt.TextSelectableByMouse)

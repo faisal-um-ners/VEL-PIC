@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VEL-PIC installer for macOS / Linux: creates a private virtual environment in ./.venv
+# VEXPACE installer for macOS / Linux: creates a private virtual environment in ./.venv
 set -e
 cd "$(dirname "$0")/.."
 PY=${PYTHON:-python3}
@@ -17,4 +17,4 @@ python -m picstudio info
 echo "Pre-compiling kernels (first run only)..."
 python -m picstudio run examples/child_langmuir_1d.pic.json --out /tmp/picstudio_warmup --steps 20 >/dev/null 2>&1 || true
 echo
-echo "Done.  Start the GUI with:   ./install/run_gui.sh   (or double-click install/VEL-PIC.command on macOS)"
+echo "Done.  Start the GUI with:   ./install/run_gui.sh   (or double-click install/VEXPACE.command on macOS)"

@@ -1,5 +1,5 @@
 @echo off
-REM VEL-PIC installer for Windows: creates a private virtual environment in .venv
+REM VEXPACE installer for Windows: creates a private virtual environment in .venv
 cd /d "%~dp0\.."
 where py >nul 2>nul && (set PY=py -3) || (set PY=python)
 %PY% --version || (echo Python 3 not found - install from https://www.python.org/downloads/ & pause & exit /b 1)

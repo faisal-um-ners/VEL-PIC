@@ -1,4 +1,4 @@
-# VEL-PIC user guide
+# VEXPACE user guide
 
 ## 1. Start
 
@@ -51,7 +51,7 @@ Use **File → Examples** to open a ready-made model. **Save as…** copies it t
    * **Line Probes (min / max):** sample a quantity along a line every history step and record its average (`probe_<name>_avg`), its minimum and/or maximum, *and where they occur*. *Line along z*, *at y / r*, *from*, *to* defines the line (or along y at a fixed z). Example: name `phi`, quantity phi, record min, along z at y = 0 from 0 to d. This gives `probe_phi_min` (the virtual-cathode depth, V) and `probe_phi_zmin` (its position, m); *max* adds `probe_phi_max` and `probe_phi_zmax`. The extremum is refined between samples by a parabola. In the live monitor, choose **Field: line: phi** to watch the whole profile φ(z) with the minimum marked. The line is drawn dashed on the 2D field map. Parts of the line inside a conductor are skipped (no field exists in a PEC): the average is taken over the vacuum part only and the min/max are searched there; the conductor surface is included.
    * **Power Monitors:** the Poynting power through a line, for example a magnetron loss port.
 12. **Output.** Set the history, field and particle snapshot intervals and the live-plot interval.
-13. **Parallel.** Choose serial, threads (the default: all cores in one process) or **mpi**. With mpi, set *MPI processes (ranks)*; **Run** then starts `mpiexec -n <ranks>` itself. MPI needs `mpi4py` and an MPI library in VEL-PIC's Python environment: `python -m pip install mpi4py mpich`, or Homebrew `open-mpi` on macOS, or Microsoft MPI on Windows. The particles are divided among the ranks, but every rank repeats the field solve, so MPI pays off for runs with many particles per cell. For small meshes with few particles, threads is usually as fast.
+13. **Parallel.** Choose serial, threads (the default: all cores in one process) or **mpi**. With mpi, set *MPI processes (ranks)*; **Run** then starts `mpiexec -n <ranks>` itself. MPI needs `mpi4py` and an MPI library in VEXPACE's Python environment: `python -m pip install mpi4py mpich`, or Homebrew `open-mpi` on macOS, or Microsoft MPI on Windows. The particles are divided among the ranks, but every rank repeats the field solve, so MPI pays off for runs with many particles per cell. For small meshes with few particles, threads is usually as fast.
 14. **Parametric Sweep.** Give a parameter name and its values, for example `linspace(0.6, 1.3, 8)`, and the number of workers.
 
 Every settings form ends with a **Meaning of the settings** paragraph. It explains each input that is currently shown, and it updates when a choice reveals new inputs. The same text appears as a tooltip on each field.

@@ -1,4 +1,4 @@
-"""Visual theme of the VEL-PIC GUI: Qt style sheets (light / dark), icons and the matching
+"""Visual theme of the VEXPACE GUI: Qt style sheets (light / dark), icons and the matching
 matplotlib style.  Categorical colours follow a validated colour-blind-safe palette."""
 from __future__ import annotations
 

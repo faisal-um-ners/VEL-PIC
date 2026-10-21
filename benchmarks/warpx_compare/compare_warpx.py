@@ -2,7 +2,7 @@
 
 Set WARPX_BIN to the folder containing the WarpX executables (warpx.1d.*, warpx.rz.*), e.g.
     WARPX_BIN=~/src/warpx/build/bin python benchmarks/warpx_compare/compare_warpx.py
-The same physical problems are run with VEL-PIC and WarpX:
+The same physical problems are run with VEXPACE and WarpX:
     A  1D ES two-stream instability            (field-energy history)
     B  1D ES Pierce diode at J_CL               (potential profile)
     C  RZ ES space-charge beam expansion         (beam edge radius vs z)
@@ -120,7 +120,7 @@ diag1.fields_to_plot = Ez
     d = run_warpx("1d", "two_stream", wx)
     fe = np.loadtxt(os.path.join(d, "diags", "reducedfiles", "FE.txt"))
     tw, Ww = fe[:, 1], fe[:, 2]
-    # VEL-PIC
+    # VEXPACE
     m = new_model("1D-Z", "electrostatic")
     m["domain"].update(z_min="0", z_max=str(float(L)), nz="64")
     for s in ("z_min", "z_max"):
@@ -140,11 +140,11 @@ diag1.fields_to_plot = Ez
     gw, _ = fit_growth(tw, np.sqrt(Ww), 1e-3, 0.2)
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
     ax.semilogy(tw * wpb, Ww, "k-", lw=2, label="WarpX")
-    ax.semilogy(tp * wpb, Wp, "r--", lw=1.5, label="VEL-PIC")
+    ax.semilogy(tp * wpb, Wp, "r--", lw=1.5, label="VEXPACE")
     ax.set_xlabel("t w_pb")
     ax.set_ylabel("field energy (J/m^2)")
     ax.legend()
-    ax.set_title("Two-stream: WarpX vs VEL-PIC")
+    ax.set_title("Two-stream: WarpX vs VEXPACE")
     sat_p, sat_w = Wp.max(), Ww.max()
     return record("16_warpx_two_stream", "WarpX comparison A: 1D ES two-stream instability",
                   [row("growth rate gamma/w_pb  (WarpX reference)", gp / wpb, gw / wpb, 0.03),
@@ -194,7 +194,7 @@ diag1.fields_to_plot = Ez rho phi
     dd = run_warpx("1d", "pierce", wx)
     f, (zc,), _ = last_plotfile(dd)
     phiw = f["phi"]
-    # VEL-PIC: beam emitter with zero energy at J_CL
+    # VEXPACE: beam emitter with zero energy at J_CL
     m = new_model("1D-Z", "electrostatic")
     m["domain"].update(z_min="0", z_max=str(float(d)), nz=str(nz))
     m["boundaries"]["z_max"]["voltage"] = str(float(V))
@@ -210,7 +210,7 @@ diag1.fields_to_plot = Ez rho phi
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
     ax.plot(zp * 1e3, th, "k-", lw=2, label="theory V (z/d)^{4/3}")
     ax.plot(zc * 1e3, phiw, "b--", label="WarpX")
-    ax.plot(zp * 1e3, phip, "r:", lw=2, label="VEL-PIC")
+    ax.plot(zp * 1e3, phip, "r:", lw=2, label="VEXPACE")
     ax.set_xlabel("z (mm)")
     ax.set_ylabel("phi (V)")
     ax.legend()
@@ -275,7 +275,7 @@ diag1.fields_to_plot = rho
     den = (rho * rc[:, None]).sum(axis=0)
     with np.errstate(invalid="ignore", divide="ignore"):
         aw = np.sqrt(2 * num / den)
-    # VEL-PIC
+    # VEXPACE
     import bench_beam
     m, p = bench_beam._beam_model(False)
     m["simulation"].update(n_steps=str(nstep), t_end="1", dt=str(float(dt)))
@@ -289,13 +289,13 @@ diag1.fields_to_plot = rho
     ok = np.isfinite(ap) & np.isfinite(awi) & (zcc > 0.01) & (zcc < 0.19)
     fig, ax = plt.subplots(figsize=(6, 3.8))
     ax.plot(zc * 100, aw * 1e3, "b-", label="WarpX (from rho)")
-    ax.plot(zcc * 100, ap * 1e3, "ro", ms=3, label="VEL-PIC")
+    ax.plot(zcc * 100, ap * 1e3, "ro", ms=3, label="VEXPACE")
     zz = np.linspace(0, Lz, 200)
     ax.plot(zz * 100, env.sol(zz)[0] * 1e3, "k--", label="envelope equation")
     ax.set_xlabel("z (cm)")
     ax.set_ylabel("edge radius (mm)")
     ax.legend()
-    ax.set_title("RZ beam expansion: WarpX vs VEL-PIC")
+    ax.set_title("RZ beam expansion: WarpX vs VEXPACE")
     return record("18_warpx_rz_beam", "WarpX comparison C: RZ ES space-charge beam expansion",
                   [row("max |a_PIC/a_WarpX - 1| over z", np.abs(ap[ok] / awi[ok] - 1).max(), 0.0, 0.05,
                        absolute=True)], fig)
@@ -373,12 +373,12 @@ diag1.fields_to_plot = Ez
     Ep = np.interp(zc, zp, Ezp)
     fig, ax = plt.subplots(figsize=(6.5, 3.8))
     ax.plot((zc - zhead) / lp, Ezw / Eth, "k-", lw=2, label="WarpX")
-    ax.plot((zp - zhead) / lp, Ezp / Eth, "r--", label="VEL-PIC")
+    ax.plot((zp - zhead) / lp, Ezp / Eth, "r--", label="VEXPACE")
     ax.set_xlim(-3.5, 0.5)
     ax.set_xlabel("(z - z_head)/lambda_p")
     ax.set_ylabel("E_z / E_linear")
     ax.legend()
-    ax.set_title("Beam-driven wake: WarpX vs VEL-PIC")
+    ax.set_title("Beam-driven wake: WarpX vs VEXPACE")
     diff = np.abs(Ep[sel] - Ezw[sel]).max() / Eth
     return record("19_warpx_wakefield", "WarpX comparison D: 1D EM beam-driven plasma wakefield",
                   [row("max |Ez_PIC - Ez_WarpX| / E_lin behind bunch", diff, 0.0, 0.08, absolute=True),

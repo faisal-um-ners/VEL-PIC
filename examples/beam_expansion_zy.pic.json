@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "Space-charge expansion of a sheet beam (ZY)",
-  "description": "A 10 keV, 1 A/m electron sheet beam (half-width 0.5 mm) enters a field-free, grounded drift region. With no focusing field it spreads under its own space charge. The edge of a uniform sheet feels a constant field, so y_edge = a0 + K z^2/2 with K = e I/(2 eps0 m gamma^3 v^3) = 0.047 /m: the rms half-width grows from 0.289 mm to 0.398 mm at z = 9 cm (VEL-PIC: 0.397 mm). Use Results > Beam envelope.",
+  "description": "A 10 keV, 1 A/m electron sheet beam (half-width 0.5 mm) enters a field-free, grounded drift region. With no focusing field it spreads under its own space charge. The edge of a uniform sheet feels a constant field, so y_edge = a0 + K z^2/2 with K = e I/(2 eps0 m gamma^3 v^3) = 0.047 /m: the rms half-width grows from 0.289 mm to 0.398 mm at z = 9 cm (VEXPACE: 0.397 mm). Use Results > Beam envelope.",
   "parameters": {
     "V0": "10e3",
     "I": "1",

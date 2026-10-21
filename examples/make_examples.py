@@ -1,4 +1,4 @@
-"""Generate the example projects (*.pic.json) shipped with VEL-PIC.
+"""Generate the example projects (*.pic.json) shipped with VEXPACE.
 
     python examples/make_examples.py
 
@@ -681,7 +681,7 @@ def beam_expansion_zy():
     m["description"] = ("A 10 keV, 1 A/m electron sheet beam (half-width 0.5 mm) enters a field-free, grounded drift "
                         "region. With no focusing field it spreads under its own space charge. The edge of a uniform sheet "
                         "feels a constant field, so y_edge = a0 + K z^2/2 with K = e I/(2 eps0 m gamma^3 v^3) = 0.047 /m: "
-                        "the rms half-width grows from 0.289 mm to 0.398 mm at z = 9 cm (VEL-PIC: 0.397 mm). Use "
+                        "the rms half-width grows from 0.289 mm to 0.398 mm at z = 9 cm (VEXPACE: 0.397 mm). Use "
                         "Results > Beam envelope.")
     m["parameters"] = {"V0": "10e3", "I": "1", "a0": "0.5e-3", "Lz": "0.1", "Ly": "6e-3"}
     m["domain"].update(z_min="0", z_max="Lz", nz="200", y_min="-Ly", y_max="Ly", ny="96")
@@ -808,7 +808,7 @@ def two_cylinder_lens_rz():
                         "Laplace solution (scikit-fem, r-weighted weak form) on a mesh refined at the gap and the "
                         "tube walls. The axial potential phi(z) and field E_z(z) are recorded by line probes. "
                         "Reference: the exact series for two coaxial cylinders with a linear potential across the "
-                        "gap (Goddard 1946; Cook & Heddle 1976); VEL-PIC agrees with it to 3e-4 V2 along the axis.")
+                        "gap (Goddard 1946; Cook & Heddle 1976); VEXPACE agrees with it to 3e-4 V2 along the axis.")
     m["parameters"] = {"V1": "0", "V2": "1e3", "R": "10e-3", "g": "0.2*R", "t": "0.1*R", "L": "6*R", "hf": "0.1e-3"}
     m["domain"].update(z_min="-L", z_max="L", nz="240", y_min="0", y_max="1.5*R", ny="60")
     bset(m, "z_min", field="conductor", voltage="V1", name="entrance")

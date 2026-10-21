@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "picstudio"
 version = "1.3.0"
-description = "VEL-PIC (Vacuum Electrodynamics and Laser Particle-in-Cell): 1D, 2D Cartesian and 2D axisymmetric electrostatic / electromagnetic particle-in-cell code with a model-builder GUI"
+description = "VEXPACE (Virtual Experiments in Plasma and Computational Electrodynamics): 1D, 2D Cartesian and 2D axisymmetric electrostatic / electromagnetic particle-in-cell code with a model-builder GUI"
 authors = [{ name = "Md Arifuzzaman Faisal" }]
 license = { text = "BSD-3-Clause" }
 keywords = ["particle-in-cell", "PIC", "plasma", "vacuum electronics", "space-charge-limited flow", "magnetron", "electromagnetic", "FDTD", "finite element"]
@@ -27,8 +27,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/faisal-um-ners/VEL-PIC"
-Repository = "https://github.com/faisal-um-ners/VEL-PIC"
+Homepage = "https://github.com/faisal-um-ners/VEXPACE"
+Repository = "https://github.com/faisal-um-ners/VEXPACE"
 
 [project.optional-dependencies]
 gui = ["PySide6>=6.4"]
