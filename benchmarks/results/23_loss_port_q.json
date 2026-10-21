@@ -4,28 +4,28 @@
   "rows": [
     {
       "case": "Planar magnetron: loaded Q of the loss port (target 250)",
-      "value": 251.7248338449939,
+      "value": 246.31753943830142,
       "reference": 250.0,
       "unit": "",
-      "error": 0.0068993353799755575,
+      "error": -0.0147298422467943,
       "tol": 0.05,
       "passed": true
     },
     {
       "case": "A6 magnetron: loaded Q of the loss port (target 250)",
-      "value": 253.02215913378225,
+      "value": 252.9572771897664,
       "reference": 250.0,
       "unit": "",
-      "error": 0.012088636535128927,
+      "error": 0.01182910875906562,
       "tol": 0.05,
       "passed": true
     },
     {
       "case": "A6 cold-test pi-mode frequency (GHz) vs ~2.34 GHz (literature)",
-      "value": 2.312923612661108,
+      "value": 2.3122854072391203,
       "reference": 2.34,
       "unit": "",
-      "error": -0.011571105700381112,
+      "error": -0.011843843060204917,
       "tol": 0.03,
       "passed": true
     }

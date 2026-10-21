@@ -394,7 +394,7 @@ def planar_magnetron_em():
                      "z0": f"{k}*p + (p-wc)/2", "z1": f"{k}*p + (p+wc)/2", "material": "vacuum"})
     objs.append({"name": "loss port", "shape": "rectangle", "y0": "d+0.5*h", "y1": "d+h",
                  "z0": "(p-wc)/2", "z1": "(p+wc)/2", "material": "lossy", "loss_spec": "Q",
-                 "Q": "Qload", "frequency": "f0", "fill": "0.01475"})
+                 "Q": "Qload", "frequency": "f0", "fill": "0.01475", "cal_period": "p", "cal_phase": "pi"})
     m["objects"] = objs
     m["species"] = [{"name": "electrons", "preset": "electron"}]
     m["emitters"] = [{"name": "cathode", "species": "electrons", "model": "scl", "z0": "0", "y0": "0",

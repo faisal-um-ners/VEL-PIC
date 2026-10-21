@@ -169,7 +169,19 @@ OBJECT = [
     Field("fill", "expr", "1", "Energy fill factor (calibrated)", "",
           show_if={"material": ["lossy"], "loss_spec": ["Q"]},
           help="Fraction of the mode's electric energy inside the lossy region (1 = region fills the "
-               "mode).  Set automatically by 'Calibrate loss Q'."),
+               "mode).  Several lossy objects with the same Q and frequency form one load: give them the "
+               "same fill (the total fraction in all of them).  Set automatically by 'Calibrate loss Q'."),
+    Field("cal_period", "expr", "", "Calibration: mode period", "m",
+          show_if={"material": ["lossy"], "loss_spec": ["Q"]},
+          help="Optional, for periodic slow-wave structures (e.g. the vane period of a magnetron). If set, "
+               "the cold test drives the first probe position and all its periodic images z + k*period "
+               "with phase k*(mode phase), which excites the wanted mode alone. Without it a single point "
+               "drive excites the neighbouring modes too, and close modes (pi and 2pi/3 in a 6-cavity "
+               "magnetron) are hard to separate."),
+    Field("cal_phase", "expr", "pi", "Calibration: mode phase per period", "rad",
+          show_if={"material": ["lossy"], "loss_spec": ["Q"]},
+          help="Phase advance of the calibrated mode per period: pi for the pi mode, 2*pi/3 for the "
+               "2pi/3 mode. Used only when the mode period is set."),
     Field("sigma", "expr", "1", "Conductivity", "S/m",
           show_if={"material": ["lossy"], "loss_spec": ["conductivity"]}),
     Field("collect_charge", "bool", True, "Accumulate surface charge",
@@ -496,6 +508,9 @@ DESCRIPTIONS = {
         "Q": "Target loaded quality factor of the resonator due to this lossy load (Q specification).",
         "frequency": "Frequency of the mode for which the loaded Q is specified (Hz).",
         "sigma": "Electrical conductivity of the lossy load (S/m), when the loss is given directly.",
+        "cal_period": "Period of the slow-wave structure for the Q calibration (optional): the cold test then "
+                      "drives every period with the mode phase, so only the wanted mode is excited.",
+        "cal_phase": "Phase advance per period of the calibrated mode (pi for the pi mode).",
     },
     "species": {
         "name": "Label of the species, used by Particle Loading and Emission.",

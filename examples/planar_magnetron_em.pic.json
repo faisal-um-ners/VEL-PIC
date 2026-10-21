@@ -168,7 +168,9 @@
       "loss_spec": "Q",
       "Q": "Qload",
       "frequency": "f0",
-      "fill": "0.01475"
+      "fill": "0.01475",
+      "cal_period": "p",
+      "cal_phase": "pi"
     }
   ],
   "species": [

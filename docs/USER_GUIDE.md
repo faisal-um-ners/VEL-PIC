@@ -37,7 +37,7 @@ Use **File → Examples** to open a ready-made model. **Save as…** copies it t
    * conductor, with a voltage that can depend on t;
    * dielectric, with εr and optional surface charging;
    * absorber;
-   * lossy: a resistive EM load. With *Loss specified by = Q*, give the target loaded Q, the mode frequency and the fill factor F; σ = 2π f ε0 /(Q·F). Use **Model → Calibrate loss Q** to compute F with a cold-test ring-down (needs one probe in the resonator). Alternatively give σ directly;
+   * lossy: a resistive EM load. With *Loss specified by = Q*, give the target loaded Q, the mode frequency and the fill factor F; σ = 2π f ε0 /(Q·F). Use **Model → Calibrate loss Q** to compute F with a cold-test ring-down (needs one probe in the resonator). The ring-down is decomposed into damped modes (harmonic inversion) and the mode nearest the given frequency is used, so a neighbouring mode cannot be measured by mistake. For a periodic slow-wave structure set *Calibration: mode period* (e.g. the vane period) and *mode phase per period* (π for the π mode): the cold test then drives every period with that phase and excites the wanted mode alone. In a 6-cavity planar magnetron the π mode and the 2π/3 pair are only about 1 % apart, closer than a loaded line width at Q = 250, and a single-point drive excites both. The calibration scales F by Q_target/Q_measured (Q ∝ F while σ ≪ ωε0) with steps limited to a factor 5, and stops if Q moves the wrong way: past σ ~ ωε0 the load behaves like a metal, expels the field and Q rises again. Alternatively give σ directly;
    * vacuum, which carves holes in earlier objects (cavities, ports).
 
    Tick *Show painted cells* to see the staircase the solver uses.
