@@ -287,7 +287,8 @@ Department of Nuclear Engineering and Radiological Sciences, University of Michi
 
 ## License
 
-Copyright © 2026 Md Arifuzzaman Faisal. VEXPACE is released under the [BSD 3-Clause License](LICENSE).
+Copyright © 2026 Md Arifuzzaman Faisal for original VEXPACE contributions. These contributions are distributed under the [BSD 3-Clause License](LICENSE).
 
-The particle kernels follow the algorithms of [WarpX](https://github.com/BLAST-WarpX/warpx)
-(BSD-3-Clause-LBNL); its notice is reproduced in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Selected particle-pushing, position-update, field-gathering, and current-deposition routines in VEXPACE are translated or adapted from [WarpX](https://github.com/BLAST-WarpX/warpx), under its **BSD-3-Clause-LBNL** license. The original copyright and license notices are preserved in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), and WarpX's supplementary [`NOTICE.txt`](third_party/warpx/NOTICE.txt) is included.
+
+VEXPACE is an independent research project and is not affiliated with or endorsed by the WarpX team or its institutions.
