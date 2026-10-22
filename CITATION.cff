@@ -11,14 +11,11 @@ abstract: >-
   vacuum electron devices in 1D-Z, 2D-ZY and 2D-RZ geometry, with finite-element electrostatic and Yee
   FDTD electromagnetic solvers, a model-builder graphical interface, a command-line runner and a Python API.
 version: "1.3.0"
-doi: "10.5281/zenodo.23512470"
+doi: "10.5281/zenodo.23512471"
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.23512470"
-    description: "Concept DOI: all versions of VEXPACE (resolves to the latest release)"
-  - type: doi
     value: "10.5281/zenodo.23512471"
-    description: "VEXPACE v1.3.0"
+    description: "Version-specific Zenodo DOI for the archived v1.3.0 release"
 date-released: "2026-10-20"
 license: BSD-3-Clause
 repository-code: "https://github.com/faisal-um-ners/VEXPACE"
@@ -39,5 +36,5 @@ preferred-citation:
   year: 2026
   publisher:
     name: "Zenodo"
-  doi: "10.5281/zenodo.23512470"
-  url: "https://doi.org/10.5281/zenodo.23512470"
+  doi: "10.5281/zenodo.23512471"
+  url: "https://doi.org/10.5281/zenodo.23512471"
