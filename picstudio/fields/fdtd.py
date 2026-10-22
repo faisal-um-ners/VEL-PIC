@@ -434,6 +434,7 @@ def binomial_filter(A, passes=1, axes=None, periodic=()):
     return B
 
 
+# WarpX-style binomial current filter; see THIRD_PARTY_NOTICES.md for provenance.
 def filter_current(yee, passes, ncell, periodic):
     """WarpX-style bilinear (1-2-1) filter of the deposited current density, ``passes`` times along
     every axis (WarpX ``warpx.use_filter`` / ``filter_npass_each_dir``; applied before the field
