@@ -2,10 +2,39 @@
 
 ## WarpX
 
-The particle pushers (Boris, Vay, Higuera–Cary), the position update, the energy-conserving field
-gather, the Esirkepov current deposition and the bilinear current filter in `picstudio/particles/kernels.py`
-and `picstudio/fields/fdtd.py` are Python/Numba translations of the corresponding WarpX algorithms
-(https://github.com/BLAST-WarpX/warpx). WarpX is distributed under the following license:
+Selected particle-pushing, position-update, field-gathering and current-deposition
+implementations in VEXPACE were translated or adapted from WarpX
+(https://github.com/BLAST-WarpX/warpx). Other routines may implement the
+same published mathematical methods without being direct source translations.
+The relevant upstream sources and original contributor notices include:
+
+- Boris momentum pusher: Source/Particles/Pusher/UpdateMomentumBoris.H
+  Copyright 2019 David Grote, Maxence Thevenet, Remi Lehe, Weiqun Zhang.
+- Vay momentum pusher: Source/Particles/Pusher/UpdateMomentumVay.H
+  Copyright 2019 David Grote, Maxence Thevenet, Remi Lehe, Weiqun Zhang.
+- Higuera-Cary pusher: Source/Particles/Pusher/UpdateMomentumHigueraCary.H
+  Copyright 2019 Yinjian Zhao.
+- Particle position update: Source/Particles/Pusher/UpdatePosition.H
+  Copyright 2019 David Grote, Maxence Thevenet, Remi Lehe, Weiqun Zhang.
+- Field gathering: Source/Particles/Gather/FieldGather.H
+  Copyright 2019 Axel Huebl, David Grote, Maxence Thevenet,
+  Revathi Jambunathan, Weiqun Zhang.
+- Esirkepov current deposition: Source/Particles/Deposition/CurrentDeposition.H
+  Copyright 2019 Axel Huebl, David Grote, Maxence Thevenet,
+  Remi Lehe, Weiqun Zhang, Michael Rowan.
+
+VEXPACE implementations are principally located in
+`picstudio/particles/kernels.py` and `picstudio/fields/fdtd.py`.
+The binomial current filter follows a method used in WarpX; whether its
+source is directly translated has not been independently established.
+
+These original contributor notices supplement the WarpX project license
+reproduced below. WarpX's additional U.S. Government rights and
+non-endorsement notice is preserved in `third_party/warpx/NOTICE.txt`.
+VEXPACE is independently maintained and is not endorsed by WarpX's
+developers or institutions.
+
+WarpX is distributed under the following license:
 
 ```
 WarpX Copyright (c) 2018, The Regents of the University of California,
