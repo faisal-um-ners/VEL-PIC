@@ -1,5 +1,10 @@
 """Numba-compiled particle kernels (gather/push, deposit, boundaries).
 
+Selected pushers, position updates, field gathering and current deposition
+are adapted from WarpX (BSD-3-Clause-LBNL). The upstream copyright holders,
+source references and complete license are listed in THIRD_PARTY_NOTICES.md.
+
+
 Component ordering of vectors (velocity u = gamma*v, E, B):
     1D-Z  : (z, y, x)       left-handed   -> hand = -1  (v x B gets a minus sign)
     2D-ZY : (z, y, x)       left-handed   -> hand = -1
