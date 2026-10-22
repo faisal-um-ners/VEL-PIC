@@ -19,27 +19,33 @@ The entries for the other codes reflect their public documentation as generally 
 
 ## Algorithm-by-algorithm comparison with WarpX
 
-WarpX is open source (BSD-3-Clause-LBNL). VEXPACE uses its algorithms as the reference wherever the two codes overlap. The particle kernels are line-by-line Python/Numba translations of WarpX's, and the license notice is kept in `picstudio/particles/kernels.py`. The table compares VEXPACE with the WarpX 26.09 source (`Source/…`).
+WarpX is distributed under BSD-3-Clause-LBNL. Selected VEXPACE particle
+routines are translated or adapted from WarpX; other components implement
+established numerical methods with a different architecture. See
+[third-party notices](../THIRD_PARTY_NOTICES.md) for provenance and licensing.
+This table compares numerical formulations in the specified configurations,
+not literal source identity. Benchmark agreement is not proof of identical
+behavior in every configuration.
 
 | Component | WarpX | VEXPACE | Verdict |
 |---|---|---|---|
-| Yee FDTD, Cartesian 1D/2D | `EvolveB/E.cpp`, `CartesianYeeAlgorithm.H` | `fields/fdtd.py`, `fdtd_kernels.py` | **identical** (same staggering and stencils; ZY uses a left-handed (z, y, x) basis with matching curl signs) |
-| Yee FDTD, RZ m = 0, off axis | `CylindricalYeeAlgorithm.H` (`UpwardDrr_over_r`, `DownwardDrr_over_r`) | same kernels, `rz=True` | **identical** |
+| Yee FDTD, Cartesian 1D/2D | `EvolveB/E.cpp`, `CartesianYeeAlgorithm.H` | `fields/fdtd.py`, `fdtd_kernels.py` | **same stated numerical formulation** (same staggering and stencils; ZY uses a left-handed (z, y, x) basis with matching curl signs) |
+| Yee FDTD, RZ m = 0, off axis | `CylindricalYeeAlgorithm.H` (`UpwardDrr_over_r`, `DownwardDrr_over_r`) | same kernels, `rz=True` | **same stated numerical formulation** |
 | RZ on-axis E_z | 4·B_θ/dr with the π·dr²/3 axis volume | 3·B_θ/dr with the same volume (Verboncoeur 2001, exact discrete Gauss law on the axis); 4 if *RZ axis volume correction* is off | **different, documented**: VEXPACE keeps the Gauss-consistent factor |
-| Loop order | push, deposit, filter J, B½, E, B½ (`OneStep_nosub`) | push, boundaries, emission, deposit, (filter J), B½, E, B½ | **equivalent**. WarpX applies particle boundaries/injection after the field solve, VEXPACE before deposition, so absorbed particles deposit up to the wall. |
-| Time step, EM | `ComputeDt`, RZ uses the 1.2105/dr² limit, cfl 0.999 | same formulas (RZ 1.2105/dr² term), default cfl 0.95 | **identical** formula; VEXPACE's default CFL is more conservative |
-| Esirkepov current deposition (1D, 2D, RZ) | `doEsirkepovDepositionShapeN` + RZ volume scaling | `kernels.esirkepov_*` | **identical** for linear shape (VEXPACE: linear/CIC only) |
-| J filter | bilinear 1-2-1, on by default in Cartesian EM (`warpx.use_filter`) | *Current filter passes* (`current_filter`), default 0 | **identical** when enabled (benchmark 29; Gauss law exact for the filtered charge, unit test) |
-| Field gather | `doGatherShapeN`, energy-conserving (Galerkin) by default | `gather_ec_yee_*` (EM default), `gather_nodal_*` | **identical** in EM. ES default is momentum-conserving: the Gauss-law SCL emitter is 2–4 % more accurate with it (see THEORY §3); EC is available. |
-| Pushers Boris / Vay / Higuera–Cary, −dt/2 start, RZ rotation | `UpdateMomentum*.H`, `UpdatePosition.H`, `PushP(-dt/2)` | `kernels._momentum`, `push_fields_*` | **identical** (benchmark 26: 1e-8…1e-15) |
-| Field boundaries | PEC (`WarpX_PEC.cpp`), periodic, split-field PML outside the domain (not in RZ FDTD), Silver–Müller | PEC, PMC, periodic; graded matched-loss absorbing layer inside the domain (also in RZ) | PEC/periodic **equivalent**; absorber **different** (more reflection at oblique incidence than a PML; benchmark 11) |
-| Particle boundaries | absorb, reflect, periodic, thermal (`ParticleBoundaries_K.H`) | absorb (with the current deposited up to the wall), reflect, periodic | **equivalent** (no thermal reflection in VEXPACE) |
+| Loop order | push, deposit, filter J, B½, E, B½ (`OneStep_nosub`) | push, boundaries, emission, deposit, (filter J), B½, E, B½ | **similar numerical method, with noted differences**. WarpX applies particle boundaries/injection after the field solve, VEXPACE before deposition, so absorbed particles deposit up to the wall. |
+| Time step, EM | `ComputeDt`, RZ uses the 1.2105/dr² limit, cfl 0.999 | same formulas (RZ 1.2105/dr² term), default cfl 0.95 | **same stated numerical formulation** formula; VEXPACE's default CFL is more conservative |
+| Esirkepov current deposition (1D, 2D, RZ) | `doEsirkepovDepositionShapeN` + RZ volume scaling | `kernels.esirkepov_*` | **same stated numerical formulation** for linear shape (VEXPACE: linear/CIC only) |
+| J filter | bilinear 1-2-1, on by default in Cartesian EM (`warpx.use_filter`) | *Current filter passes* (`current_filter`), default 0 | **same stated numerical formulation** when enabled (benchmark 29; Gauss law exact for the filtered charge, unit test) |
+| Field gather | `doGatherShapeN`, energy-conserving (Galerkin) by default | `gather_ec_yee_*` (EM default), `gather_nodal_*` | **same stated numerical formulation** in EM. ES default is momentum-conserving: the Gauss-law SCL emitter is 2–4 % more accurate with it (see THEORY §3); EC is available. |
+| Pushers Boris / Vay / Higuera–Cary, −dt/2 start, RZ rotation | `UpdateMomentum*.H`, `UpdatePosition.H`, `PushP(-dt/2)` | `kernels._momentum`, `push_fields_*` | **same stated numerical formulation** (benchmark 26: 1e-8…1e-15) |
+| Field boundaries | PEC (`WarpX_PEC.cpp`), periodic, split-field PML outside the domain (not in RZ FDTD), Silver–Müller | PEC, PMC, periodic; graded matched-loss absorbing layer inside the domain (also in RZ) | PEC/periodic **similar numerical method, with noted differences**; absorber **different** (more reflection at oblique incidence than a PML; benchmark 11) |
+| Particle boundaries | absorb, reflect, periodic, thermal (`ParticleBoundaries_K.H`) | absorb (with the current deposited up to the wall), reflect, periodic | **similar numerical method, with noted differences** (no thermal reflection in VEXPACE) |
 | Laser antenna | antenna macro-particles depositing J (`LaserParticleContainer`), Gaussian profile with 1/e field duration, cos phase | current sheet J = −2ε0·c·E at a node (`sources/em_sources.py`), FWHM-intensity duration, sin phase | **different implementation**, same emitted sheet strength. Convert τ_WarpX = τ_FWHM/√(2 ln 2) when comparing. |
 | Electrostatic solver | MLMG finite differences (5-point) | scikit-fem FEM (Q1, r-weighted), direct LU, conductors/dielectrics painted | **different** (both 2nd order; benchmarks 01, 17, 18 agree with WarpX) |
 | Emission | flux injection only (`AddPlasmaFlux`) | Gauss-law SCL, Fowler–Nordheim, thermionic + Schottky, photo, beam (charge-conserving) | **VEXPACE only** |
 | Initial fields | zero unless `initialize_self_fields` | ES: Poisson; EM: Poisson-initialised by default (`initial_field = none` for WarpX-like start) | **different default**, selectable |
 
-A complete line-by-line translation of WarpX is not possible: WarpX is about 300 000 lines of C++ on AMReX (adaptive mesh refinement, GPU kernels, distributed boxes). The physics kernels above are what decides the numerics, and they match.
+VEXPACE is not a complete translation of WarpX. The software architectures differ; reported benchmark agreement applies to the tested configurations only.
 
 ## Code-to-code results (benchmarks 16–19, 26)
 
