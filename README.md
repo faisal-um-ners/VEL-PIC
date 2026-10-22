@@ -8,7 +8,7 @@ An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Elect
 <a href="LICENSE"><img alt="License: BSD-3-Clause" src="https://img.shields.io/badge/license-BSD--3--Clause-blue.svg"></a>
 <img alt="Python 3.9+" src="https://img.shields.io/badge/python-3.9%2B-blue.svg">
 <img alt="Validation: 107/107" src="https://img.shields.io/badge/validation-107%2F107%20passed-brightgreen.svg">
-<a href="https://doi.org/10.5281/zenodo.23512470"><img alt="DOI 10.5281/zenodo.23512470" src="https://zenodo.org/badge/DOI/10.5281/zenodo.23512470.svg"></a>
+<a href="https://doi.org/10.5281/zenodo.23512471"><img alt="DOI 10.5281/zenodo.23512471" src="https://zenodo.org/badge/DOI/10.5281/zenodo.23512471.svg"></a>
 </p>
 
 VEXPACE is a particle-in-cell (PIC) code for space-charge-limited flow, electron beams, plasmas and vacuum
@@ -262,10 +262,10 @@ install/        installers and launchers
 ## How to cite
 
 If VEXPACE contributes to published work, please cite it. The software is archived on Zenodo with the
-permanent DOI [10.5281/zenodo.23512470](https://doi.org/10.5281/zenodo.23512470), which covers all versions.
+permanent DOI [10.5281/zenodo.23512471](https://doi.org/10.5281/zenodo.23512471), which covers all versions.
 
 > Faisal, M. A. (2026). *VEXPACE: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics* [Computer software].
-> Zenodo. https://doi.org/10.5281/zenodo.23512470
+> Zenodo. https://doi.org/10.5281/zenodo.23512471
 
 ```bibtex
 @software{faisal_vexpace,
@@ -273,8 +273,8 @@ permanent DOI [10.5281/zenodo.23512470](https://doi.org/10.5281/zenodo.23512470)
   title     = {{VEXPACE}: An Open-Source Particle-in-Cell Simulation Framework for Plasma and Vacuum Electronics},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.23512470},
-  url       = {https://doi.org/10.5281/zenodo.23512470}
+  doi       = {10.5281/zenodo.23512471},
+  url       = {https://doi.org/10.5281/zenodo.23512471}
 }
 ```
 
