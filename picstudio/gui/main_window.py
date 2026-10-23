@@ -190,6 +190,10 @@ class MainWindow(QMainWindow):
 
     def _act(self, menu, text, slot, shortcut=None, tb=None, icon=None, name=None):
         a = QAction(text, self)
+        if text == "About":
+            # Qt/macOS otherwise relocates this item to the application menu.
+            # Keep Help -> About visible on all supported platforms.
+            a.setMenuRole(QAction.MenuRole.NoRole)
         if icon is not None:
             from .theme import action_icon
             a.setIcon(action_icon(icon))
