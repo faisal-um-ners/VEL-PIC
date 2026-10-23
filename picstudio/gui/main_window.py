@@ -203,11 +203,6 @@ class MainWindow(QMainWindow):
                 tb.widgetForAction(a).setObjectName(name)
         return a
 
-    def open_conduction(self):
-        """Open independent conduction study without altering the PIC model."""
-        from ..conduction.gui import open_dialog
-        open_dialog(self)
-
     def _build_menus(self):
         mb = self.menuBar()
         tb = self.addToolBar("Main")
@@ -248,7 +243,6 @@ class MainWindow(QMainWindow):
         self._act(mm, "Check model", self.check_model, "F7", tb, icon="check")
         self._act(mm, "Show mesh", self.show_mesh, "F6")
         self._act(mm, "Mesh / time-step info", self.mesh_info)
-        self._act(mm, "AC/DC Contact Conduction (FEM)...", self.open_conduction)
         self._act(mm, "Calibrate loss Q (cold test)...", self.calibrate_q)
         rm = mb.addMenu("&Run")
         tb.addSeparator()
