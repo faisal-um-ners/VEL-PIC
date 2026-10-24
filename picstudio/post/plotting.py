@@ -32,6 +32,9 @@ def plot_geometry(ax, model, show_mesh=False, painted=False, selected=None):
     z0, z1 = ev.num(d["z_min"]), ev.num(d["z_max"])
     nz = int(ev.num(d["nz"]))
     ax.clear()
+    # Display padding outside the physical 2D domain; the interior patch retains its theme color.
+    import matplotlib as mpl
+    ax.set_facecolor("#f2f2f2" if geom != "1D-Z" else mpl.rcParams["axes.facecolor"])
     if geom == "1D-Z":
         y0, y1 = 0.0, 1.0
     else:
@@ -257,8 +260,9 @@ def plot_geometry(ax, model, show_mesh=False, painted=False, selected=None):
     ax.set_ylabel(yl if geom != "1D-Z" else "")
     if geom == "1D-Z":
         ax.set_yticks([])
-    ax.set_xlim(z0 - 0.02 * (z1 - z0), z1 + 0.02 * (z1 - z0))
-    ax.set_ylim(y0 - 0.02 * (y1 - y0), y1 + 0.02 * (y1 - y0))
+    padding = 0.04 if geom != "1D-Z" else 0.02
+    ax.set_xlim(z0 - padding * (z1 - z0), z1 + padding * (z1 - z0))
+    ax.set_ylim(y0 - padding * (y1 - y0), y1 + padding * (y1 - y0))
     if geom != "1D-Z":
         ratio = (z1 - z0) / max(y1 - y0, 1e-300)
         ax.set_aspect("equal" if 0.25 < ratio < 4 else "auto", adjustable="box")
