@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "name": "Heri-Zhang 2026: drift, trapezoid short pulse (1D)",
+  "description": "Paper-parameter PIC example; exact reproduction is not claimed. Nominal FWHM tau=k*T; equal total injected charge for all three profiles. Trapezoid ramp fraction 0.15 and Gaussian cutoff are inferred, not reported inputs. The paper FWHM-label and full-support arrival-span metrics must be distinguished. History electrode currents are collected currents; the paper induced current requires sum(|q|*w*vz)/D. Drift charge uses the explicitly documented small-spacing interpretation Q/A=4*f*eps0*V0/D. The paper Eq.(5) amplitude initialization and Eq.(11) field normalization are unresolved: f=0.95 may reflect in this physical model. The installed emitter has a small relativistic-momentum offset with a nonrelativistic pusher at 1 keV. See SHORT_PULSE_EXAMPLES.md. Source DOI 10.1109/TED.2026.3670804.",
+  "parameters": {
+    "D": "0.01",
+    "V0": "1000",
+    "k": "0.1",
+    "f": "0.95",
+    "vstar": "sqrt(2*e*V0/me)",
+    "T": "1.5*D/vstar",
+    "tau": "k*T",
+    "charge_scale": "4",
+    "sigma_ref": "charge_scale*eps0*V0/D",
+    "pulse_charge_per_area": "f*sigma_ref",
+    "ramp_fraction": "0.15",
+    "gaussian_cutoff_sigma": "2.0",
+    "gaussian_retained_fraction": "0.9544997361036416",
+    "support": "tau/(1-ramp_fraction)",
+    "sigma_t": "support/(2*gaussian_cutoff_sigma)",
+    "pulse_area_time": "support*(1-ramp_fraction)",
+    "Jamp": "pulse_charge_per_area/pulse_area_time",
+    "dt_fraction": "0.0002",
+    "sample_dt": "support/ceil(support/(dt_fraction*T))",
+    "end_over_T": "max(4,support/T+3.5)"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "1D-Z",
+    "solver": "electrostatic",
+    "t_end": "end_over_T*T",
+    "dt": "sample_dt",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": false,
+    "particle_pusher": "boris",
+    "field_gathering": "momentum-conserving",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "D",
+    "nz": "256",
+    "y_min": "0",
+    "y_max": "1e-2",
+    "ny": "128"
+  },
+  "diagnostics": {
+    "output_dir": "output_short_pulse_drift_2026_trapezoid_1d",
+    "history_every": "5",
+    "field_every": "5",
+    "particle_every": "5",
+    "max_dump_particles": "10000",
+    "live_every": "5"
+  },
+  "parallel": {
+    "mode": "serial",
+    "ranks": 4,
+    "threads": 1
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [],
+  "objects": [],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron",
+      "charge": "-1",
+      "mass": "me",
+      "beam_self_B": false,
+      "motion": "full"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "pulse",
+      "species": "electrons",
+      "model": "beam",
+      "surface": "segment",
+      "object": "",
+      "z0": "0",
+      "y0": "0",
+      "z1": "0",
+      "y1": "0",
+      "normal": "+z",
+      "current_density": "Jamp*(max(0,min(1,min((t+sample_dt/2)/support,1-(t+sample_dt/2)/support)/ramp_fraction)))*where(((t+sample_dt/2)>=0)&((t+sample_dt/2)<support),1,0)",
+      "energy": "V0",
+      "temperature": "0",
+      "work_function": "4.5",
+      "beta": "1",
+      "cathode_temperature": "2000",
+      "richardson": "1.20173e6",
+      "schottky": true,
+      "relax": "1.0",
+      "profile": "1",
+      "particles_per_cell": "8",
+      "t_start": "0",
+      "t_stop": "support"
+    }
+  ],
+  "external_fields": [],
+  "sources": [],
+  "probes": [
+    {
+      "name": "phi_midgap",
+      "quantity": "phi",
+      "z": "D/2",
+      "y": "0"
+    }
+  ],
+  "line_probes": [
+    {
+      "name": "phi_axis",
+      "quantity": "phi",
+      "extremum": "min and max",
+      "along": "z",
+      "y": "0",
+      "z": "0",
+      "start": "0",
+      "end": "D"
+    }
+  ],
+  "power_lines": []
+}

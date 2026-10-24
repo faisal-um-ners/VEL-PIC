@@ -6,7 +6,7 @@ import os
 import numpy as np
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QHBoxLayout, QLabel, QListWidget,
-                               QListWidgetItem, QPushButton, QSlider, QSplitter, QVBoxLayout, QWidget)
+                               QListWidgetItem, QMenu, QPushButton, QSlider, QSplitter, QVBoxLayout, QWidget)
 
 from ..post import plotting as P
 from ..post.reader import Results, species_names
@@ -84,6 +84,28 @@ class _Envelope:
         return lo - d, hi + d
 
 
+class _SignalMenu(QMenu):
+    """Keep signal selections open; ordinary outside-click/Escape dismissal remains."""
+
+    def mouseReleaseEvent(self, event):
+        action = self.actionAt(event.position().toPoint())
+        if (event.button() == Qt.LeftButton and action is not None
+                and action.isEnabled() and action.isCheckable()):
+            action.trigger()
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
+    def keyPressEvent(self, event):
+        action = self.activeAction()
+        if (event.key() in (Qt.Key_Space, Qt.Key_Return, Qt.Key_Enter)
+                and action is not None and action.isEnabled() and action.isCheckable()):
+            action.trigger()
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
+
 class LivePanel(QWidget):
     """Live plots refreshed from <output>/live.npz while the solver runs.
 
@@ -95,7 +117,7 @@ class LivePanel(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        from PySide6.QtWidgets import QMenu, QToolButton
+        from PySide6.QtWidgets import QToolButton
         lay = QVBoxLayout(self)
         bar = QHBoxLayout()
         self.qty = QComboBox()
@@ -108,10 +130,10 @@ class LivePanel(QWidget):
         self.sig_btn = QToolButton()
         self.sig_btn.setText("Signals ▾")
         self.sig_btn.setPopupMode(QToolButton.InstantPopup)
-        self.sig_menu = QMenu(self)
+        self.sig_menu = _SignalMenu(self)
         self.sig_btn.setMenu(self.sig_menu)
         self.fft_chk = QCheckBox("FFT inset")
-        self.fft_chk.setChecked(True)
+        self.fft_chk.setChecked(False)
         for lab, w in (("Field:", self.qty), ("Phase space:", self.phx), (None, self.phy),
                        ("History:", self.sig_btn), (None, self.fft_chk)):
             if lab:
