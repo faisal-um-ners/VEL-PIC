@@ -95,7 +95,7 @@ normalisation and the limiting-current equation (their Eq. 7) are those of Ref. 
 Small emitters require fine resolution near injection, potential barriers and returning electrons, while
 the surrounding field still needs a well-resolved background. **Mesh Refinement** provides three choices:
 
-- **Along z line / Along y line:** the existing graded bands on a tensor-product Q1 mesh.
+- **Along z / Along y:** the existing graded bands on a tensor-product Q1 mesh.
 - **2D:** a filled **rectangle** or **polygon** with a chosen cell size, a **Safety buffer outside** and a
   **Growth ratio outside**. Regions combine using the finer requested size; the rest of the domain keeps
   the resolution set in **Domain & Mesh**.

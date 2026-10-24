@@ -1,14 +1,14 @@
 # Manual local mesh refinement (electrostatic)
 
-The existing **Along z line / Along y line** refinement bands are unchanged. The **2D** mode refines a filled region in both coordinates without extending its fine cells across the full domain. The prescribed mesh is generated before PIC and remains fixed throughout the run. Particles may leave the region: its outline is not a wall or an imposed trajectory.
+The existing **Along z / Along y** refinement bands are unchanged. The **2D** mode refines a filled region in both coordinates without extending its fine cells across the full domain. The prescribed mesh is generated before PIC and remains fixed throughout the run. Particles may leave the region: its outline is not a wall or an imposed trajectory.
 
 ## In the interface
 
 1. Select **Mesh Refinement** in the Model Builder.
-2. Click **Add refinement region** and choose **Refinement type**: **Along z line**, **Along y line**, or **2D**. Existing saved models keep their original settings; these are display labels for the compatible stored values `z`, `y`, and `local 2D`.
+2. Click **Add refinement region** and choose **Refinement type**: **Along z**, **Along y**, or **2D**. Existing saved models keep their original settings; these are display labels for the compatible stored values `z`, `y`, and `local 2D`.
 3. For **2D**, choose **Region shape = rectangle** or **polygon** in the dropdown. Enter rectangle limits or ordered polygon corner coordinates, using parameter expressions if desired. Set **Cell size inside**, **Safety buffer outside**, and **Growth ratio outside**. The two separate drawing buttons have been removed.
 4. Use a filled envelope covering the expected beam, with extra space for lateral movement and cathode returns. Add another local region for the return footprint if needed. Regions combine by taking the finer requested size.
-5. **Domain & Mesh** sets the background resolution. Avoid an excessively coarse background: the surrounding potential still affects the beam. Along z line / Along y line bands can coexist with local regions; disable them if broad refinement bands are unwanted.
+5. **Domain & Mesh** sets the background resolution. Avoid an excessively coarse background: the surrounding potential still affects the beam. Along z / Along y bands can coexist with local regions; disable them if broad refinement bands are unwanted.
 6. Click **Show mesh** to preview the actual triangles and node/element counts. Check the model, save it, and run normally.
 
 Emitter segment endpoints on an outer boundary are exact local boundary vertices. They do not insert an emitter-aligned row or column across the whole triangular domain. Rectangular material interfaces still align with the mesh; explicitly chosen line refinements retain their full-domain bands. Disabling a polygon removes its size constraint, while any other enabled rectangle, buffer, and graded transition remain active.

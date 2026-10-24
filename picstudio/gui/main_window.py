@@ -487,7 +487,7 @@ class MainWindow(QMainWindow):
         bt.setToolTip("Draw the computational mesh in the Geometry tab (F6)")
         bt.clicked.connect(self.show_mesh)
         lay.addWidget(bt)
-        hint = QLabel("<p><b>Along z line / Along y line</b> retains the existing full-domain graded bands. "
+        hint = QLabel("<p><b>Along z / Along y</b> retains the existing full-domain graded bands. "
                       "Choose <b>2D</b>, select rectangle or polygon in <b>Region shape</b>, "
                       "and enter its coordinates or parameter expressions. Set <b>Cell size inside</b> "
                       "and <b>Safety buffer</b>. Protect possible cathode-return space as well as the beam. "

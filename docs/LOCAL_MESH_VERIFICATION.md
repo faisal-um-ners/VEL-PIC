@@ -4,7 +4,7 @@ Actual computations in the `tfgpu` Python environment, 23 October 2026. The orig
 
 ## Emitter-boundary localization correction, 23 October 2026
 
-The emitter endpoint now splits only its boundary leaf fan, rather than inserting a full-domain axis break. The enabled cathode-return rectangle still refines its requested region, buffer, and graded transition. The interface displays **Along z line**, **Along y line**, and **2D**; saved JSON values are unchanged. Rectangle/polygon selection remains in the **Region shape** dropdown; the separate drawing buttons were removed.
+The emitter endpoint now splits only its boundary leaf fan, rather than inserting a full-domain axis break. The enabled cathode-return rectangle still refines its requested region, buffer, and graded transition. The interface displays **Along z**, **Along y**, and **2D**; saved JSON values are unchanged. Rectangle/polygon selection remains in the **Region shape** dropdown; the separate drawing buttons were removed.
 
 The installed `tfgpu` test suite passed **29 tests**, including exact local endpoint insertion on all four boundaries, no change to the background leaf distribution, periodic pairing of added endpoints, and conserved cut-element strip integration. The offscreen GUI check verified labels, saved-value compatibility, conditional fields, removed buttons, and the actual mesh preview. The stationary validator now clips source quadrature at the strip edge when triangles cross it; it does not count a whole triangle based on its centroid.
 

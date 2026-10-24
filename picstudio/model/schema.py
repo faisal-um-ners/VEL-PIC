@@ -108,8 +108,8 @@ MESH_REFINE = [
     Field("name", "str", "emission region"),
     Field("enabled", "bool", True, "Enabled"),
     Field("axis", "choice", "z", "Refinement type", choices=("z", "y", "local 2D"),
-          choice_labels={"z": "Along z line", "y": "Along y line", "local 2D": "2D"},
-          help="Along z line / Along y line: full-domain graded bands along the chosen coordinate. "
+          choice_labels={"z": "Along z", "y": "Along y", "local 2D": "2D"},
+          help="Along z / Along y: full-domain graded bands along the chosen coordinate. "
                "2D: refine only a filled rectangle or "
                "polygon that you prescribe before the electrostatic PIC run; its conforming triangular "
                "mesh stays fixed. Particles can leave the region freely."),
