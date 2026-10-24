@@ -109,10 +109,12 @@ Emitter endpoints are fitted locally at the boundary without adding an unwanted 
 The comparison below uses actual rectangle/polygon meshes at d = 1 cm. The strip mesh has **29,954
 triangles** and the disk mesh **18,192**. A uniform P1 mesh with the same smallest leaf widths
 (31.25 µm × 39.06 µm) needs **655,360** and **327,680** triangles, respectively: **21.9×** and **18.0×**
-more. These are full-domain element counts, not measured runtime speedups; panels a and b zoom in near
-the strip emitter. Both uniform comparisons use the same four-triangle center-fan construction.
+more. Panel **a** shows the full strip domain with both electrodes and periodic sides; the dashed frame
+marks the near-emitter detail in **b**. Panel **c** compares full-domain element budgets. These are element
+counts, not measured runtime speedups; the uniform references use the same four-triangle center-fan construction.
+All three panels have equal display dimensions; panel a uses separate coordinate scales to show the full domain.
 
-<p align="center"><img src="docs/images/mesh_refinement.png" alt="Local polygon and rectangle refinement versus uniform P1 triangles, with measured strip and disk element budgets" width="1000"></p>
+<p align="center"><img src="docs/images/mesh_refinement.png" alt="Full-domain local triangular mesh, near-emitter polygon/rectangle detail, and strip/disk element budgets" width="1000"></p>
 
 Refinement is available for **2D-ZY and 2D-RZ electrostatics**; use a gentle transition (growth 1.05–1.2)
 and check mesh convergence. Local P1 runs require **smoothing = 0**. With the electromagnetic solver,

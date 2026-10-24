@@ -23,5 +23,9 @@
     "uniform_finest_nodes": 164417,
     "comparison": "Same full domain and smallest leaf widths; four P1 center-fan triangles per uniform rectangle. Counts are not timings."
   },
-  "same_budget_uniform_triangles": 30012
+  "figure_panels": {
+    "a": "Full strip domain: z = 0..10 mm, y = -10..10 mm; both electrodes and periodic sides",
+    "b": "Same mesh near the emitter: z = 0..3 mm, y = -1.5..1.5 mm",
+    "c": "Local / uniform P1 triangle counts over each full domain, with matching finest leaf widths"
+  }
 }
