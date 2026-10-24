@@ -128,7 +128,7 @@ MESH_REFINE = [
                "start at y=0. Add separate regions for cathode return footprints if needed."),
     Field("buffer", "expr", "0", "Safety buffer outside", "m", show_if={"axis": ["local 2D"]},
           help="Additional refined width around the prescribed region, including possible sideways motion."),
-    Field("size", "expr", "1e-5", "Cell size inside", "m",
+    Field("size", "expr", "1", "Cell size inside", "m",
           help="For local 2D this is the maximum rectangular leaf-edge length in the refined region; "
                "each leaf is split into conforming P1 triangles."),
     Field("growth", "expr", "1.2", "Growth ratio outside",
