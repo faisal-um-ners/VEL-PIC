@@ -1097,12 +1097,14 @@ class MainWindow(QMainWindow):
                     "<p>Particle-in-cell simulation of diodes, beams, plasmas and vacuum electron devices in 1D (z), "
                     "2D Cartesian (z, y) and 2D axisymmetric (z, r) geometry. Electrostatic solver: finite elements "
                     "(scikit-fem). Electromagnetic solver: Yee FDTD with charge-conserving deposition.</p>"
-                    f"<p><b>Author:</b> {AUTHOR}<br>{AFFILIATION}</p>"
+                    f"<p><b>Author:</b> {AUTHOR}<br>{AFFILIATION}<br>"
+                    "<b>Website:</b> <a href='https://www.arifuzzaman.info'>www.arifuzzaman.info</a></p>"
                     f"<p>{COPYRIGHT}. Released under the {LICENSE}.<br>"
                     "Particle kernels follow WarpX (BSD-3-Clause-LBNL); see THIRD_PARTY_NOTICES.md.</p>"
                     f"<p><a href='{URL}'>{URL}</a><br>DOI: <a href='https://doi.org/{DOI}'>{DOI}</a></p>"
                     "<p>If you use VEXPACE in published work, please cite it (Help &rarr; How to cite VEXPACE).</p>")
         box.setTextFormat(Qt.RichText)
+        box.setTextInteractionFlags(Qt.TextBrowserInteraction)
         box.exec()
 
     def cite(self):
