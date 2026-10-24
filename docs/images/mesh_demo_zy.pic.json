@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "name": "Manual 2D mesh: strip, polygon + cathode rectangle",
+  "description": "Mesh preview only; derived from the Lau et al. (2026) example geometry. The polygon is an assumed resolution envelope, not a computed trajectory or an imposed wall. The README live-monitor images retain the original graded-mesh PIC runs.",
+  "parameters": {
+    "V0": "2500",
+    "d": "1e-2",
+    "Delta": "0.01",
+    "Jn": "5.0",
+    "JCL": "4*eps0/9*sqrt(2*e/me)*V0**1.5/d**2",
+    "v0": "sqrt(2*e*V0/me)",
+    "Nz": "100",
+    "dz_fine": "25e-6",
+    "Bz": "0",
+    "wbar": "0.1",
+    "pbar": "2.0",
+    "Ny": "80",
+    "dy_fine": "31.25e-6"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "periodic",
+      "voltage": "0",
+      "particles": "periodic",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electrostatic",
+    "t_end": "8e-9",
+    "dt": "0.4*dz_fine/v0",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": true,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "d",
+    "nz": "40",
+    "y_min": "-pbar*d/2",
+    "y_max": "pbar*d/2",
+    "ny": "64"
+  },
+  "diagnostics": {
+    "output_dir": "output_yylau_2026_strip_caseA_zy",
+    "history_every": "20",
+    "field_every": "2000",
+    "particle_every": "2000",
+    "max_dump_particles": "50000",
+    "live_every": "200"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "Jn",
+    "values": "[4.5, 5.0, 5.4, 6.0]",
+    "workers": 2
+  },
+  "mesh_refinements": [
+    {
+      "name": "assumed beam envelope",
+      "enabled": true,
+      "axis": "local 2D",
+      "region_shape": "polygon",
+      "points": "0,-wbar*d/2; d,-.17*d; d,.17*d; 0,wbar*d/2",
+      "size": ".0125*d",
+      "buffer": ".01*d",
+      "growth": "1.2"
+    },
+    {
+      "name": "cathode return region",
+      "enabled": true,
+      "axis": "local 2D",
+      "region_shape": "rectangle",
+      "z0": "0",
+      "z1": ".05*d",
+      "y0": "-.12*d",
+      "y1": ".12*d",
+      "size": ".005*d",
+      "buffer": ".005*d",
+      "growth": "1.2"
+    }
+  ],
+  "objects": [
+    {
+      "name": "vacuum gap",
+      "shape": "rectangle",
+      "z0": "0",
+      "z1": "d",
+      "y0": "-pbar*d/2",
+      "y1": "pbar*d/2",
+      "zc": "0",
+      "yc": "0",
+      "radius": "1e-3",
+      "radius_inner": "5e-4",
+      "a": "1e-3",
+      "b": "1e-3",
+      "points": "0,0; 1e-3,0; 0,1e-3",
+      "expression": "z**2 + y**2 < 1e-6",
+      "material": "vacuum",
+      "voltage": "0",
+      "eps_r": "1",
+      "loss_spec": "Q",
+      "Q": "250",
+      "frequency": "5.8e9",
+      "fill": "1",
+      "cal_period": "",
+      "cal_phase": "pi",
+      "sigma": "1",
+      "collect_charge": true
+    }
+  ],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron",
+      "charge": "-1",
+      "mass": "me",
+      "beam_self_B": false,
+      "motion": "z_only"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "beam",
+      "surface": "segment",
+      "object": "",
+      "z0": "0",
+      "y0": "-wbar*d/2",
+      "z1": "0",
+      "y1": "wbar*d/2",
+      "normal": "+z",
+      "current_density": "Jn*JCL",
+      "energy": "Delta*V0",
+      "temperature": "0",
+      "work_function": "4.5",
+      "beta": "1",
+      "cathode_temperature": "2000",
+      "richardson": "1.20173e6",
+      "schottky": true,
+      "relax": "1.0",
+      "profile": "1",
+      "particles_per_cell": "2",
+      "t_start": "0",
+      "t_stop": "1e9"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "axial B",
+      "type": "uniform",
+      "E": [
+        "0",
+        "0",
+        "0"
+      ],
+      "B": [
+        "Bz",
+        "0",
+        "0"
+      ],
+      "Ez": "0",
+      "Ey": "0",
+      "Ex": "0",
+      "Bz": "0",
+      "By": "0",
+      "Bx": "0",
+      "zc": "0",
+      "z_end": "1e-2",
+      "radius": "1e-2",
+      "ampere_turns": "1000",
+      "time_factor": "1"
+    }
+  ],
+  "sources": [],
+  "probes": [],
+  "line_probes": [
+    {
+      "name": "phi",
+      "quantity": "phi",
+      "extremum": "min",
+      "along": "z",
+      "y": "0",
+      "z": "0",
+      "start": "0",
+      "end": "0.2*d"
+    }
+  ],
+  "power_lines": [],
+  "_path": "/Users/mdarifuzzamanfaisal/VEXPACE/examples/yylau_2026_strip_caseA_zy.pic.json"
+}

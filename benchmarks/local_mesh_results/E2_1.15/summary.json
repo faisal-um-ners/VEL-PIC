@@ -1,0 +1,23 @@
+{
+  "case": "E2",
+  "reference": "Lau et al. (2026), Table 1, POISSON column",
+  "eta": 0.05,
+  "Delta": 0.001,
+  "p_over_D": 2.56,
+  "reference_J_over_JCL": 4.829,
+  "injected_fraction_of_reference": 1.15,
+  "injected_J_over_JCL": 5.553349999999999,
+  "measured_transmitted_fraction": 0.8534375000000008,
+  "measured_returned_fraction": 0.1552187500000006,
+  "min_axis_phi_over_V": -0.0009102766001925275,
+  "poisson_relative_residual": 3.4321937945915235e-12,
+  "relative_charge_error": 0.0,
+  "mesh_fixed": true,
+  "nodes": 3498,
+  "triangles": 6785,
+  "dtau": 0.004,
+  "simulated_tau": 8,
+  "steps": 2000,
+  "elapsed_seconds": 12.612111806869507,
+  "interpretation": "PIC below/above-reference behavior check; not a measured SCL fold or a sub-percent limiting-current benchmark."
+}

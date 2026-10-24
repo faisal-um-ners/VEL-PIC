@@ -34,6 +34,14 @@ class FieldForm(QWidget):
             self.form.addRow(lab, w)
             self.widgets[f.name] = w
             self.rows[f.name] = lab
+        self.material_summary = None
+        if any(f.name == "material" for f in fields):
+            self.material_summary = QLabel()
+            self.material_summary.setWordWrap(True)
+            self.material_summary.setTextFormat(Qt.RichText)
+            self.material_summary.setObjectName("materialSummary")
+            self.material_summary.setStyleSheet("QLabel#materialSummary { font-size: 11px; padding-top: 8px; }")
+            self.form.addRow(self.material_summary)
         self.explain = None
         if explain:
             self.explain = QLabel()
@@ -69,9 +77,11 @@ class FieldForm(QWidget):
                 choices = list(self.context.get("objects"))
             if v not in choices and v not in (None, ""):
                 choices.append(str(v))
-            w.addItems([str(c) for c in choices])
-            w.setCurrentText(str(v))
-            w.currentTextChanged.connect(lambda val, n=f.name: self._set(n, val, structural=True))
+            for c in choices:
+                w.addItem(f.choice_labels.get(c,str(c)),c)
+            w.setCurrentIndex(choices.index(v) if v in choices else -1)
+            w.currentIndexChanged.connect(lambda index, n=f.name, ww=w:
+                self._set(n, ww.itemData(index), structural=True) if index>=0 else None)
             return w
         if f.name == "object" and self.context.get("objects") is not None:
             w = QComboBox()
@@ -125,6 +135,13 @@ class FieldForm(QWidget):
             vis = S.is_visible(f, self.values)
             self.widgets[f.name].setVisible(vis)
             self.rows[f.name].setVisible(vis)
+        if self.material_summary is not None:
+            material = self.values.get("material", "conductor")
+            lines = S.MATERIAL_SUMMARIES.get(material)
+            self.material_summary.setVisible(lines is not None)
+            if lines:
+                self.material_summary.setText("<b>" + material.capitalize() + "</b>: " +
+                                              lines[0] + "<br>" + lines[1])
         if self.explain is not None:
             self.explain.setText(explain_html(self.fields, self.values))
 

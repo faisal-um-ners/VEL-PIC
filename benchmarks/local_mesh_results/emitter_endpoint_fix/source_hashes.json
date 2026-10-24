@@ -1,0 +1,7 @@
+{
+  "picstudio/mesh/local.py": "d5e56459f7916fb91a32ac2cac04763c04c1cf54d5e1bbbd0cbb9d1e8eb65f24",
+  "picstudio/fields/local_es.py": "48f85c06442d2cf82a07466369198e842f2dff8d2c2878b39e7f42351936e4ee",
+  "picstudio/core/simulation.py": "4fa3cc45eb581e48134b1217c6e1c44910abe92f8828ba1b736c5afcc4de4272",
+  "benchmarks/check_local_mesh_lau2026.py": "7601847b8f3467d10b4ec3d552cff673f280e505454511a2e3e99f61446fb954",
+  "benchmarks/local_mesh_stationary.py": "4a534a4e996af3ce27b00b06c00a4eeb3f3582eecb18b76e3856ac2d620c914d"
+}

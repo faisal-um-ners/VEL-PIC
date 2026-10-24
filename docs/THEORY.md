@@ -2,9 +2,11 @@
 
 ## 1. Mesh and coordinates
 
-The mesh is a structured tensor-product grid, uniform (dz, dy) or graded/refined along z and y (electrostatic solver). Particles are pushed and deposited in logical coordinates (the fractional node index), where every cell has unit size, so the bilinear weights are the Q1 shape functions of the physical cell.
+The default mesh is a structured tensor-product grid, uniform (dz, dy) or graded/refined along z and y (electrostatic solver). Particles are pushed and deposited in logical coordinates (the fractional node index), where every cell has unit size, so the bilinear weights are the Q1 shape functions of the physical cell.
 
 **Why abrupt cell-size jumps are avoided.** The electromagnetic (Yee) solver runs on a uniform grid; a refined mesh with the electromagnetic solver is a model-check error. Three reasons: (i) the Courant limit of the explicit Yee update is set by the smallest cell and applies to the whole domain, so a 10 µm band on a 78 µm grid would shorten every step about eightfold; (ii) the staggered update is second-order only for equal cells: on a stretched grid it drops to first order, and a change of cell size reflects waves and changes the numerical dispersion; (iii) the Esirkepov deposition and the held-electrode correction (discrete harmonic functions of the Yee operator) are written for equal cells. Codes that refine electromagnetic grids (e.g. WarpX) use separate refinement patches with buffer and absorbing layers, which VEXPACE does not provide. In the electrostatic solver a jump lowers the local accuracy of the finite-element solution, adds a self-force on particles crossing it and changes the particle statistics per cell. The tensor axes are therefore graded geometrically (growth ratio 1.05–1.2 recommended; the model check warns above 1.3), with grid lines continuous across the domain.
+
+**Manual local 2D mesh.** Rectangle/polygon regions optionally replace the 2D electrostatic Q1 mesh with conforming P1 triangles. Filled regions and safety buffers prescribe a target size; the mesh is generated before PIC and remains fixed. The actual triangles provide barycentric charge deposition, the Poisson weak form and direct element-gradient field gathering (`auto`). The optional momentum-conserving choice uses a consistent-mass L2 nodal projection; the name does not guarantee exact momentum conservation on irregular triangles. RZ includes the radial weight. Emitter endpoints on domain edges are inserted locally; no emitter-aligned full-domain band is added. Rectangular material interfaces and explicit line refinements retain their alignment. The rectangular arrays saved for compatibility are field samples, not the particle source mesh. See [LOCAL_MESH.md](LOCAL_MESH.md) for controls and restrictions. The tensor-grid descriptions below apply to the original Q1 path unless stated otherwise.
 
 Nodes are indexed `[iz]` in 1D and `[iz, iy]` in 2D. In RZ the second coordinate is the radius r, and either r_min = 0 (on axis) or r_min > 0 (annular domain).
 
@@ -20,7 +22,7 @@ Shapes are painted in list order. A node is a Dirichlet (conductor) node if it l
 
 ## 2. Electrostatic solver (scikit-fem)
 
-The solver works on the weak form of −∇·(ε0 εr ∇φ) = ρ, using bilinear Q1 elements (2D) or linear P1 elements (1D) on the same nodes as the particle grid:
+The solver works on the weak form of −∇·(ε0 εr ∇φ) = ρ, using bilinear Q1 elements on the default 2D tensor grid, linear P1 elements in 1D, or P1 triangles in the optional local 2D mode:
 
 * Cartesian: ∫ ε ∇φ·∇v dA = ∫ ρ v dA
 * RZ: ∫ ε ∇φ·∇v r dr dz = ∫ ρ v r dr dz. The factor 2π cancels, and the axis needs no special treatment.

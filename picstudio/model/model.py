@@ -260,6 +260,11 @@ def _refinement_warnings(m, ev):
         out.append(("error", "Mesh Refinement is for the electrostatic solver only: the Yee FDTD solver "
                              "needs a uniform grid (disable the refinement regions)."))
         return out
+    from ..mesh.local import validate_local
+    try:
+        validate_local(m, ev)
+    except (ValueError, ArithmeticError) as exc:
+        out.append(("error", str(exc)))
     for r in refs:
         try:
             gr = ev.num(r.get("growth", 1.2))

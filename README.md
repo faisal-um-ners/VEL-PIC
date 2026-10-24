@@ -19,8 +19,8 @@ name VEL-PIC.)
 | Geometry | Electrostatic | Electromagnetic |
 |---|---|---|
 | **1D-Z** (planar) | finite elements (scikit-fem [[1]](#references), P1) | Yee FDTD, charge-conserving |
-| **2D-ZY** (Cartesian, per unit depth) | finite elements (Q1), locally refined meshes | Yee FDTD, all six field components |
-| **2D-RZ** (axisymmetric) | finite elements with r-weighted weak form | cylindrical Yee FDTD with exact on-axis update |
+| **2D-ZY** (Cartesian, per unit depth) | Q1 graded bands or P1 local triangular meshes | Yee FDTD, all six field components |
+| **2D-RZ** (axisymmetric) | Q1 / local P1 finite elements with r-weighted weak form | cylindrical Yee FDTD with exact on-axis update |
 
 <p align="center"><img src="docs/images/gui_model_builder.png" alt="VEXPACE model builder" width="900"></p>
 
@@ -29,6 +29,8 @@ name VEL-PIC.)
 - **Model builder.** Parameters and expressions in every field, geometry objects (rectangles, circles,
   ellipses, annuli, polygons, implicit shapes) as conductors with V(t), dielectrics, absorbers, resistive
   loads of prescribed Q, or vacuum. Every settings form explains each input.
+- **Electrostatic mesh.** Graded refinement along z or y/r, plus manually prescribed 2D rectangles and
+  polygons with safety buffers and graded transitions. The local triangular mesh is fixed before PIC.
 - **Emission.** Space-charge-limited (Gauss's law), Fowler–Nordheim (Murphy–Good), thermionic
   (Richardson–Dushman with Schottky lowering), photoemission and prescribed beams, from segments or from
   the whole surface of a conductor.
@@ -60,11 +62,20 @@ on the axis, and a second field component.
 
 ### Limiting current of small emitters
 
-Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with low injection energy,
-Δ·eV₀ = 25 eV at V₀ = 2.5 kV, following Lau, Chernin, Heri & Zhang [[4]](#references). The live monitor shows the potential along
-the emitter axis with its minimum marked, the phase space, the particles and the history of the potential
-minimum φ_min. The steady limiting-current solver included with VEXPACE agrees with the paper's POISSON
-values to within 0.25 %.
+Space-charge-limited flow from a strip (2D-ZY) and a disk (2D-RZ) emitter with injection energy
+Δ·eV₀ = 25 eV at V₀ = 2.5 kV, following Lau et al. (2026) [[4]](#references). The Geometry tab previews the
+mesh before the run; manual 2D polygons and rectangles can resolve the beam, the cathode and possible
+return paths. The live monitor shows the axial potential and its minimum, phase space, particles and the
+history of φ_min. The stationary reference solver agrees with the matched strip POISSON values within
+0.25%; the [local P1 checks](docs/LOCAL_MESH_VERIFICATION.md) give errors of 0.054–0.206% for three cases.
+These stationary comparisons are separate from the below/above-limit PIC behavior shown here.
+
+**Mesh setup in VEXPACE (full domain).** Both electrodes and periodic sides are visible. A prescribed
+polygon envelope and cathode rectangle provide a fine
+interior, safety buffers and a coarser surrounding mesh. This is a setup preview; the two live-monitor
+images below retain the original graded-mesh PIC runs.
+
+<p align="center"><img src="docs/images/gui_diode_local_mesh.png" alt="VEXPACE Geometry view: manual 2D polygon and rectangular cathode refinement" width="900"></p>
 
 **Below the limit (strip, J = 0.96 J_max).** The flow is steady: φ_min settles at −4.6 V, well above
 −Δ·V₀ = −25 V, and the whole current reaches the anode.
@@ -79,21 +90,39 @@ oscillates around φ_min ≈ −25.5 V (FFT inset: peak at 7.8 GHz), and part of
 Examples: `yylau_2026_strip_caseA_zy` (below the limit) and `yylau_2026_disk_virtual_cathode_rz` (above it); geometry,
 normalisation and the limiting-current equation (their Eq. 7) are those of Ref. [[4]](#references).
 
-### Graded mesh for small emitters
+### Manual mesh refinement for electrostatics
 
-The electrostatic solver uses finite elements (scikit-fem [[1]](#references)) on a tensor-product mesh with
-graded refinement bands: cells are fine over a small emitter and at the cathode and grow by a set ratio
-(1.05–1.2) away from them. Uniform-grid PIC codes such as XOOPIC [[5]](#references) must use the finest cell
-everywhere. For the strip emitter above, the graded mesh has 15,972 cells; the same 25 µm × 31 µm resolution on
-a uniform grid needs 256,000 cells (16× more), and 9× more for the disk.
+Small emitters require fine resolution near injection, potential barriers and returning electrons, while
+the surrounding field still needs a well-resolved background. **Mesh Refinement** provides three choices:
 
-Graded meshes are for electrostatic runs only. The Geometry tab draws a refinement region for either solver,
-but with the electromagnetic solver the model check reports an error and the run does not start: the Yee time
-step is set by the smallest cell over the whole domain, the staggered update is second-order only on equal
-cells (graded cells reflect waves), and the charge-conserving deposition and the held-electrode correction
-assume equal cells. For electromagnetic runs use a uniform mesh fine enough for the emitter.
+- **Along z line / Along y line:** the existing graded bands on a tensor-product Q1 mesh.
+- **2D:** a filled **rectangle** or **polygon** with a chosen cell size, a **Safety buffer outside** and a
+  **Growth ratio outside**. Regions combine using the finer requested size; the rest of the domain keeps
+  the resolution set in **Domain & Mesh**.
 
-<p align="center"><img src="docs/images/mesh_refinement.png" alt="Graded mesh versus uniform mesh at a small emitter" width="820"></p>
+In 2D mode, VEXPACE builds conforming P1 triangles, solves Poisson on those triangles, deposits particle
+charge with their shape functions and gathers the electric field from the same potential. Prescribe the
+expected electron region before PIC, including room for transverse spreading and cathode returns. The
+mesh stays fixed during the run; a refinement outline guides resolution and does not confine particles.
+Emitter endpoints are fitted locally at the boundary without adding an unwanted line across the domain.
+
+The comparison below uses actual rectangle/polygon meshes at d = 1 cm. The strip mesh has **29,954
+triangles** and the disk mesh **18,192**. A uniform P1 mesh with the same smallest leaf widths
+(31.25 µm × 39.06 µm) needs **655,360** and **327,680** triangles, respectively: **21.9×** and **18.0×**
+more. These are full-domain element counts, not measured runtime speedups; panels a and b zoom in near
+the strip emitter. Both uniform comparisons use the same four-triangle center-fan construction.
+
+<p align="center"><img src="docs/images/mesh_refinement.png" alt="Local polygon and rectangle refinement versus uniform P1 triangles, with measured strip and disk element budgets" width="1000"></p>
+
+Refinement is available for **2D-ZY and 2D-RZ electrostatics**; use a gentle transition (growth 1.05–1.2)
+and check mesh convergence. Local P1 runs require **smoothing = 0**. With the electromagnetic solver,
+**Check model** and **Run** reject enabled refinement: the implemented Yee update and charge-conserving
+deposition require a **uniform grid**.
+
+Ready-to-edit examples: [`local_mesh_confined_strip_zy`](examples/local_mesh_confined_strip_zy.pic.json)
+and [`local_mesh_b0_envelope_zy`](examples/local_mesh_b0_envelope_zy.pic.json). See the
+[mesh guide](docs/LOCAL_MESH.md), [verification records](docs/LOCAL_MESH_VERIFICATION.md) and
+[figure generator](docs/make_mesh_refinement.py) for settings and reproduction.
 
 ### Planar vane magnetron
 
@@ -167,6 +196,7 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 | `coaxial_diode_rz` | RZ ES | Langmuir–Blodgett radial flow [[11]](#references) |
 | `thermionic_diode_1d`, `field_emission_1d` | 1D ES | emission laws with space charge |
 | `yylau_2026_strip_caseA_zy`, `yylau_2026_strip_E3_zy`, `yylau_2026_disk_rz` (+ `_virtual_cathode` variants) | ZY / RZ ES, refined mesh | limiting current of small emitters [[4]](#references) |
+| `local_mesh_confined_strip_zy`, `local_mesh_b0_envelope_zy` | ZY ES, manual local P1 triangles | rectangle/polygon refinement for confined and expanding beams |
 | `plasma_oscillation_1d`, `landau_damping_1d` | 1D ES | Langmuir oscillation; Landau damping (kλ_D = 0.5) |
 | `two_stream_1d`, `beam_plasma_1d`, `beam_plasma_zy` | 1D / ZY ES | streaming instabilities |
 | `pierce_diode_1d` | 1D ES | Pierce diode instability [[12]](#references) |
@@ -246,6 +276,8 @@ All examples are in [`examples/`](examples) and under **File → Examples** in t
 - [User guide](docs/USER_GUIDE.md): building, running and post-processing a model.
 - [Numerical methods](docs/THEORY.md): mesh, solvers, emission, particle push, parallelisation.
 - [Comparison with other codes](docs/COMPARISON.md): feature overview and algorithm-by-algorithm comparison with WarpX.
+- [Manual local mesh refinement](docs/LOCAL_MESH.md): rectangle/polygon settings and fixed P1 mesh.
+- [Local mesh verification](docs/LOCAL_MESH_VERIFICATION.md): stationary Lau comparisons, PIC behavior checks and unit tests.
 - [Validation report](benchmarks/results/VALIDATION_REPORT.md).
 
 ## Repository layout

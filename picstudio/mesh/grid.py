@@ -205,7 +205,7 @@ class Grid:
                 f"{rng(self.hy, 'r' if self.rz else 'y')}")
 
 
-def grid_from_model(m, ev, axis_correction=True):
+def grid_from_model(m, ev, axis_correction=True, _local=True):
     """Build the Grid of a (completed) model, including its mesh refinement regions."""
     from .refine import axis_nodes, geometry_breaks
     dom = m["domain"]
@@ -215,11 +215,17 @@ def grid_from_model(m, ev, axis_correction=True):
           if any(r.get("axis", "z") == "z" for r in refs) else None)
     yn = (axis_nodes(ev, dom, refs, "y", geometry_breaks(m, ev, "y"))
           if geom != "1D-Z" and any(r.get("axis") == "y" for r in refs) else None)
-    return Grid(geom, ev.num(dom["z_min"]), ev.num(dom["z_max"]), ev.num(dom["nz"]),
+    grid = Grid(geom, ev.num(dom["z_min"]), ev.num(dom["z_max"]), ev.num(dom["nz"]),
                 ev.num(dom["y_min"]) if geom != "1D-Z" else 0.0,
                 ev.num(dom["y_max"]) if geom != "1D-Z" else 1.0,
                 ev.num(dom["ny"]) if geom != "1D-Z" else 1,
                 axis_correction=axis_correction, z_nodes=zn, y_nodes=yn)
+    if _local:
+        from .local import local_regions, mesh_from_model
+        if local_regions(m):
+            grid.local_mesh = mesh_from_model(m)
+            grid.hmin = grid.local_mesh.hmin
+    return grid
 
 
 def lossy_sigma(obj, ev):

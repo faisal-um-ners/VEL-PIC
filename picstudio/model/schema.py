@@ -28,6 +28,7 @@ class Field:
     help: str = ""
     choices: tuple = ()
     show_if: dict = field(default_factory=dict)   # {other_field: [allowed values]}
+    choice_labels: dict = field(default_factory=dict)  # display labels; stored values stay compatible
 
     def __post_init__(self):
         if not self.label:
@@ -64,7 +65,9 @@ SIMULATION = [
                "interpolation of node-centred fields - second-order accurate at emitting surfaces, so "
                "space-charge-limited emission converges faster.  auto: energy-conserving for the EM "
                "solver (as WarpX), momentum-conserving for the ES solver.  Choose energy-conserving "
-               "for runs that must reproduce WarpX exactly."),
+               "for runs that must reproduce WarpX exactly. Local 2D P1 mesh: auto uses the direct "
+               "element gradient; momentum-conserving selects an L2-projected nodal reconstruction, "
+               "which does not imply exact momentum conservation on an irregular mesh."),
     Field("smoothing", "int", 0, "Binomial smoothing passes", "",
           help="1-2-1 filter passes. ES: applied to the charge density.  EM: applied to the fields "
                "gathered by the particles (keeps the current deposition charge conserving)."),
@@ -104,17 +107,34 @@ DOMAIN = [
 MESH_REFINE = [
     Field("name", "str", "emission region"),
     Field("enabled", "bool", True, "Enabled"),
-    Field("axis", "choice", "z", "Refine along", choices=("z", "y"),
-          help="z: refine the z spacing for start <= z <= end.  y: refine the y (r) spacing for "
-               "start <= y <= end.  Combine one z and one y region to refine a rectangle (e.g. in front "
-               "of an emitter)."),
-    Field("start", "expr", "0", "From", "m"),
-    Field("end", "expr", "1e-3", "To", "m"),
-    Field("size", "expr", "1e-5", "Cell size inside", "m"),
+    Field("axis", "choice", "z", "Refinement type", choices=("z", "y", "local 2D"),
+          choice_labels={"z": "Along z line", "y": "Along y line", "local 2D": "2D"},
+          help="Along z line / Along y line: full-domain graded bands along the chosen coordinate. "
+               "2D: refine only a filled rectangle or "
+               "polygon that you prescribe before the electrostatic PIC run; its conforming triangular "
+               "mesh stays fixed. Particles can leave the region freely."),
+    Field("start", "expr", "0", "From", "m", show_if={"axis": ["z", "y"]}),
+    Field("end", "expr", "1e-3", "To", "m", show_if={"axis": ["z", "y"]}),
+    Field("region_shape", "choice", "rectangle", "Region shape", choices=("rectangle", "polygon"),
+          show_if={"axis": ["local 2D"]}),
+    Field("z0", "expr", "0", "Region z min", "m", show_if={"axis": ["local 2D"], "region_shape": ["rectangle"]}),
+    Field("z1", "expr", "1e-3", "Region z max", "m", show_if={"axis": ["local 2D"], "region_shape": ["rectangle"]}),
+    Field("y0", "expr", "0", "Region y / r min", "m", show_if={"axis": ["local 2D"], "region_shape": ["rectangle"]}),
+    Field("y1", "expr", "1e-3", "Region y / r max", "m", show_if={"axis": ["local 2D"], "region_shape": ["rectangle"]}),
+    Field("points", "text", "0,0; 1e-2,0; 1e-2,2e-3; 0,2e-4", "Polygon points (z,y; ...)", "m",
+          show_if={"axis": ["local 2D"], "region_shape": ["polygon"]},
+          help="Ordered boundary vertices around the entire expected electron region, not just a trajectory. "
+               "Use parameter expressions. In RZ the second coordinate is radius; in a half-domain "
+               "start at y=0. Add separate regions for cathode return footprints if needed."),
+    Field("buffer", "expr", "0", "Safety buffer outside", "m", show_if={"axis": ["local 2D"]},
+          help="Additional refined width around the prescribed region, including possible sideways motion."),
+    Field("size", "expr", "1e-5", "Cell size inside", "m",
+          help="For local 2D this is the maximum rectangular leaf-edge length in the refined region; "
+               "each leaf is split into conforming P1 triangles."),
     Field("growth", "expr", "1.2", "Growth ratio outside",
-          help="Cell-to-cell growth factor away from the region (1.05 smooth ... 1.5 fast; 1.05-1.2 "
-               "recommended: abrupt cell-size jumps lower the field accuracy and add self-forces on "
-               "particles). The region edges are always mesh nodes."),
+          help="Smooth target size grows with distance from the region (1.05-1.2 recommended). "
+               "Local 2D uses discrete subdivisions; neighboring triangle sizes therefore change in levels. "
+               "The Domain & Mesh counts retain moderate background resolution elsewhere."),
 ]
 
 BOUNDARY_FIELD = ("conductor", "neumann", "periodic", "absorbing", "axis")
@@ -136,6 +156,23 @@ SIDES = ("z_min", "z_max", "y_min", "y_max")
 
 SHAPES = ("rectangle", "circle", "ellipse", "annulus", "polygon", "expression")
 MATERIALS = ("conductor", "dielectric", "vacuum", "absorber", "lossy")
+MATERIAL_SUMMARIES = {
+    "conductor": (
+        "Electrode: absorbs particles; emission is set separately.",
+        "ES: φ = V(t). EM: perfect conductor, tangential E = 0."),
+    "dielectric": (
+        "Insulator (εr): absorbs particles; charging is optional.",
+        "ES: continuous φ; normal εE changes with surface charge."),
+    "vacuum": (
+        "Empty region: particles pass through; can carve holes.",
+        "No internal field boundary or prescribed potential."),
+    "absorber": (
+        "Particle sink: removes incoming particles.",
+        "Vacuum-like fields; no EM wave-absorbing layer."),
+    "lossy": (
+        "Resistive EM load: damps fields; particles pass through.",
+        "EM: J = σE (Q or σ input). No resistive damping in ES."),
+}
 OBJECT = [
     Field("name", "str", "object"),
     Field("shape", "choice", "rectangle", "Shape", choices=SHAPES),

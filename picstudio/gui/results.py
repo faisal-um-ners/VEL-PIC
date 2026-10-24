@@ -264,6 +264,23 @@ class LivePanel(QWidget):
         robust: colour scale from the 99.5th percentile of |q| (field-only runs, where the singular
         field at conductor corners would otherwise wash out the map)."""
         A = P.masked_field(d, q)          # conductor interiors excluded from the colour scale
+        if "local_points" in d and "local_" + q in d:
+            native = np.asarray(d["local_" + q], float)
+            cells = np.asarray(d["local_triangles"])
+            active = np.asarray(d.get("local_cell_mat", np.zeros(len(cells)))) != 1
+            native = native[np.unique(cells[active])]
+            e = self._e("field:" + q)
+            e.update(native)
+            sym = q.startswith(("E", "B", "J")) or (q.startswith("rho") and e.lo < 0 < e.hi)
+            im = P.plot_field(a, d, q, vlim=e.limits(0.0, symmetric=sym), aspect="auto")
+            _eng(a, "m", "m")
+            self._overlay_lines(a, d)
+            self.plot.colorbar(im, a)
+            cb = self.plot._cbars.get(id(a))
+            if cb is not None:
+                from ..post.ticks import unit_colorbar
+                unit_colorbar(cb, field_unit(q), q)
+            return
         e = self._e("field:" + q)
         e.update(A)
         sym = q.startswith(("E", "B", "J")) or (q.startswith("rho") and e.lo < 0 < e.hi)

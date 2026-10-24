@@ -97,9 +97,22 @@ class Simulation:
         self.v_td = any(ev.is_time_dependent(cnd["voltage"]) for cnd in self.mats.conductors)
         self.log(g.info())
         t0 = time.time()
-        self.poisson = PoissonFEM(g, self.mats, self.pz, self.py)
-        self.log(f"scikit-fem Poisson operator assembled and factorized ({g.nnodes} nodes, "
-                 f"{len(self.mats.conductors)} conductors) in {time.time() - t0:.2f} s")
+        self.local_es = None
+        if hasattr(g, "local_mesh"):
+            from ..fields.local_es import LocalElectrostatics
+            self.local_es = LocalElectrostatics(g, self.mats, m, ev)
+            self.poisson = self.local_es
+            self.log(f"Fixed local mesh: {len(g.local_mesh.points):,} nodes, "
+                     f"{len(g.local_mesh.triangles):,} P1 triangles")
+        else:
+            self.poisson = PoissonFEM(g, self.mats, self.pz, self.py)
+        if self.local_es is not None:
+            self.log(f"Local P1 Poisson operator assembled and factorized "
+                     f"({len(g.local_mesh.points):,} nodes, {len(self.mats.conductors)} conductors) "
+                     f"in {time.time() - t0:.2f} s")
+        else:
+            self.log(f"scikit-fem Poisson operator assembled and factorized ({g.nnodes} nodes, "
+                     f"{len(self.mats.conductors)} conductors) in {time.time() - t0:.2f} s")
         self.ext = ExternalFields(m["external_fields"], g, ev)
         self.has_obj = bool((self.mats.cell_obj >= 0).any())
         self.obj_names = [o.get("name", f"obj{i}") for i, o in enumerate(m["objects"])]
@@ -120,10 +133,20 @@ class Simulation:
         # particles -----------------------------------------------------------------
         for ld in m["loaders"]:
             sp = self.sp_by_name[ld["species"]]
-            n = load_particles(ld, sp, g, self.mats, ev, self.rng, self.rank, self.size)
+            if self.local_es is not None:
+                from ..fields.local_es import load_local_particles
+                n = load_local_particles(ld, sp, self.local_es, ev, self.rng, self.rank, self.size)
+            else:
+                n = load_particles(ld, sp, g, self.mats, ev, self.rng, self.rank, self.size)
             self.log(f"Loaded {self.comm.allsum(n)} macro-particles of '{sp.name}' ({ld['name']})")
-        self.emitters = [Emitter(e, self.sp_by_name[e["species"]], g, self.mats, ev, sim["solver"],
-                                 objects=m["objects"]) for e in m["emitters"]]
+        if self.local_es is not None:
+            from ..fields.local_es import LocalEmitter
+            self.emitters = [LocalEmitter(self.local_es, e, self.sp_by_name[e["species"]],
+                              g, self.mats, ev, sim["solver"], objects=m["objects"])
+                             for e in m["emitters"]]
+        else:
+            self.emitters = [Emitter(e, self.sp_by_name[e["species"]], g, self.mats, ev, sim["solver"],
+                                     objects=m["objects"]) for e in m["emitters"]]
         for e in self.emitters:
             self.log(f"Emitter '{e.name}' ({e.model}): {e.npanel} panels"
                      f"{', reaction surface field' if e.react_idx and not self.em else ''}")
@@ -137,6 +160,9 @@ class Simulation:
         self.pusher = {"boris": 0, "vay": 1, "higuera": 2}.get(str(sim.get("particle_pusher", "boris")), 0)
         fg = str(sim.get("field_gathering", "auto"))
         self.gather_ec = (fg == "energy-conserving") or (fg == "auto" and self.em)
+        if self.local_es is not None and fg == "auto":
+            self.gather_ec = True
+            self.log("Local P1 mesh: auto gathers E directly from the triangle potential gradient.")
         if self.gather_ec and self.em and self.smooth:
             self.gather_ec = False
             self.log("  note: smoothing of the gathered fields requires momentum-conserving gathering; "
@@ -337,6 +363,9 @@ class Simulation:
         return Q
 
     def _es_solve(self, t):
+        if self.local_es is not None:
+            self.local_es.update(self, t)
+            return
         g = self.grid
         Q, per = self._deposit_charge()
         Q = Q + self.static_rhs
@@ -446,6 +475,8 @@ class Simulation:
         """Fields at the particles (6, n): nodal part + (energy-conserving) self field."""
         g = self.grid
         n = sp.n
+        if self.local_es is not None:
+            return self.local_es.gather(self, sp)
         zl = np.ascontiguousarray(g.lz(sp._z[:n]))
         yl = np.ascontiguousarray(g.ly(sp._y[:n])) if g.dim == 2 else zl
         P = np.empty((6, n))
@@ -469,6 +500,8 @@ class Simulation:
         return P
 
     def _interp(self, A, z, y):
+        if self.local_es is not None:
+            return self.local_es.interp(self, A, z, y)
         g = self.grid
         if not g.uniform:
             return g.interp(A, z, y)
@@ -509,6 +542,12 @@ class Simulation:
         g = self.grid
         z, y, u0, u1, u2, w = sp.arrays()
         flag = np.zeros(sp.n, dtype=np.int32)
+        if self.local_es is not None:
+            # Reuse the existing physical wall/periodic rules. Material hits
+            # are looked up on the actual triangles, not the display grid.
+            K.boundary_2d(z, y, u0, u1, sp.n, g.z_min, g.z_max, g.y_min, g.y_max,
+                          self.pbc, wrap, self.mats.cell_obj, g.dz, g.dy, g.nz, g.ny, False, flag)
+            return self.local_es.boundary_objects(z[:sp.n], y[:sp.n], flag)
         if not g.uniform:            # refined mesh: apply the walls in logical coordinates
             n = sp.n
             zl, yl = self._logical(z[:n], y[:n])
@@ -563,6 +602,12 @@ class Simulation:
                         self._stick_charge(sp, sel)
 
     def _stick_charge(self, sp, idx):
+        if self.local_es is not None:
+            q = self.local_es.mesh.deposit(sp.z[idx], sp.y[idx], sp.q*sp.w[idx])
+            if self.size > 1:
+                q = self.comm.allreduce(q)
+            self.local_es.stuck += q
+            return
         g = self.grid
         z = np.ascontiguousarray(sp.z[idx])
         w = np.ascontiguousarray(sp.w[idx])
@@ -601,7 +646,7 @@ class Simulation:
                 if self.py and self.grid.dim == 2:
                     qn[:, 0] += qn[:, -1]
                     qn[:, -1] = qn[:, 0]
-        elif self.emitters:
+        elif self.emitters and self.local_es is None:
             reaction = self.poisson.reaction(self.phi, self.rhs_fem)
         for k, em in enumerate(self.emitters):
             out = em.emit(t_emit, self.dt, self.rng, self.step_count, self.rank, self.size,
@@ -838,6 +883,10 @@ class Simulation:
         ys = y0 + s_ * (y1 - y0) if g.dim == 2 else np.zeros_like(zs)
         v = np.asarray(self._interp(A, zs, ys) if g.dim == 2 else self._interp(A, zs, None), float)
         # samples inside a conductor (PEC: no field there) are excluded -> NaN
+        if self.local_es is not None:
+            ids, _ = self.local_es.mesh.locate(zs, ys)
+            v = np.where(self.local_es.P.solid[ids], np.nan, v)
+            return s_, zs, ys, v
         if not hasattr(self, "_interior_f"):
             from ..mesh.grid import conductor_interior_nodes
             self._interior_f = conductor_interior_nodes(self.mats.cell_mat).astype(float)
@@ -968,7 +1017,9 @@ class Simulation:
                 pass
         for c_, nm in enumerate(("E", "E", "E", "B", "B", "B")):
             d[f"{nm}{self.comp[c_ % 3]}"] = self.F[c_]
-        if self.em and len(self.species):
+        if self.local_es is not None:
+            d.update(self.local_es.snapshot(self))
+        elif self.em and len(self.species):
             Q, per = self._deposit_charge()
             d["rho"] = self.density(Q)
             for k, v in per.items():
@@ -989,8 +1040,13 @@ class Simulation:
 
     def geometry_data(self):
         g = self.grid
-        return {"z": g.z, "y": g.y, "node_cond": self.mats.node_cond, "cell_mat": self.mats.cell_mat,
+        data = {"z": g.z, "y": g.y, "node_cond": self.mats.node_cond, "cell_mat": self.mats.cell_mat,
                 "cell_obj": self.mats.cell_obj, "eps_cell": self.mats.eps_cell, "geometry": self.geometry}
+        if self.local_es is not None:
+            data.update(local_points=g.local_mesh.points, local_triangles=g.local_mesh.triangles,
+                        local_cell_mat=self.local_es.P.cell_mat,
+                        local_node_cond=self.local_es.P.node_cond, mesh_type="local P1 triangles (fixed)")
+        return data
 
     # ==========================================================================
     def run(self, callback=None, should_stop=None):
@@ -1001,7 +1057,11 @@ class Simulation:
             "name": self.model.get("name"), "geometry": self.geometry,
             "solver": "electromagnetic" if self.em else "electrostatic",
             "dt": self.dt, "n_steps": self.n_steps, "t_end": self.n_steps * self.dt,
-            "grid": {"nz": self.grid.nz, "ny": self.grid.ny, "dz": self.grid.dz, "dy": self.grid.dy},
+            "grid": {"nz": self.grid.nz, "ny": self.grid.ny, "dz": self.grid.dz, "dy": self.grid.dy,
+                     **({"mesh_type": "local P1 triangles (fixed)",
+                         "local_nodes": len(self.local_es.mesh.points),
+                         "local_triangles": len(self.local_es.mesh.triangles)}
+                        if self.local_es is not None else {})},
             "species": [{"name": s.name, "q": s.q, "m": s.m} for s in self.species],
             "conductors": [c_["name"] for c_ in self.mats.conductors],
             "objects": self.obj_names, "components": self.comp,

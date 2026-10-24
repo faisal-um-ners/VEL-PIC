@@ -96,27 +96,36 @@ def plot_geometry(ax, model, show_mesh=False, painted=False, selected=None):
             col = "#8fa3bf" if dark else "#5b6b82"
             zs = g.z
             ys = g.y if g.dim == 2 else np.array([y0, y1])
-            # thin out only if there are far more lines than pixels (zoom in to see all of them)
-            sz = max(1, len(zs) // 600)
-            sy = max(1, len(ys) // 600)
-            zl = np.r_[zs[::sz], zs[-1]]
-            segs = [[(z, ys[0]), (z, ys[-1])] for z in zl]
-            if g.dim == 2:
-                yl = np.r_[ys[::sy], ys[-1]]
-                segs += [[(zs[0], y), (zs[-1], y)] for y in yl]
-            ax.add_collection(LineCollection(segs, colors=col, linewidths=0.35, alpha=0.75, zorder=2.5))
-            # highlight refinement regions
-            for r in m.get("mesh_refinements", []):
-                if not r.get("enabled", True):
-                    continue
-                a, b = sorted((ev.num(r["start"]), ev.num(r["end"])))
-                if r.get("axis", "z") == "z":
-                    ax.axvspan(a, b, color="#2a78d6", alpha=0.08, zorder=0.5, lw=0)
-                elif g.dim == 2:
-                    ax.axhspan(a, b, color="#2a78d6", alpha=0.08, zorder=0.5, lw=0)
-            note = f"{g.nz} x {g.ny} cells" if g.dim == 2 else f"{g.nz} cells"
-            if sz > 1 or sy > 1:
-                note += "  (every %d-th line drawn; zoom in for all)" % max(sz, sy)
+            if hasattr(g, "local_mesh"):
+                mesh = g.local_mesh
+                segs = mesh.points[mesh.edge_nodes]
+                ax.add_collection(LineCollection(segs, colors=col, linewidths=0.3, alpha=0.75, zorder=2.5))
+                for region in mesh.regions:
+                    ax.add_patch(MplPolygon(region.points, closed=True, fc="#2a78d6", ec="#2a78d6",
+                                            alpha=0.12, lw=1, zorder=2))
+                note = f"{len(mesh.points):,} nodes, {len(mesh.triangles):,} triangles (fixed local mesh)"
+            else:
+                # thin out only if there are far more lines than pixels (zoom in to see all of them)
+                sz = max(1, len(zs) // 600)
+                sy = max(1, len(ys) // 600)
+                zl = np.r_[zs[::sz], zs[-1]]
+                segs = [[(z, ys[0]), (z, ys[-1])] for z in zl]
+                if g.dim == 2:
+                    yl = np.r_[ys[::sy], ys[-1]]
+                    segs += [[(zs[0], y), (zs[-1], y)] for y in yl]
+                ax.add_collection(LineCollection(segs, colors=col, linewidths=0.35, alpha=0.75, zorder=2.5))
+                # highlight refinement regions
+                for r in m.get("mesh_refinements", []):
+                    if not r.get("enabled", True):
+                        continue
+                    a, b = sorted((ev.num(r["start"]), ev.num(r["end"])))
+                    if r.get("axis", "z") == "z":
+                        ax.axvspan(a, b, color="#2a78d6", alpha=0.08, zorder=0.5, lw=0)
+                    elif g.dim == 2:
+                        ax.axhspan(a, b, color="#2a78d6", alpha=0.08, zorder=0.5, lw=0)
+                note = f"{g.nz} x {g.ny} cells" if g.dim == 2 else f"{g.nz} cells"
+                if sz > 1 or sy > 1:
+                    note += "  (every %d-th line drawn; zoom in for all)" % max(sz, sy)
             ax.text(0.99, 0.01, note, transform=ax.transAxes, ha="right", va="bottom", fontsize=7,
                     color=col, zorder=20)
         except Exception as exc:  # noqa: BLE001
@@ -294,6 +303,8 @@ def _conductor_cover(ax, fdata, z, y, mirror):
 
 
 def plot_field(ax, fdata, qty, cmap=None, mirror=False, colorbar_owner=None, vlim=None, aspect=None):
+    if "local_points" in fdata and "local_" + qty in fdata:
+        return _plot_local_field(ax, fdata, qty, cmap, mirror, vlim, aspect)
     geom = str(fdata.get("geometry", "2D-ZY"))
     A = masked_field(fdata, qty)              # NaN inside conductors
     z, y = fdata["z"], fdata["y"]
@@ -447,3 +458,37 @@ def plot_beam(axs, pdata, species, geometry, nbins=40):
     axs[1].set_xlabel("z (m)")
     for a in axs:
         a.grid(alpha=0.3)
+
+
+def _plot_local_field(ax, data, qty, cmap=None, mirror=False, vlim=None, aspect=None):
+    """Render the actual P1 field, not a resampled background rectangle."""
+    from matplotlib.tri import Triangulation
+    p = np.asarray(data["local_points"])
+    cells = np.asarray(data["local_triangles"])
+    values = np.asarray(data["local_" + qty])
+    mask = np.asarray(data.get("local_cell_mat", np.zeros(len(cells)))) == 1
+    tri = Triangulation(*p.T, triangles=cells, mask=mask)
+    valid = np.unique(cells[~mask])
+    used = values[valid]
+    sym = qty.startswith(("E", "B", "J")) or (qty.startswith("rho") and used.min() < 0 < used.max())
+    if vlim is None:
+        hi = float(np.max(abs(used))) if sym else float(used.max())
+        lo = -hi if sym else float(used.min())
+    else:
+        lo, hi = vlim
+    if lo == hi: hi = lo + 1e-30
+    cm = cmap or ("RdBu_r" if sym else "viridis")
+    ax.clear()
+    im = ax.tripcolor(tri, values, shading="gouraud", cmap=cm, vmin=lo, vmax=hi, rasterized=True)
+    rz = str(data.get("geometry")) == "2D-RZ"
+    if mirror and rz:
+        other = Triangulation(p[:,0], -p[:,1], cells[:,[0,2,1]], mask=mask)
+        sign = -1 if qty in ("Er", "Etheta", "Br", "Btheta") else 1
+        ax.tripcolor(other, sign*values, shading="gouraud", cmap=cm, vmin=lo, vmax=hi, rasterized=True)
+    ax.set_xlim(p[:,0].min(), p[:,0].max())
+    ax.set_ylim(-p[:,1].max() if mirror and rz else p[:,1].min(), p[:,1].max())
+    ax.set_aspect(aspect or "auto")
+    ax.set_xlabel("z (m)");ax.set_ylabel("r (m)" if rz else "y (m)")
+    ax.set_title(f"{qty}   t = {float(data.get('t',0)):.4g} s", fontsize=9)
+    ax.grid(False)
+    return im

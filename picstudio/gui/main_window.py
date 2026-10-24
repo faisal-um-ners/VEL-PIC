@@ -487,19 +487,91 @@ class MainWindow(QMainWindow):
         bt.setToolTip("Draw the computational mesh in the Geometry tab (F6)")
         bt.clicked.connect(self.show_mesh)
         lay.addWidget(bt)
-        hint = QLabel("<p>Refine the mesh locally with <b>Mesh Refinement</b> regions (e.g. in front of "
-                      "the emitter): a region gives a smaller cell size between <i>From</i> and <i>To</i> "
-                      "along z or y; the cells grow by the growth ratio away from it. Emitter ends and "
-                      "rectangle edges become mesh nodes automatically. Keep the growth ratio gentle "
-                      "(1.05-1.2). Refined meshes are available with the electrostatic solver only. The "
-                      "electromagnetic Yee solver needs a uniform grid: its time step follows the smallest "
-                      "cell everywhere, graded cells reflect waves, and charge conservation assumes equal "
-                      "cells, so Check model reports an error and the run does not start. For EM runs untick "
-                      "<i>Enabled</i> and use a uniform mesh fine enough for the emitter.</p>")
+        hint = QLabel("<p><b>Along z line / Along y line</b> retains the existing full-domain graded bands. "
+                      "Choose <b>2D</b>, select rectangle or polygon in <b>Region shape</b>, "
+                      "and enter its coordinates or parameter expressions. Set <b>Cell size inside</b> "
+                      "and <b>Safety buffer</b>. Protect possible cathode-return space as well as the beam. "
+                      "Domain &amp; Mesh sets the background resolution. <b>Show mesh</b> previews "
+                      "the actual triangles; the mesh is frozen before PIC. Regions are resolution "
+                      "controls, not particle walls. Electrostatic solver only; smoothing must be 0.</p>")
         hint.setWordWrap(True)
         hint.setObjectName("hint")
         lay.addWidget(hint)
         return box
+
+    def _draw_local_refinement(self, shape):
+        """Interactive pre-run region entry; does not start or remesh a PIC run."""
+        from matplotlib.widgets import RectangleSelector, PolygonSelector
+        self.geo_timer.stop()
+        previous = getattr(self, "_refine_selector", None)
+        if previous is not None:
+            previous.set_active(False)
+            previous.disconnect_events()
+        self.tabs.setCurrentIndex(0)
+        self.draw_geometry()
+        ax = self.geo_plot.axes[0]
+        target = self.selected
+        self.statusBar().showMessage("Drag a rectangle" if shape == "rectangle" else
+                                     "Click polygon corners; click the first point again to finish. Escape cancels.")
+
+        def finish(points):
+            selector = getattr(self, "_refine_selector", None)
+            if selector is not None:
+                selector.set_active(False)
+                selector.disconnect_events()
+            self._refine_selector = None
+            key = getattr(self, "_refine_cancel_key", None)
+            if key is not None:
+                self.geo_plot.canvas.mpl_disconnect(key)
+                self._refine_cancel_key = None
+            d = S.defaults(S.MESH_REFINE)
+            if target and target[0] == "mesh_refinements" and target[1] is not None:
+                index = target[1]
+                d.update(self.model["mesh_refinements"][index])
+            else:
+                index = len(self.model["mesh_refinements"])
+                self.model["mesh_refinements"].append(d)
+                ev = M.evaluator(self.model)
+                dom = self.model["domain"]
+                h = min((ev.num(dom["z_max"])-ev.num(dom["z_min"]))/ev.num(dom["nz"]),
+                        (ev.num(dom["y_max"])-ev.num(dom["y_min"]))/ev.num(dom["ny"]))
+                d.update(name=f"local region {index+1}", size=f"{h/4:.12g}")
+            fmt = lambda v: f"{v:.12g}"
+            d.update(axis="local 2D", enabled=True, region_shape=shape)
+            if shape == "rectangle":
+                lo, hi = np.min(points, axis=0), np.max(points, axis=0)
+                d.update(z0=fmt(lo[0]), z1=fmt(hi[0]), y0=fmt(lo[1]), y1=fmt(hi[1]))
+            else:
+                d["points"] = "; ".join(fmt(z)+","+fmt(y) for z,y in points)
+            self.model["mesh_refinements"][index] = d
+            self.mark_dirty()
+            self.populate_tree(select=("mesh_refinements", index))
+            self.chk_mesh.setChecked(True)
+            self.draw_geometry()
+            self.statusBar().showMessage("Local region added. Set cell size / buffer, preview, then run.", 8000)
+
+        def rectangle(a, b):
+            if None not in (a.xdata, a.ydata, b.xdata, b.ydata) and a.xdata != b.xdata and a.ydata != b.ydata:
+                finish([(a.xdata,a.ydata),(b.xdata,b.ydata)])
+
+        def polygon(points):
+            if len(points) >= 3: finish(points)
+
+        def cancel(event):
+            if event.key != "escape": return
+            selector = getattr(self, "_refine_selector", None)
+            if selector is not None:
+                selector.set_active(False)
+                selector.disconnect_events()
+            self._refine_selector = None
+            self.geo_plot.canvas.mpl_disconnect(self._refine_cancel_key)
+            self._refine_cancel_key = None
+            self.draw_geometry()
+            self.statusBar().showMessage("Local region drawing cancelled.", 3000)
+
+        self._refine_selector = (RectangleSelector(ax, rectangle, button=[1], useblit=True)
+                                 if shape == "rectangle" else PolygonSelector(ax, polygon, useblit=True))
+        self._refine_cancel_key = self.geo_plot.canvas.mpl_connect("key_press_event", cancel)
 
     def show_mesh(self):
         self.chk_mesh.setChecked(True)
@@ -565,6 +637,11 @@ class MainWindow(QMainWindow):
                         else f"d{a} = {h.min():.3g}…{h.max():.3g} m")
             if g.dim == 1:
                 self.geo_info.setText(f"mesh: {g.nz} cells, {rng(g.hz, 'z')}")
+            elif hasattr(g, "local_mesh"):
+                mesh = g.local_mesh
+                self.geo_info.setText(f"fixed local mesh: {len(mesh.points):,} nodes, "
+                                      f"{len(mesh.triangles):,} triangles; "
+                                      f"minimum triangle altitude = {mesh.hmin:.3g} m")
             else:
                 self.geo_info.setText(f"mesh: {g.nz} × {g.ny} = {g.nz * g.ny:,} cells, {rng(g.hz, 'z')}, "
                                       f"{rng(g.hy, nm)}")

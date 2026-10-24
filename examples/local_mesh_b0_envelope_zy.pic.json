@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "name": "Manual local mesh: expanding B=0 beam and cathode returns",
+  "description": "Manually assumed, filled expanding electron region with a buffer and a second region for sideways cathode returns. The mesh is constructed before PIC and never follows particles. The polygon is only a resolution guide; it does not force trajectories or set an SCL limit. No applied magnetic field: B=0. Edit the polygon coordinates in Mesh Refinement.",
+  "parameters": {
+    "d": "0.02",
+    "V0": "100",
+    "eta": "1",
+    "Delta": "0.5",
+    "Jn": "12",
+    "pbar": "9",
+    "v0": "sqrt(2*e*V0/me)",
+    "JCL": "4*eps0/9*sqrt(2*e/me)*V0**1.5/d**2"
+  },
+  "boundaries": {
+    "z_min": {
+      "name": "cathode",
+      "field": "conductor",
+      "voltage": "0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "z_max": {
+      "name": "anode",
+      "field": "conductor",
+      "voltage": "V0",
+      "particles": "absorb",
+      "absorber_cells": 16
+    },
+    "y_min": {
+      "name": "",
+      "field": "neumann",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    },
+    "y_max": {
+      "name": "",
+      "field": "neumann",
+      "voltage": "0",
+      "particles": "reflect",
+      "absorber_cells": 16
+    }
+  },
+  "simulation": {
+    "geometry": "2D-ZY",
+    "solver": "electrostatic",
+    "t_end": "6*d/v0",
+    "dt": ".003*d/v0",
+    "cfl": "0.95",
+    "n_steps": "",
+    "relativistic": false,
+    "particle_pusher": "boris",
+    "field_gathering": "auto",
+    "smoothing": 0,
+    "em_conductors": "held at their potentials",
+    "current_filter": 0,
+    "axis_correction": true,
+    "initial_field": "poisson",
+    "seed": 12345,
+    "max_particles": "2e7"
+  },
+  "domain": {
+    "z_min": "0",
+    "z_max": "d",
+    "nz": "32",
+    "y_min": "0",
+    "y_max": "pbar*d/2",
+    "ny": "40"
+  },
+  "diagnostics": {
+    "output_dir": "output_local_mesh_b0_envelope_zy",
+    "history_every": "10",
+    "field_every": "500",
+    "particle_every": "500",
+    "max_dump_particles": "10000",
+    "live_every": "50"
+  },
+  "parallel": {
+    "mode": "threads",
+    "ranks": 4,
+    "threads": 0
+  },
+  "sweep": {
+    "enabled": false,
+    "parameter": "",
+    "values": "linspace(0,1,5)",
+    "workers": 2
+  },
+  "mesh_refinements": [
+    {
+      "name": "assumed expanding beam envelope",
+      "enabled": true,
+      "axis": "local 2D",
+      "start": "0",
+      "end": "1e-3",
+      "region_shape": "polygon",
+      "z0": "0",
+      "z1": "1e-3",
+      "y0": "0",
+      "y1": "1e-3",
+      "points": "0,0; d,0; d,1.4*d; .65*d,1.1*d; .25*d,.8*d; 0,eta*d/2",
+      "buffer": ".1*d",
+      "size": ".025*d",
+      "growth": "1.2"
+    },
+    {
+      "name": "cathode return footprint",
+      "enabled": true,
+      "axis": "local 2D",
+      "start": "0",
+      "end": "1e-3",
+      "region_shape": "rectangle",
+      "z0": "0",
+      "z1": ".12*d",
+      "y0": "0",
+      "y1": "1.0*d",
+      "points": "0,0; 1e-2,0; 1e-2,2e-3; 0,2e-4",
+      "buffer": ".05*d",
+      "size": ".0125*d",
+      "growth": "1.2"
+    }
+  ],
+  "objects": [],
+  "species": [
+    {
+      "name": "electrons",
+      "preset": "electron",
+      "charge": "-1",
+      "mass": "me",
+      "beam_self_B": false,
+      "motion": "full"
+    }
+  ],
+  "loaders": [],
+  "emitters": [
+    {
+      "name": "cathode",
+      "species": "electrons",
+      "model": "beam",
+      "surface": "segment",
+      "object": "",
+      "z0": "0",
+      "y0": "0",
+      "z1": "0",
+      "y1": "eta*d/2",
+      "normal": "+z",
+      "current_density": "Jn*JCL",
+      "energy": "Delta*V0",
+      "temperature": "0",
+      "work_function": "4.5",
+      "beta": "1",
+      "cathode_temperature": "2000",
+      "richardson": "1.20173e6",
+      "schottky": true,
+      "relax": "1.0",
+      "profile": "1",
+      "particles_per_cell": "2",
+      "t_start": "0",
+      "t_stop": "1e9"
+    }
+  ],
+  "external_fields": [
+    {
+      "name": "Bext1",
+      "type": "uniform",
+      "E": [
+        "0",
+        "0",
+        "0"
+      ],
+      "B": [
+        "0",
+        "0",
+        "0"
+      ],
+      "Ez": "0",
+      "Ey": "0",
+      "Ex": "0",
+      "Bz": "0",
+      "By": "0",
+      "Bx": "0",
+      "zc": "0",
+      "z_end": "1e-2",
+      "radius": "1e-2",
+      "ampere_turns": "1000",
+      "time_factor": "1"
+    }
+  ],
+  "sources": [],
+  "probes": [],
+  "line_probes": [
+    {
+      "name": "phi",
+      "quantity": "phi",
+      "extremum": "min",
+      "along": "z",
+      "y": "0",
+      "z": "0",
+      "start": "0",
+      "end": "d"
+    }
+  ],
+  "power_lines": []
+}

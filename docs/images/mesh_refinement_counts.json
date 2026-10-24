@@ -1,0 +1,27 @@
+{
+  "2D-ZY": {
+    "nodes": 15144,
+    "triangles": 29954,
+    "leaves": 7440,
+    "minimum_leaf_dz_m": 3.124999999999992e-05,
+    "minimum_leaf_dy_m": 3.906249999999982e-05,
+    "uniform_finest_nz": 320,
+    "uniform_finest_ny": 512,
+    "uniform_finest_triangles": 655360,
+    "uniform_finest_nodes": 328513,
+    "comparison": "Same full domain and smallest leaf widths; four P1 center-fan triangles per uniform rectangle. Counts are not timings."
+  },
+  "2D-RZ": {
+    "nodes": 9239,
+    "triangles": 18192,
+    "leaves": 4522,
+    "minimum_leaf_dz_m": 3.124999999999992e-05,
+    "minimum_leaf_dy_m": 3.906249999999982e-05,
+    "uniform_finest_nz": 320,
+    "uniform_finest_ny": 256,
+    "uniform_finest_triangles": 327680,
+    "uniform_finest_nodes": 164417,
+    "comparison": "Same full domain and smallest leaf widths; four P1 center-fan triangles per uniform rectangle. Counts are not timings."
+  },
+  "same_budget_uniform_triangles": 30012
+}

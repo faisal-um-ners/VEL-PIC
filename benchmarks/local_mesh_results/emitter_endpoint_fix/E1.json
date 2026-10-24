@@ -1,0 +1,416 @@
+{
+  "state": "converged_bracketed_stationary_fold",
+  "points": [
+    {
+      "converged": true,
+      "amplitude": 0.0004,
+      "current": 0.13754450367017176,
+      "residual": 2.1380098297378797e-13,
+      "iterations": 2,
+      "minimum_kinetic": 0.010014897391430955
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0008960000000000001,
+      "current": 0.30616713504018545,
+      "residual": 5.375196239444571e-13,
+      "iterations": 2,
+      "minimum_kinetic": 0.010014435378063902
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0015110400000000002,
+      "current": 0.5122566444726699,
+      "residual": 1.3740211700081877e-12,
+      "iterations": 2,
+      "minimum_kinetic": 0.010013862919240687
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0022736896000000004,
+      "current": 0.7631297315201453,
+      "residual": 3.5886321583626646e-12,
+      "iterations": 2,
+      "minimum_kinetic": 0.010013153762659
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0032193751040000005,
+      "current": 1.066898063886389,
+      "residual": 9.6270041905714e-12,
+      "iterations": 2,
+      "minimum_kinetic": 0.010012275511804012
+    },
+    {
+      "converged": true,
+      "amplitude": 0.004392025128960001,
+      "current": 1.432079841525894,
+      "residual": 3.2841867352974684e-17,
+      "iterations": 3,
+      "minimum_kinetic": 0.010011188256294802
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0058461111599104,
+      "current": 1.866738790760206,
+      "residual": 3.663248090285398e-17,
+      "iterations": 3,
+      "minimum_kinetic": 0.010009842953598618
+    },
+    {
+      "converged": true,
+      "amplitude": 0.007649177838288897,
+      "current": 2.3767457026278658,
+      "residual": 5.374932270096888e-17,
+      "iterations": 3,
+      "minimum_kinetic": 0.01000817957861008
+    },
+    {
+      "converged": true,
+      "amplitude": 0.009649177838288897,
+      "current": 2.903154305957443,
+      "residual": 6.324964423737311e-17,
+      "iterations": 3,
+      "minimum_kinetic": 0.010006341365185488
+    },
+    {
+      "converged": true,
+      "amplitude": 0.011649177838288897,
+      "current": 3.385860353550156,
+      "residual": 9.356664748549903e-17,
+      "iterations": 3,
+      "minimum_kinetic": 0.010004511198867947
+    },
+    {
+      "converged": true,
+      "amplitude": 0.013649177838288897,
+      "current": 3.8220059288835517,
+      "residual": 1.6371452804531117e-16,
+      "iterations": 3,
+      "minimum_kinetic": 0.010002690161377231
+    },
+    {
+      "converged": true,
+      "amplitude": 0.015649177838288897,
+      "current": 4.208188701079647,
+      "residual": 3.0552817220641515e-16,
+      "iterations": 3,
+      "minimum_kinetic": 0.01000087961357706
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0176491778382889,
+      "current": 4.540285682907614,
+      "residual": 7.126460879747221e-16,
+      "iterations": 3,
+      "minimum_kinetic": 0.009897763444377131
+    },
+    {
+      "converged": true,
+      "amplitude": 0.0196491778382889,
+      "current": 4.81319550653601,
+      "residual": 1.8919327909872052e-15,
+      "iterations": 3,
+      "minimum_kinetic": 0.009227397184711198
+    },
+    {
+      "converged": true,
+      "amplitude": 0.021649177838288902,
+      "current": 5.020453462783989,
+      "residual": 6.5040204125232925e-15,
+      "iterations": 3,
+      "minimum_kinetic": 0.00803515593116799
+    },
+    {
+      "converged": true,
+      "amplitude": 0.023649177838288904,
+      "current": 5.153657720298842,
+      "residual": 3.584968693431945e-14,
+      "iterations": 3,
+      "minimum_kinetic": 0.006432830535231482
+    },
+    {
+      "converged": true,
+      "amplitude": 0.025649177838288906,
+      "current": 5.201707270930731,
+      "residual": 8.39270656010499e-13,
+      "iterations": 3,
+      "minimum_kinetic": 0.004533313652605059
+    },
+    {
+      "converged": true,
+      "amplitude": 0.027649177838288908,
+      "current": 5.150690459108945,
+      "residual": 1.4006059792738356e-16,
+      "iterations": 4,
+      "minimum_kinetic": 0.0024705892303761665
+    },
+    {
+      "converged": true,
+      "amplitude": 0.02964917783828891,
+      "current": 4.998649330806639,
+      "residual": 1.5602274572139307e-11,
+      "iterations": 4,
+      "minimum_kinetic": 0.00042271334794944
+    },
+    {
+      "converged": true,
+      "amplitude": 0.02989917783828891,
+      "current": 4.980402903412349,
+      "residual": 1.0649561384427861e-16,
+      "iterations": 4,
+      "minimum_kinetic": 0.00016896040407135896
+    },
+    {
+      "converged": true,
+      "amplitude": 0.02997667783828891,
+      "current": 4.977611883465316,
+      "residual": 1.2311115668572903e-16,
+      "iterations": 4,
+      "minimum_kinetic": 7.389275268567842e-05
+    }
+  ],
+  "failed": [
+    {
+      "amplitude": 0.03164917783828891,
+      "converged": false,
+      "reason": "backtrack"
+    },
+    {
+      "amplitude": 0.03064917783828891,
+      "converged": false,
+      "reason": "backtrack"
+    },
+    {
+      "amplitude": 0.03014917783828891,
+      "converged": false,
+      "reason": "backtrack"
+    },
+    {
+      "amplitude": 0.03020917783828891,
+      "converged": false,
+      "reason": "backtrack"
+    },
+    {
+      "amplitude": 0.03005417783828891,
+      "converged": false,
+      "reason": "backtrack"
+    }
+  ],
+  "nodes": 17741,
+  "triangles": 35056,
+  "probe_node": 12855,
+  "peak": {
+    "converged": true,
+    "amplitude": 0.025668799385175883,
+    "current": 5.201712045180348,
+    "residual": 6.981719889720406e-16,
+    "iterations": 2,
+    "minimum_kinetic": 0.00451368254603577
+  },
+  "bracket": [
+    {
+      "converged": true,
+      "amplitude": 0.023649177838288904,
+      "current": 5.153657720298842,
+      "residual": 3.584968693431945e-14,
+      "iterations": 3,
+      "minimum_kinetic": 0.006432830535231482
+    },
+    {
+      "converged": true,
+      "amplitude": 0.027649177838288908,
+      "current": 5.150690459108945,
+      "residual": 1.4006059792738356e-16,
+      "iterations": 4,
+      "minimum_kinetic": 0.0024705892303761665
+    }
+  ],
+  "attained_current": 5.201712045180348,
+  "case": "E1",
+  "reference_J_over_JCL": 5.191,
+  "relative_error_percent": 0.20635802697646088,
+  "elapsed_seconds": 12.482302188873291,
+  "scope": "Stationary transmitting P1 fold on the actual new mesh; separate from PIC below/above behavior checks.",
+  "fine": true,
+  "model": {
+    "version": 1,
+    "name": "Manual local mesh: confined narrow strip (Lau E1 geometry)",
+    "description": "User-prescribed fixed local triangular mesh; full width eta=w/d. No live adaptation. The half-cell represents a symmetric periodic array. Jn=4.67 is below the tabulated E1 reference 5.191; this example is a PIC trial, not an extracted SCL limit. Show mesh before Run. Coordinates below define a filled region, not a particle wall.",
+    "parameters": {
+      "d": "0.02",
+      "V0": "100",
+      "eta": "0.1",
+      "Delta": "0.01",
+      "Jn": "5.191",
+      "pbar": "5.12",
+      "v0": "sqrt(2*e*V0/me)",
+      "JCL": "4*eps0/9*sqrt(2*e/me)*V0**1.5/d**2"
+    },
+    "boundaries": {
+      "z_min": {
+        "name": "cathode",
+        "field": "conductor",
+        "voltage": "0",
+        "particles": "absorb",
+        "absorber_cells": 16
+      },
+      "z_max": {
+        "name": "anode",
+        "field": "conductor",
+        "voltage": "V0",
+        "particles": "absorb",
+        "absorber_cells": 16
+      },
+      "y_min": {
+        "name": "",
+        "field": "neumann",
+        "voltage": "0",
+        "particles": "reflect",
+        "absorber_cells": 16
+      },
+      "y_max": {
+        "name": "",
+        "field": "neumann",
+        "voltage": "0",
+        "particles": "reflect",
+        "absorber_cells": 16
+      }
+    },
+    "simulation": {
+      "geometry": "2D-ZY",
+      "solver": "electrostatic",
+      "t_end": "8*d/v0",
+      "dt": "0.004*d/v0",
+      "cfl": "0.95",
+      "n_steps": "2000",
+      "relativistic": false,
+      "particle_pusher": "boris",
+      "field_gathering": "energy-conserving",
+      "smoothing": 0,
+      "em_conductors": "held at their potentials",
+      "current_filter": 0,
+      "axis_correction": true,
+      "initial_field": "poisson",
+      "seed": 12345,
+      "max_particles": "2e7"
+    },
+    "domain": {
+      "z_min": "0",
+      "z_max": "d",
+      "nz": "48",
+      "y_min": "0",
+      "y_max": "pbar*d/2",
+      "ny": "48"
+    },
+    "diagnostics": {
+      "output_dir": "output_local_mesh_confined_strip_zy",
+      "history_every": "10",
+      "field_every": "1000000",
+      "particle_every": "1000000",
+      "max_dump_particles": "10000",
+      "live_every": "1000000"
+    },
+    "parallel": {
+      "mode": "serial",
+      "ranks": 4,
+      "threads": 1
+    },
+    "sweep": {
+      "enabled": false,
+      "parameter": "",
+      "values": "linspace(0,1,5)",
+      "workers": 2
+    },
+    "mesh_refinements": [
+      {
+        "name": "confined columns",
+        "enabled": true,
+        "axis": "local 2D",
+        "start": "0",
+        "end": "1e-3",
+        "region_shape": "rectangle",
+        "z0": "0",
+        "z1": "d",
+        "y0": "0",
+        "y1": "eta*d/2",
+        "points": "0,0; 1e-2,0; 1e-2,2e-3; 0,2e-4",
+        "buffer": ".005*d",
+        "size": ".0125*d",
+        "growth": "1.15"
+      },
+      {
+        "name": "cathode barrier layer",
+        "enabled": true,
+        "axis": "local 2D",
+        "start": "0",
+        "end": "1e-3",
+        "region_shape": "rectangle",
+        "z0": "0",
+        "z1": "0.03*d",
+        "y0": "0",
+        "y1": "eta*d/2",
+        "points": "0,0; 1e-2,0; 1e-2,2e-3; 0,2e-4",
+        "buffer": "0.002*d",
+        "size": "0.001*d",
+        "growth": "1.15"
+      }
+    ],
+    "objects": [],
+    "species": [
+      {
+        "name": "electrons",
+        "preset": "electron",
+        "charge": "-1",
+        "mass": "me",
+        "beam_self_B": false,
+        "motion": "z_only"
+      }
+    ],
+    "loaders": [],
+    "emitters": [
+      {
+        "name": "cathode",
+        "species": "electrons",
+        "model": "beam",
+        "surface": "segment",
+        "object": "",
+        "z0": "0",
+        "y0": "0",
+        "z1": "0",
+        "y1": "eta*d/2",
+        "normal": "+z",
+        "current_density": "Jn*JCL",
+        "energy": "Delta*V0",
+        "temperature": "0",
+        "work_function": "4.5",
+        "beta": "1",
+        "cathode_temperature": "2000",
+        "richardson": "1.20173e6",
+        "schottky": true,
+        "relax": "1.0",
+        "profile": "1",
+        "particles_per_cell": "2",
+        "t_start": "0",
+        "t_stop": "1e9"
+      }
+    ],
+    "external_fields": [],
+    "sources": [],
+    "probes": [],
+    "line_probes": [
+      {
+        "name": "phi",
+        "quantity": "phi",
+        "extremum": "min",
+        "along": "z",
+        "y": "0",
+        "z": "0",
+        "start": "0",
+        "end": "d"
+      }
+    ],
+    "power_lines": [],
+    "_path": "/private/tmp/vexpace_mesh_band_fix/examples/local_mesh_confined_strip_zy.pic.json"
+  }
+}
