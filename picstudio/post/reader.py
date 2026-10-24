@@ -5,6 +5,7 @@ import glob
 import io
 import json
 import os
+import re
 
 import numpy as np
 
@@ -32,8 +33,15 @@ class Results:
         self.refresh()
 
     def refresh(self):
-        self.field_files = sorted(glob.glob(os.path.join(self.dir, "fields", "field_*.npz")))
-        self.particle_files = sorted(glob.glob(os.path.join(self.dir, "particles", "part_*.npz")))
+        # Atomic writes use e.g. field_0000001.npz.tmp.npz until complete.
+        # A broad *.npz glob also sees those files, which disappear on rename.
+        self.field_files = self._snapshot_files("fields", "field")
+        self.particle_files = self._snapshot_files("particles", "part")
+
+    def _snapshot_files(self, subdir, prefix):
+        pattern = re.compile(rf"{prefix}_[0-9]+\.npz")
+        return sorted(path for path in glob.glob(os.path.join(self.dir, subdir, f"{prefix}_*.npz"))
+                      if pattern.fullmatch(os.path.basename(path)))
 
     @property
     def geometry(self):

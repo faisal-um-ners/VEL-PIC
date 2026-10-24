@@ -4,7 +4,7 @@
   "cases": [
     {
       "file": "short_pulse_diode_2025_gaussian_1d.pic.json",
-      "input_sha256": "551b07d69f82206a1842b3f8774bfa6081b211611480fd647c4d4cc3a211c1fd",
+      "input_sha256": "c1614f33a7cb884ef1978f19ad2a6a650b6581f5eb60c696df360e00ad73016f",
       "geometry": "1D-Z",
       "steps": 20007,
       "elapsed_seconds": 1.9377291202545166,
@@ -24,11 +24,12 @@
       "minimum_sampled_potential_V": 0.0,
       "normal_model_validation_passed": true,
       "pulse_FWHM_and_charge_checks_passed": true,
-      "standard_diagnostics_passed": true
+      "standard_diagnostics_passed": true,
+      "verified_run_input_sha256": "551b07d69f82206a1842b3f8774bfa6081b211611480fd647c4d4cc3a211c1fd"
     },
     {
       "file": "short_pulse_diode_2025_square_1d.pic.json",
-      "input_sha256": "47ba52ee45bb483c3ce66e69178c0c9a19a3bc3e1f157447ae9985fec0639aad",
+      "input_sha256": "ec582d7ba2a7cf11fb92336363c79ff9e761049ce1429e2bdfdfd3e80ee9626e",
       "geometry": "1D-Z",
       "steps": 20040,
       "elapsed_seconds": 1.1928198337554932,
@@ -48,11 +49,12 @@
       "minimum_sampled_potential_V": 0.0,
       "normal_model_validation_passed": true,
       "pulse_FWHM_and_charge_checks_passed": true,
-      "standard_diagnostics_passed": true
+      "standard_diagnostics_passed": true,
+      "verified_run_input_sha256": "47ba52ee45bb483c3ce66e69178c0c9a19a3bc3e1f157447ae9985fec0639aad"
     },
     {
       "file": "short_pulse_diode_2025_trapezoid_1d.pic.json",
-      "input_sha256": "f74f7fa6cd32cede285bd59727726928e26d071a4e5c0b8af4eaec78ed767571",
+      "input_sha256": "4b7bf0dd200f3c7b343ef04ca70af7ecb6ee944c236a00e138f4fb69660f4b0a",
       "geometry": "1D-Z",
       "steps": 20026,
       "elapsed_seconds": 1.2385809421539307,
@@ -72,11 +74,12 @@
       "minimum_sampled_potential_V": 0.0,
       "normal_model_validation_passed": true,
       "pulse_FWHM_and_charge_checks_passed": true,
-      "standard_diagnostics_passed": true
+      "standard_diagnostics_passed": true,
+      "verified_run_input_sha256": "f74f7fa6cd32cede285bd59727726928e26d071a4e5c0b8af4eaec78ed767571"
     },
     {
       "file": "short_pulse_drift_2026_gaussian_1d.pic.json",
-      "input_sha256": "67791fa7de57850748230043aa5c3759a96265979bcc0c03577985d3b06e30ba",
+      "input_sha256": "84977e53f490364337ea4f2118e5a28eae53582f4ee231bf65e9e755a2a5fb4b",
       "geometry": "1D-Z",
       "steps": 20016,
       "elapsed_seconds": 2.762233257293701,
@@ -96,11 +99,12 @@
       "minimum_sampled_potential_V": -766.9189083805691,
       "normal_model_validation_passed": true,
       "pulse_FWHM_and_charge_checks_passed": true,
-      "standard_diagnostics_passed": true
+      "standard_diagnostics_passed": true,
+      "verified_run_input_sha256": "67791fa7de57850748230043aa5c3759a96265979bcc0c03577985d3b06e30ba"
     },
     {
       "file": "short_pulse_drift_2026_square_1d.pic.json",
-      "input_sha256": "aa8d80688cc1072201698d02894c50038d22612baba710c82b88a05733232646",
+      "input_sha256": "aacd7297e02348c2d3375b9fcf24ee23e0f1039e2f6920bd73af61f38d2928b5",
       "geometry": "1D-Z",
       "steps": 20000,
       "elapsed_seconds": 2.312615156173706,
@@ -120,11 +124,12 @@
       "minimum_sampled_potential_V": -776.4564642710899,
       "normal_model_validation_passed": true,
       "pulse_FWHM_and_charge_checks_passed": true,
-      "standard_diagnostics_passed": true
+      "standard_diagnostics_passed": true,
+      "verified_run_input_sha256": "aa8d80688cc1072201698d02894c50038d22612baba710c82b88a05733232646"
     },
     {
       "file": "short_pulse_drift_2026_trapezoid_1d.pic.json",
-      "input_sha256": "4a9777466c0785c38a74e82505ae9357670c84e659141514f365131a89abed2b",
+      "input_sha256": "280971c9293fea16d4e76c37299d870a90c158c7b7830933656d58784cd61635",
       "geometry": "1D-Z",
       "steps": 20026,
       "elapsed_seconds": 2.380068063735962,
@@ -144,7 +149,9 @@
       "minimum_sampled_potential_V": -777.4021875086441,
       "normal_model_validation_passed": true,
       "pulse_FWHM_and_charge_checks_passed": true,
-      "standard_diagnostics_passed": true
+      "standard_diagnostics_passed": true,
+      "verified_run_input_sha256": "4a9777466c0785c38a74e82505ae9357670c84e659141514f365131a89abed2b"
     }
-  ]
+  ],
+  "description_update": "Pulse setup explanations added after the recorded runs. All numerical model fields are identical to the verified run inputs; verified_run_input_sha256 identifies the original bytes and input_sha256 identifies the documented shipped model. User-local numerical edits are not included."
 }

@@ -147,6 +147,7 @@ class MainWindow(QMainWindow):
         self.live = LivePanel()
         self.tabs.addTab(self.live, "Live monitor")
         self.results = ResultsPanel()
+        self.results.can_open = self._can_open_files
         self.tabs.addTab(self.results, "Results")
         rv.addWidget(self.tabs)
         right.setMinimumWidth(320)
@@ -225,15 +226,19 @@ class MainWindow(QMainWindow):
                             "padding-right: 12px;")
         tb.addWidget(bname)
         tb.addSeparator()
+        self._file_open_actions = []
         f = mb.addMenu("&File")
         newm = f.addMenu("New model")
+        self._file_open_actions.append(newm.menuAction())
         for g in S.GEOMETRIES:
             for s in S.SOLVERS:
                 self._act(newm, f"{g}  {s}", lambda _=False, g=g, s=s: self.new_model(g, s))
-        self._act(f, "Open...", self.open_dialog, "Ctrl+O", tb, icon="open")
+        self._file_open_actions.append(
+            self._act(f, "Open...", self.open_dialog, "Ctrl+O", tb, icon="open"))
         self._act(f, "Save", self.save, "Ctrl+S", tb, icon="save")
         self._act(f, "Save as...", self.save_as, "Ctrl+Shift+S")
         exm = f.addMenu("Examples")
+        self._file_open_actions.append(exm.menuAction())
         ed = examples_dir()
         if ed:
             for fn in sorted(os.listdir(ed)):
@@ -256,8 +261,10 @@ class MainWindow(QMainWindow):
         self._act(rm, "Run with MPI...", self.run_mpi)
         self._act(rm, "Run parametric sweep", self.run_sweep, tb=tb, icon="sweep")
         res = mb.addMenu("Re&sults")
-        self._act(res, "Open results folder...", self.results.choose_dir)
-        self._act(res, "Load results of this model", self.load_results, tb=tb, icon="results")
+        self._file_open_actions.append(
+            self._act(res, "Open results folder...", self.results.choose_dir))
+        self._file_open_actions.append(
+            self._act(res, "Load results of this model", self.load_results, tb=tb, icon="results"))
         vm = mb.addMenu("&View")
         self._act(vm, "Light theme", lambda: self.set_theme("light"))
         self._act(vm, "Dark theme", lambda: self.set_theme("dark"))
@@ -670,7 +677,20 @@ class MainWindow(QMainWindow):
             return self.save()
         return r == QMessageBox.Discard
 
+    def _can_open_files(self):
+        if self.proc is not None:
+            self.statusBar().showMessage("Stop the current run before opening another model or results folder.", 5000)
+            return False
+        return True
+
+    def _set_file_open_enabled(self, enabled):
+        for action in self._file_open_actions:
+            action.setEnabled(enabled)
+        self.results.open_button.setEnabled(enabled)
+
     def new_model(self, g, s):
+        if not self._can_open_files():
+            return
         if not self.maybe_save():
             return
         self.model = M.new_model(g, s)
@@ -681,6 +701,8 @@ class MainWindow(QMainWindow):
         self.refresh_all()
 
     def open_dialog(self):
+        if not self._can_open_files():
+            return
         if not self.maybe_save():
             return
         fn, _ = QFileDialog.getOpenFileName(self, "Open model", self.settings.value("lastdir", ""),
@@ -689,6 +711,8 @@ class MainWindow(QMainWindow):
             self.open_file(fn)
 
     def open_file(self, fn):
+        if not self._can_open_files():
+            return
         try:
             self.model = M.load(fn)
         except Exception as exc:  # noqa: BLE001
@@ -706,6 +730,8 @@ class MainWindow(QMainWindow):
             self.results.load(out)
 
     def open_example(self, p):
+        if not self._can_open_files():
+            return
         if not self.maybe_save():
             return
         self.model = M.load(p)
@@ -806,9 +832,11 @@ class MainWindow(QMainWindow):
                 pass
             self.live.clear("Starting simulation...")
         self.proc = QProcess(self)
+        self._set_file_open_enabled(False)
         self.proc.setProcessChannelMode(QProcess.MergedChannels)
         self.proc.readyReadStandardOutput.connect(self._read_proc)
         self.proc.finished.connect(self._proc_done)
+        self.proc.errorOccurred.connect(self._proc_error)
         self.run_out = out_dir
         env = self.proc.processEnvironment()
         from PySide6.QtCore import QProcessEnvironment
@@ -1009,6 +1037,11 @@ class MainWindow(QMainWindow):
             elif line.strip():
                 self.msg(line)
 
+    def _proc_error(self, error):
+        if error == QProcess.FailedToStart and self.proc is not None:
+            self.msg(f"[error] Could not start solver: {self.proc.errorString()}")
+            self._proc_done(-1, QProcess.NormalExit)
+
     def _proc_done(self, code, _status):
         self._read_proc()
         user_stop = getattr(self, "_user_stop", False)
@@ -1028,6 +1061,7 @@ class MainWindow(QMainWindow):
         self.live_timer.stop()
         self._poll_live()
         self.proc = None
+        self._set_file_open_enabled(True)
         if self.run_out:
             self.results.load(self.run_out)
         self.run_out = None
@@ -1053,6 +1087,8 @@ class MainWindow(QMainWindow):
             self.live.update_from(live)
 
     def load_results(self):
+        if not self._can_open_files():
+            return
         out = self.output_dir()
         if out and os.path.isdir(out):
             self.results.load(out)

@@ -498,6 +498,7 @@ class ResultsPanel(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.res = None
+        self.can_open = lambda: True
         lay = QHBoxLayout(self)
         split = QSplitter(Qt.Horizontal)
         lay.addWidget(split)
@@ -505,7 +506,7 @@ class ResultsPanel(QWidget):
         v = QVBoxLayout(ctl)
         self.dir_label = QLabel("No results loaded")
         self.dir_label.setWordWrap(True)
-        b = QPushButton("Open results folder...")
+        b = self.open_button = QPushButton("Open results folder...")
         b.clicked.connect(self.choose_dir)
         br = QPushButton("Refresh")
         br.clicked.connect(self.refresh)
@@ -573,6 +574,8 @@ class ResultsPanel(QWidget):
 
     # ------------------------------------------------------------------
     def choose_dir(self):
+        if not self.can_open():
+            return
         d = QFileDialog.getExistingDirectory(self, "Results folder")
         if d:
             self.load(d)
@@ -584,6 +587,8 @@ class ResultsPanel(QWidget):
         self.plot.draw()
 
     def load(self, d):
+        if not self.can_open():
+            return
         if not os.path.isdir(d):
             return
         self.res = Results(d)

@@ -22,6 +22,57 @@ PAPERS = {
 }
 
 
+def pulse_expression(shape):
+    clock = '(t+sample_dt/2)'
+    if shape == 'square':
+        profile = '1'
+    elif shape == 'trapezoid':
+        profile = f'max(0,min(1,min({clock}/support,1-{clock}/support)/ramp_fraction))'
+    elif shape == 'gaussian':
+        profile = f'exp(-0.5*(({clock}-support/2)/sigma_t)**2)'
+    else:
+        raise ValueError(f'Unknown pulse shape: {shape}')
+    # Current is sampled at each step midpoint; support spans whole steps.
+    return f'Jamp*({profile})*where(({clock}>=0)&({clock}<support),1,0)'
+
+
+def pulse_description(shape):
+    detail = {
+        'square': 'Square: shape=1 inside support; support=tau; pulse_area_time=support.',
+        'trapezoid': (
+            'Trapezoid: with u=t+sample_dt/2, rise linearly from 0 to Jamp over '
+            '0 <= u < ramp_fraction*support; stay at Jamp until '
+            'u=(1-ramp_fraction)*support; then fall linearly to zero at u=support. '
+            'ramp_fraction is EACH ramp duration / full support (0 < ramp_fraction <= 0.5; '
+            'default 0.15). The min/max terms clip the shape between 0 and 1. '
+            'support=tau/(1-ramp_fraction); pulse_area_time=support*(1-ramp_fraction).'
+        ),
+        'gaussian': (
+            'Gaussian: center=support/2, shape=exp(-0.5*((u-support/2)/sigma_t)**2), '
+            'where u=t+sample_dt/2. sigma_t=tau/(2*sqrt(2*log(2))) is the time standard deviation; '
+            'support=2*gaussian_cutoff_sigma*sigma_t. Cutoff is 2.5 sigma (diode) or 2 sigma (drift). '
+            'pulse_area_time=sigma_t*sqrt(2*pi)*gaussian_retained_fraction; '
+            'gaussian_retained_fraction=erf(gaussian_cutoff_sigma/sqrt(2)). '
+            'The evaluator has no erf: update this numerical fraction together with the cutoff. '
+            'Use cutoff > sqrt(2*log(2)) so tau remains the retained pulse FWHM.'
+        ),
+    }[shape]
+    return (
+        '\n\nPulse setup: edit named values under Parameters, and the expression under '
+        'Emission > pulse > Current density [A/m^2]. t is solver time [s]; '
+        'u=t+sample_dt/2 samples the midpoint of the current step. '
+        'The where((u>=0)&(u<support),1,0) gate emits only for 0 <= u < support; '
+        '& means both comparisons must hold. Keep emitter t_start=0, t_stop=support '
+        'and simulation dt=sample_dt. support is full pulse duration [s]; tau=k*T is FWHM [s]. '
+        'Jamp=pulse_charge_per_area/pulse_area_time is peak current density [A/m^2], '
+        'not total current. pulse_charge_per_area=f*sigma_ref [C/m^2]; '
+        'pulse_area_time is the integral of the dimensionless pulse shape [s]. '
+        'sample_dt=support/ceil(support/(dt_fraction*T)) aligns support to whole steps; '
+        'dt_fraction=0.0002 is the requested maximum step / T. '
+        + detail + '\nCurrent density expression: ' + pulse_expression(shape)
+    )
+
+
 def build_model(paper, shape):
     p = PAPERS[paper]
     stem = f'short_pulse_{paper}_{p["year"]}_{shape}_1d'
@@ -75,16 +126,8 @@ def build_model(paper, shape):
     m['boundaries']['z_max'].update(name='anode', field='conductor',
                                    voltage='V0' if paper == 'diode' else '0', particles='absorb')
     m['species'] = [dict(name='electrons', preset='electron', motion='full')]
-    clock = '(t+sample_dt/2)'
-    if shape == 'square':
-        profile = '1'
-    elif shape == 'trapezoid':
-        profile = f'max(0,min(1,min({clock}/support,1-{clock}/support)/ramp_fraction))'
-    else:
-        profile = f'exp(-0.5*(({clock}-support/2)/sigma_t)**2)'
-    # Sample prescribed current at the centre of each step. Alignment makes the
-    # injection support an integer number of steps and avoids an extra final step.
-    current = f'Jamp*({profile})*where(({clock}>=0)&({clock}<support),1,0)'
+    current = pulse_expression(shape)
+    m['description'] += pulse_description(shape)
     m['emitters'] = [dict(name='pulse', species='electrons', model='beam', surface='segment',
                          z0='0', z1='0', y0='0', y1='0', normal='+z', current_density=current,
                          energy='0' if paper == 'diode' else 'V0', temperature='0',
